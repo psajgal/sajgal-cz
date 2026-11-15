@@ -923,6 +923,33 @@
     if (!layoutOn(list)) { lay = { rows: autoRows(list) }; writeRows(list, lay.rows); }
     markDirty(); renderLayout();
   }
+  var undoShuffle = null;
+  function snapshotLayout(list) { return { list: list, order: list.slice(), f: list.map(function (p) { return { p: p, row: p.row, cols: p.cols, stack: p.stack, al: p.al, col: p.col }; }) }; }
+  // Mix up where the photos sit, keeping the layout type and the number of columns.
+  function shuffleLayout(list) {
+    if (list.length < 2) return;
+    undoShuffle = snapshotLayout(list);
+    if (editing && !editing.cover && list[0]) editing.cover = list[0].src; // the cover stays the cover
+    if (layoutOn(list)) {
+      readDom($("#lay"));
+      var slots = [], all = [];
+      lay.rows.forEach(function (r) { r.cols.forEach(function (c) { slots.push(c); c.items.forEach(function (p) { all.push(p); }); }); });
+      shuffle(all);
+      var k = 0; slots.forEach(function (c) { c.items = c.items.map(function () { return all[k++]; }); });
+      writeRows(list, lay.rows);
+    } else {
+      shuffle(list);
+      list.forEach(function (p) { delete p.col; });
+      lay = null;
+    }
+    markDirty(); renderLayout();
+  }
+  function undoLayoutShuffle(list) {
+    var u = undoShuffle; if (!u || u.list !== list) return;
+    list.length = 0; u.order.forEach(function (p) { list.push(p); });
+    u.f.forEach(function (x) { ["row", "cols", "stack", "al", "col"].forEach(function (k) { if (x[k] === undefined) delete x.p[k]; else x.p[k] = x[k]; }); });
+    undoShuffle = null; lay = null; markDirty(); renderLayout();
+  }
   function modeSwitch(list, manual) {
     var armed = false, t = null;
     var a = h("button", { type: "button", "aria-pressed": String(!manual), text: "Automatic" });
@@ -932,7 +959,9 @@
       if (!armed) { armed = true; a.textContent = "Click again: your row layout is removed"; t = setTimeout(function () { armed = false; a.textContent = "Automatic"; }, 4000); return; }
       clearTimeout(t); clearLayout(list); lay = null; markDirty(); renderLayout();
     };
-    return h("div", { class: "lay-modebar" }, [h("div", { class: "seg lay-mode", role: "group", "aria-label": "Layout mode" }, [a, m]),
+    var shuf = h("button", { type: "button", class: "btn", text: "Shuffle photos", title: "Move the photos around. The layout type and the number of columns stay.", onclick: function () { shuffleLayout(list); } });
+    var undo = undoShuffle && undoShuffle.list === list ? h("button", { type: "button", class: "link", text: "Undo shuffle", onclick: function () { undoLayoutShuffle(list); } }) : null;
+    return h("div", { class: "lay-modebar" }, [h("div", { class: "seg lay-mode", role: "group", "aria-label": "Layout mode" }, [a, m]), shuf, undo,
       h("span", { class: "hint", text: manual ? "You place every photo yourself. Visitors on phones always see one column." : "The site arranges the photos in even columns for every screen size." })]);
   }
   function getMasonrySrc() {
