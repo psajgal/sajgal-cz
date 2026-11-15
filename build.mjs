@@ -271,7 +271,7 @@ function rowGallery(items, ctx, extraClass = "") {
 }
 function gallery(items, ctx, extraClass = "") {
   if (items.some((p) => p.row != null)) return rowGallery(items, ctx, extraClass);
-  const rows = items.map((p, i) => photoLink(p, i, ctx, "(max-width:600px) 50vw, 33vw"));
+  const rows = items.map((p, i) => photoLink(p, i, ctx, "(max-width:640px) 100vw, (max-width:1300px) 33vw, 25vw"));
   return `<div class="gallery${extraClass ? " " + extraClass : ""}" id="gallery">\n${rows.join("\n")}\n</div>`;
 }
 
