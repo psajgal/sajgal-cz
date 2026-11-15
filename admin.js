@@ -1125,7 +1125,7 @@
     var kind = meta(tab).kind, pb = $("#prevbtn");
     pb.hidden = !(kind === "photos" || (kind === "entries" && editing)); pb.onclick = openPreview;
     if (D.ahead && !publishing) {
-      right.appendChild(h("a", { class: "btn", href: previewBase() + "/", target: "_blank", rel: "noopener", text: "Open draft site ↗" }));
+      right.appendChild(h("a", { class: "btn", href: previewBase() + "/", target: "_blank", text: "Open draft site ↗" }));
       if (confirmPub) {
         right.appendChild(h("span", { class: "db-ask", text: "Make these changes public on the live site?" }));
         right.appendChild(h("button", { type: "button", class: "btn primary", text: "Yes, publish", onclick: publish }));
@@ -1511,6 +1511,7 @@
     $("#empty").textContent = k === "videos" ? "No videos yet. Add up to " + m.max + " MP4 or WebM clips." : "No photos yet. Drop images here or use Add photos.";
   }
   function layout() {
+    try { localStorage.setItem("sajgal-admin-pos", JSON.stringify({ tab: tab, view: view, slug: editing ? editing.slug : "" })); } catch (x) {}
     var m = meta(tab), k = m.kind, grid = k === "photos" || k === "videos" || (k === "entries" && !!editing);
     $("#addbtn").hidden = !grid; $("#drop").hidden = !grid;
     $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels";
@@ -1542,7 +1543,16 @@
     $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false;
     setStatus("Loading…");
     ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile()])); }).then(function () {
-      setStatus(""); tabs(); layout(); refreshDraft();
+      setStatus("");
+      try {
+        var pos = JSON.parse(localStorage.getItem("sajgal-admin-pos") || "null");
+        if (pos && pos.tab && meta(pos.tab)) {
+          tab = pos.tab;
+          if (pos.slug && ENT[tab]) editing = (state[tab] || []).filter(function (x) { return x.slug === pos.slug; })[0] || null;
+          if ((pos.view === "layout") && (meta(tab).kind === "photos" || editing)) view = "layout";
+        }
+      } catch (x) {}
+      tabs(); layout(); refreshDraft();
     }).catch(function (e) { setStatus(e.message, true); });
   }
 
