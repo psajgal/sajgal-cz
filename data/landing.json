@@ -1,20 +1,5 @@
 [
   {
-    "video": "/videos/clip-2.mp4",
-    "mobile": "/videos/clip-2-m.mp4",
-    "poster": "/images/home/clip-2.jpg"
-  },
-  {
-    "video": "/videos/clip-4.mp4",
-    "mobile": "/videos/clip-4-m.mp4",
-    "poster": "/images/home/clip-4.jpg"
-  },
-  {
-    "video": "/videos/clip-6.mp4",
-    "mobile": "/videos/clip-6-m.mp4",
-    "poster": "/images/home/clip-6.jpg"
-  },
-  {
     "video": "/videos/clip-1.mp4",
     "mobile": "/videos/clip-1-m.mp4",
     "poster": "/images/home/clip-1.jpg"
@@ -28,6 +13,21 @@
     "video": "/videos/clip-5.mp4",
     "mobile": "/videos/clip-5-m.mp4",
     "poster": "/images/home/clip-5.jpg"
+  },
+  {
+    "video": "/videos/clip-2.mp4",
+    "mobile": "/videos/clip-2-m.mp4",
+    "poster": "/images/home/clip-2.jpg"
+  },
+  {
+    "video": "/videos/clip-4.mp4",
+    "mobile": "/videos/clip-4-m.mp4",
+    "poster": "/images/home/clip-4.jpg"
+  },
+  {
+    "video": "/videos/clip-6.mp4",
+    "mobile": "/videos/clip-6-m.mp4",
+    "poster": "/images/home/clip-6.jpg"
   },
   {
     "video": "/videos/clip-7.mp4",
