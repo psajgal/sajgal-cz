@@ -1,5 +1,5 @@
 // Home background: three columns (one on phones), each plays its own clips one after another with a cross-fade.
-// Clip n belongs to column n mod 3. On phones the one column plays every clip, using the lighter phone files.
+// Clip n belongs to column n mod 3. On phones the one column plays every clip in a random order, using the lighter phone files.
 // Data saver, a slow connection or reduced motion: the still poster images only.
 (function () {
   var bg = document.getElementById("bg");
@@ -56,11 +56,21 @@
     p.layers[0].oncanplay = function () { p.layers[0].oncanplay = null; start(p.layers[0], 0); watch(p.layers[0]); };
     return p;
   }
+  var mix = null;
+  function shuffled() {
+    if (mix) return mix;
+    mix = clips.slice();
+    for (var i = mix.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = mix[i]; mix[i] = mix[j]; mix[j] = t; }
+    return mix;
+  }
   function apply() {
     stop();
-    if (!clips.length || stillOnly()) return;
+    if (!clips.length) return;
     var isPhone = phone.matches;
-    if (isPhone) players.push(player(cols[0], clips, true));
+    // On phones every visit starts with a random clip and plays the rest in a random order (the poster follows the first clip).
+    if (isPhone && cols[0]) { var first = shuffled()[0]; if (first && first.p) cols[0].style.backgroundImage = "url('" + first.p + "')"; }
+    if (stillOnly()) return;
+    if (isPhone) players.push(player(cols[0], shuffled(), true));
     else cols.forEach(function (col, k) {
       var list = clips.filter(function (_, i) { return i % 3 === k; });
       if (list.length) players.push(player(col, list, false));
