@@ -68,6 +68,7 @@
   function api(path, opts) {
     opts = opts || {};
     opts.headers = Object.assign({ Authorization: "Bearer " + cfg.token, Accept: "application/vnd.github+json" }, opts.headers || {});
+    opts.cache = "no-store"; /* GitHub lets browsers cache API answers for a minute, which made the draft state look stale */
     return fetch("https://api.github.com/repos/" + cfg.repo + path, opts);
   }
   function b64FromText(t) {
