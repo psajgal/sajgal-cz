@@ -1,0 +1,100 @@
+[
+  {
+    "id": "gmwi3zuhy",
+    "name": "demo 1",
+    "saved": "2026-11-15T17:29:07.366Z",
+    "photos": [
+      {
+        "image": "/images/fashion/03.jpg",
+        "thumb": "/images/fashion/03-1000.jpg",
+        "caption": "",
+        "w": 1080,
+        "h": 1350,
+        "col": 0
+      },
+      {
+        "image": "/images/fashion/01.jpg",
+        "thumb": "/images/fashion/01-1000.jpg",
+        "caption": "Designblok Prague, Diploma Selection 2026",
+        "w": 1080,
+        "h": 1350,
+        "col": 1
+      },
+      {
+        "image": "/images/fashion/02.jpg",
+        "thumb": "/images/fashion/02-1000.jpg",
+        "caption": "Designblok Prague, Diploma Selection 2026",
+        "w": 1080,
+        "h": 1350,
+        "col": 2
+      },
+      {
+        "image": "/images/fashion/11.jpg",
+        "thumb": "/images/fashion/11-1000.jpg",
+        "caption": "",
+        "w": 1500,
+        "h": 1200,
+        "col": 0
+      },
+      {
+        "image": "/images/fashion/05.jpg",
+        "thumb": "/images/fashion/05-1000.jpg",
+        "caption": "",
+        "w": 1080,
+        "h": 1350,
+        "col": 1
+      },
+      {
+        "image": "/images/fashion/04.jpg",
+        "thumb": "/images/fashion/04-1000.jpg",
+        "caption": "",
+        "w": 1080,
+        "h": 1350,
+        "col": 2
+      },
+      {
+        "image": "/images/fashion/06.jpg",
+        "thumb": "/images/fashion/06-1000.jpg",
+        "caption": "",
+        "w": 1080,
+        "h": 1350,
+        "col": 0
+      },
+      {
+        "image": "/images/fashion/10.jpg",
+        "thumb": "/images/fashion/10-1000.jpg",
+        "caption": "",
+        "w": 1200,
+        "h": 1500,
+        "col": 1
+      },
+      {
+        "image": "/images/fashion/07.jpg",
+        "thumb": "/images/fashion/07-1000.jpg",
+        "caption": "",
+        "w": 1500,
+        "h": 1200,
+        "col": 2
+      },
+      {
+        "image": "/images/fashion/08.jpg",
+        "thumb": "/images/fashion/08-1000.jpg",
+        "caption": "",
+        "w": 1200,
+        "h": 1500,
+        "col": 0
+      },
+      {
+        "image": "/images/fashion/09.jpg",
+        "thumb": "/images/fashion/09-1000.jpg",
+        "caption": "",
+        "w": 1200,
+        "h": 1500,
+        "col": 2
+      }
+    ],
+    "layout": {
+      "cols": 3
+    }
+  }
+]
