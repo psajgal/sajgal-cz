@@ -106,6 +106,13 @@ const brands = (Array.isArray(readJSON("data/brands.json", [])) ? readJSON("data
 const liveBrands = brands.filter((b) => b.photos.length > 0);
 // Videos on the /video page: an Instagram link, a title and a thumbnail. Instagram only loads when a visitor clicks.
 const igId = (u) => { const m = /instagram\.com\/(?:[^/?#]+\/)?(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/.exec(String(u || "")); return m ? m[2] : ""; };
+// Automatic photo layout: columns on desktop (0 = automatic), columns on phones, even column bottoms. Lists keep theirs in data/layout.json, shows and brands on the entry itself.
+const LAYOUTS = readJSON("data/layout.json", {}) || {};
+const layoutAttrs = (cfg) => {
+  if (!cfg || typeof cfg !== "object") return "";
+  const cols = Math.round(+cfg.cols) >= 2 && Math.round(+cfg.cols) <= 6 ? Math.round(+cfg.cols) : 0;
+  return (cols ? ` data-cols="${cols}"` : "") + (+cfg.phone === 2 ? ' data-phone="2"' : "") + (cfg.even === false ? ' data-even="0"' : "") + (cfg.even === false && Array.isArray(cfg.offs) && cfg.offs.length ? ` data-offs="${cfg.offs.slice(0, 6).map((v) => Math.max(0, Math.min(1.5, +v || 0))).join(",")}"` : "");
+};
 const videos = (Array.isArray(readJSON("data/videos.json", [])) ? readJSON("data/videos.json", []) : [])
   .map((v) => ({ ...v, id: igId(v.ig) }))
   .filter((v) => v.id)
@@ -241,7 +248,7 @@ function cropOf(p) {
   const fx = cl(p.fx, 0, 100, 50), fy = cl(p.fy, 0, 100, 50), z = cl(p.z, 1, 4, 1), r = (n) => +n.toFixed(2);
   return { ar: `${m[1]} / ${m[2]}`, img: `position:absolute;width:${r(z * 100)}%;height:${r(z * 100)}%;max-width:none;left:-${r((z - 1) * fx)}%;top:-${r((z - 1) * fy)}%;object-fit:cover;object-position:${r(fx)}% ${r(fy)}%` };
 }
-function photoLink(p, i, ctx, sizes) {
+function photoLink(p, i, ctx, sizes, pin = false) {
   const t = thumbOf(p), eager = i < 4, crop = cropOf(p);
   const attrs = [
     `src="${esc(A(t ? t.src : p.image))}"`,
@@ -252,7 +259,7 @@ function photoLink(p, i, ctx, sizes) {
     'decoding="async"',
     crop ? `style="${crop.img}"` : ""
   ].filter(Boolean).join(" ");
-  return `<a href="${esc(A(p.image))}"${crop ? ` class="crop" style="aspect-ratio:${crop.ar}"` : ""} data-cap="${esc(p.caption || "")}"><img ${attrs}></a>`;
+  return `<a href="${esc(A(p.image))}"${pin && Number.isInteger(p.col) && p.col >= 0 && p.col < 6 ? ` data-col="${p.col}"` : ""}${crop ? ` class="crop" style="aspect-ratio:${crop.ar}"` : ""} data-cap="${esc(p.caption || "")}"><img ${attrs}></a>`;
 }
 // A page's photos can carry a hand-made layout: `row` groups photos side by side, `cols` is the column width
 // out of 12 (set on the first photo of a column) and `stack` puts a photo under the one before it.
@@ -270,10 +277,10 @@ function rowGallery(items, ctx, extraClass = "") {
   const out = rows.map((r) => `<div class="row"${J[r.al] ? ` style="--j:${J[r.al]}"` : ""}>${r.cols.map((c) => `<div class="col" style="--w:${c.w}">${c.html.join("")}</div>`).join("")}</div>`);
   return `<div class="gallery rows${extraClass ? " " + extraClass : ""}" id="gallery">\n${out.join("\n")}\n</div>`;
 }
-function gallery(items, ctx, extraClass = "") {
+function gallery(items, ctx, extraClass = "", cfg = null) {
   if (items.some((p) => p.row != null)) return rowGallery(items, ctx, extraClass);
-  const rows = items.map((p, i) => photoLink(p, i, ctx, "(max-width:640px) 100vw, (max-width:1300px) 33vw, 25vw"));
-  return `<div class="gallery${extraClass ? " " + extraClass : ""}" id="gallery">\n${rows.join("\n")}\n</div>`;
+  const rows = items.map((p, i) => photoLink(p, i, ctx, "(max-width:640px) 100vw, (max-width:1300px) 33vw, 25vw", true));
+  return `<div class="gallery${extraClass ? " " + extraClass : ""}" id="gallery"${layoutAttrs(cfg)}>\n${rows.join("\n")}\n</div>`;
 }
 
 /* ---------- pages ---------- */
@@ -329,14 +336,14 @@ function render() {
     const body = `${back("/", "Back to home")}
 <main class="gut">
 <h1 class="sr">${esc(c.h1)}</h1>
-${gallery(items, c.ctx)}${more}
+${gallery(items, c.ctx, "", LAYOUTS[c.data])}${more}
 </main>`;
     const first = items.find((p) => isRaster(p.image));
     emit(c.route, shell({
       route: c.route, title: pg.title, description: pg.description, noindex: !live,
       ogImage: first ? { src: first.image, w: first.w, h: first.h } : null, ogAlt: first ? altFor(first, c.ctx, 0) : "",
       jsonld: { "@context": "https://schema.org", "@graph": [crumbs([["Home", "/"], [c.label, c.route]]), { "@type": "ImageGallery", "@id": SITE + c.route + "#gallery", url: SITE + c.route, name: c.h1, description: pg.description, inLanguage: "en", isPartOf: { "@id": SITE + "/#website" }, author: { "@type": "Person", name: NAME, url: SITE + "/" }, image: imageObjects(items, c.ctx) }] },
-      body, scripts: ["site.js"]
+      body, scripts: ["masonry.js", "site.js"]
     }));
     if (live) sitemap.push({ route: c.route, images: items.filter((p) => isRaster(p.image)).slice(0, 1000).map((p, i) => ({ loc: p.image, title: altFor(p, c.ctx, i), caption: p.caption })) });
   }
@@ -419,7 +426,7 @@ ${allLink}
 ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
 ${paras.map((x) => `<p>${esc(x).replace(/\n/g, "<br>")}</p>`).join("\n")}
 </header>
-${gallery(s.photos, ctx, "after-head")}
+${gallery(s.photos, ctx, "after-head", s.layout)}
 ${live ? othersHtml : ""}
 </main>`;
       const first = s.photos.find((p) => isRaster(p.image));
@@ -428,7 +435,7 @@ ${live ? othersHtml : ""}
         route, title, description, noindex: !live, ogType: "article",
         ogImage: first ? { src: first.image, w: first.w, h: first.h } : null, ogAlt: first ? altFor(first, ctx, 0) : "",
         jsonld: { "@context": "https://schema.org", "@graph": [crumbs(cfg.crumbs(s)), { "@type": "ImageGallery", "@id": SITE + route + "#gallery", url: SITE + route, name: s.title, description, inLanguage: "en", isPartOf: { "@id": SITE + "/#website" }, author: { "@type": "Person", name: NAME, url: SITE + "/" }, ...(dateIso ? { dateCreated: dateIso } : {}), ...(s.location ? { contentLocation: { "@type": "Place", name: s.location } } : {}), ...(s.designer ? { about: { "@type": "Person", name: s.designer } } : {}), image: imageObjects(s.photos, ctx) }] },
-        body, scripts: ["site.js"]
+        body, scripts: ["masonry.js", "site.js"]
       }));
       if (live) sitemap.push({ route, images: s.photos.filter((p) => isRaster(p.image)).slice(0, 1000).map((p, i) => ({ loc: p.image, title: altFor(p, ctx, i), caption: p.caption })) });
     });
@@ -564,7 +571,7 @@ for (const p of pages) {
   fs.mkdirSync(path.dirname(f), { recursive: true });
   fs.writeFileSync(f, p.html);
 }
-["style.css", "site.js", "home.js", "video.js", "favicon.svg", "fonts", "images", "videos"].forEach(copy);
+["style.css", "site.js", "home.js", "video.js", "masonry.js", "favicon.svg", "fonts", "images", "videos"].forEach(copy);
 if (DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "draft.js"), fs.readFileSync(path.join(ROOT, "draft.js"), "utf8").replace("__REPO__", REPO).replace("__BRANCH__", BRANCH));
 if (!PREVIEW) {
   ["admin.html", "admin.css", "admin.js"].forEach(copy);
