@@ -45,7 +45,7 @@
   var KEY = "sajgal-admin", MAX_EDGE = 2200, THUMB_EDGE = 1000, MAX_VIDEO_MB = 25;
   var $ = function (s) { return document.querySelector(s); };
   var cfg = null, tab = "fashion", state = {}, shas = {}, dirty = {}, uid = 0, replacing = null;
-  var DEMO = !!window.__DEMO_DRAFT__, view = "text", lay = null, layoutSort = [], layBackup = [], draftN = 0, phoneFor = null, editing = null, deletedSlugs = { shows: [], brands: [] }, sortGrid = null, sortList = null, seoRefresh = [];
+  var WB = "draft", D = { loaded: false, ahead: 0, behind: 0, files: [], head: "", main: "" }, pv = { state: "", timer: null }, view = "text", lay = null, layoutSort = [], layBackup = [], draftN = 0, phoneFor = null, editing = null, deletedSlugs = { shows: [], brands: [] }, sortGrid = null, sortList = null, seoRefresh = [];
 
   try { cfg = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
 
@@ -88,7 +88,7 @@
     });
   }
   function put(path, contentB64, message, sha) {
-    var body = { message: message, content: contentB64, branch: cfg.branch };
+    var body = { message: message, content: contentB64, branch: WB };
     if (sha) body.sha = sha;
     return api("/contents/" + path.split("/").map(encodeURIComponent).join("/"), { method: "PUT", body: JSON.stringify(body) })
       .then(function (r) {
@@ -158,7 +158,7 @@
 
   /* ---------- Load / save ---------- */
   function load(id) {
-    return api("/contents/data/" + id + ".json?ref=" + encodeURIComponent(cfg.branch)).then(function (r) {
+    return api("/contents/data/" + id + ".json?ref=" + encodeURIComponent(WB)).then(function (r) {
       if (r.status === 404) { shas[id] = null; state[id] = parse(id, meta(id).kind === "seo" ? {} : []); return; }
       if (!r.ok) throw new Error(r.status === 401 ? "The token was rejected. Reconnect with a new one." : "Could not load " + id + " (" + r.status + ").");
       return r.json().then(function (j) { shas[id] = j.sha; state[id] = parse(id, JSON.parse(textFromB64(j.content))); });
@@ -200,7 +200,7 @@
   }
   function addRedirects(lines) {
     if (!lines.length) return Promise.resolve();
-    return api("/contents/redirects.txt?ref=" + encodeURIComponent(cfg.branch)).then(function (r) {
+    return api("/contents/redirects.txt?ref=" + encodeURIComponent(WB)).then(function (r) {
       if (r.status === 404) return { sha: null, text: "" };
       if (!r.ok) throw new Error("redirects.txt " + r.status);
       return r.json().then(function (j) { return { sha: j.sha, text: textFromB64(j.content) }; });
@@ -233,9 +233,8 @@
         if (meta(id).kind === "entries") { state[id].forEach(function (s) { s.origSlug = s.slug; }); deletedSlugs[id] = []; }
       });
     }).then(function () {
-      if (DEMO) { draftN++; noteMsg = ""; setStatus("Saved to draft. Preview it, then publish when you are happy."); }
-      else setStatus("Saved. The live site updates in about a minute.");
-      layout(); refreshSave();
+      noteMsg = ""; setStatus("Saved to the draft. Open the preview in about a minute, then publish when you are happy.");
+      layout(); refreshSave(); refreshDraft();
     }).catch(function (e) {
       setStatus(String(e.message || e).indexOf("does not match") > -1
         ? "The site changed elsewhere. Reload this page and try again." : "Could not save: " + (e.message || e), true);
@@ -749,8 +748,9 @@
     });
   }
 
-  /* ---------- Draft, preview and publish (demo) ---------- */
-  var publishing = false, confirmPub = false, noteMsg = "";
+  /* ---------- Draft, preview and publish ---------- */
+  var publishing = false, confirmPub = false, confirmDiscard = false, noteMsg = "";
+  try { noteMsg = sessionStorage.getItem("sajgal-note") || ""; sessionStorage.removeItem("sajgal-note"); } catch (x) {}
   function pageCss() {
     var out = "";
     Array.prototype.forEach.call(document.styleSheets, function (sh) {
@@ -785,9 +785,9 @@
     var ov = h("div", { class: "pv-over", role: "dialog", "aria-label": "Draft preview" });
     var close = function () { window.removeEventListener("resize", fit); ov.remove(); };
     var seg = h("div", { class: "seg pv-seg" });
-    var url = h("span", { class: "pv-url", text: "https://draft.sajgal.pages.dev" + pv.name });
+    var url = h("span", { class: "pv-url", text: "Screen-size preview of the page you are editing: " + pv.name });
     ov.appendChild(h("div", { class: "pv-chrome" }, [h("span", { class: "pv-dots", text: "● ● ●" }), url, seg, h("button", { type: "button", class: "btn", text: "Close preview", onclick: close })]));
-    ov.appendChild(h("div", { class: "pv-note", text: "This is your draft at real page size, scaled to fit your screen. Only people with this address can see it, and Google is told not to index it." }));
+    ov.appendChild(h("div", { class: "pv-note", text: "This is the page you are editing, unsaved changes included, at real page size and scaled to fit your screen." }));
     var stage = h("div", { class: "pv-stage" }), frame = h("iframe", { class: "pv-iframe", title: "Draft page", sandbox: "allow-same-origin" });
     frame.srcdoc = pv.html; stage.appendChild(frame); ov.appendChild(stage);
     [["desktop", "Desktop"], ["phone", "Phone"]].forEach(function (x) {
@@ -807,30 +807,115 @@
     window.addEventListener("resize", fit);
     document.body.appendChild(ov); fit();
   }
+  var FRIENDLY = { fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
+  function previewBase() { return cfg.previewBase || "https://" + WB + "." + cfg.repo.split("/")[1] + ".pages.dev"; }
+  function ghJson(path, opts) {
+    return api(path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) { var e = new Error(j.message || ("GitHub returned " + r.status)); e.status = r.status; throw e; } return j; });
+    });
+  }
+  function ensureDraft() {
+    return api("/git/ref/heads/" + WB).then(function (r) {
+      if (r.ok) return;
+      if (r.status !== 404) throw new Error("GitHub returned " + r.status + " while checking the draft.");
+      return ghJson("/git/ref/heads/" + cfg.branch).then(function (m) {
+        return ghJson("/git/refs", { method: "POST", body: JSON.stringify({ ref: "refs/heads/" + WB, sha: m.object.sha }) });
+      });
+    });
+  }
+  function refreshDraft() {
+    return Promise.all([ghJson("/git/ref/heads/" + WB), ghJson("/git/ref/heads/" + cfg.branch)]).then(function (r) {
+      D.head = r[0].object.sha; D.main = r[1].object.sha;
+      if (D.head === D.main) return { ahead_by: 0, behind_by: 0, files: [] };
+      return ghJson("/compare/" + encodeURIComponent(cfg.branch) + "..." + encodeURIComponent(WB));
+    }).then(function (c) {
+      D.ahead = c.ahead_by || 0; D.behind = c.behind_by || 0;
+      D.files = (c.files || []).map(function (f) { return f.filename; });
+      if (!D.ahead && D.behind) {
+        /* nothing unpublished, but the live site moved on (for example a code update): bring the draft up to date */
+        return api("/git/refs/heads/" + WB, { method: "PATCH", body: JSON.stringify({ sha: D.main, force: true }) }).then(function () { D.head = D.main; D.behind = 0; D.loaded = true; pv.state = ""; renderDraft(); });
+      }
+      D.loaded = true; pv.state = ""; renderDraft(); watchPreview();
+    }).catch(function (e) { D.loaded = true; D.error = e.message; renderDraft(); });
+  }
+  function areas() {
+    var names = {}, media = 0;
+    D.files.forEach(function (f) {
+      var m = /^data\/(\w+)\.json$/.exec(f);
+      if (m) names[FRIENDLY[m[1]] || m[1]] = 1; else if (/^(images|videos)\//.test(f)) media++;
+    });
+    var out = Object.keys(names);
+    if (media) out.push(media + " new file" + (media > 1 ? "s" : ""));
+    return out.join(", ");
+  }
+  function watchPreview() {
+    clearTimeout(pv.timer);
+    if (!D.ahead || !D.head) return;
+    var tries = 0;
+    (function tick() {
+      fetch(previewBase() + "/_build.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
+        var ok = !!(j && j.sha && j.sha === D.head);
+        if (ok !== (pv.state === "ready") || !pv.state) { pv.state = ok ? "ready" : "building"; renderDraft(); }
+        if (!ok && ++tries < 60) pv.timer = setTimeout(tick, 6000);
+      });
+    })();
+  }
+  function publish() {
+    publishing = true; confirmPub = false; renderDraft();
+    ghJson("/git/ref/heads/" + WB).then(function (d) {
+      return ghJson("/git/refs/heads/" + cfg.branch, { method: "PATCH", body: JSON.stringify({ sha: d.object.sha, force: false }) }).catch(function (e) {
+        if (e.status === 422) return ghJson("/merges", { method: "POST", body: JSON.stringify({ base: cfg.branch, head: WB, commit_message: "Publish draft" }) });
+        throw e;
+      });
+    }).then(function () {
+      return ghJson("/git/ref/heads/" + cfg.branch).then(function (m) {
+        return api("/git/refs/heads/" + WB, { method: "PATCH", body: JSON.stringify({ sha: m.object.sha, force: true }) });
+      });
+    }).then(function () {
+      publishing = false; noteMsg = "Published. The live site updates in about a minute."; return refreshDraft();
+    }).catch(function (e) { publishing = false; noteMsg = ""; setStatus("Could not publish: " + e.message, true); refreshDraft(); });
+  }
+  function discard() {
+    publishing = true; confirmDiscard = false; renderDraft();
+    ghJson("/git/ref/heads/" + cfg.branch).then(function (m) {
+      return ghJson("/git/refs/heads/" + WB, { method: "PATCH", body: JSON.stringify({ sha: m.object.sha, force: true }) });
+    }).then(function () {
+      try { sessionStorage.setItem("sajgal-note", "Draft reset to the live site."); } catch (x) {}
+      dirty = {}; location.reload();
+    }).catch(function (e) { publishing = false; setStatus("Could not discard: " + e.message, true); renderDraft(); });
+  }
   function renderDraft() {
     var bar = $("#draftbar");
-    if (!DEMO) { bar.hidden = true; return; }
     bar.hidden = false; bar.innerHTML = "";
     var unsaved = Object.keys(dirty).some(function (k) { return dirty[k]; });
-    var left = h("div", { class: "db-state" });
-    if (publishing) left.appendChild(h("span", { class: "db-dot busy" })), left.appendChild(h("strong", { text: "Publishing…" }));
-    else if (draftN) { left.appendChild(h("span", { class: "db-dot warn" })); left.appendChild(h("strong", { text: "Draft: " + draftN + " saved change" + (draftN > 1 ? "s" : "") + " not public yet" })); }
-    else { left.appendChild(h("span", { class: "db-dot ok" })); left.appendChild(h("strong", { text: noteMsg || "Draft and live site are the same" })); }
-    if (unsaved && draftN === 0 && !noteMsg) left.appendChild(h("span", { class: "db-sub", text: "You have edits that are not saved yet." }));
+    var left = h("div", { class: "db-state" }), subs = [];
+    if (!D.loaded) { left.appendChild(h("span", { class: "db-dot busy" })); left.appendChild(h("strong", { text: "Checking the draft…" })); }
+    else if (D.error) { left.appendChild(h("span", { class: "db-dot warn" })); left.appendChild(h("strong", { text: "Could not read the draft state: " + D.error })); }
+    else if (publishing) { left.appendChild(h("span", { class: "db-dot busy" })); left.appendChild(h("strong", { text: "Working…" })); }
+    else if (D.ahead) {
+      left.appendChild(h("span", { class: "db-dot warn" })); left.appendChild(h("strong", { text: "Draft has changes that are not public yet" }));
+      subs.push(areas());
+      subs.push(pv.state === "ready" ? "Preview is ready." : "Preview is building, usually about a minute…");
+    } else { left.appendChild(h("span", { class: "db-dot ok" })); left.appendChild(h("strong", { text: noteMsg || "Draft and live site are the same" })); }
+    if (unsaved) subs.push("You have edits that are not saved yet.");
+    subs.forEach(function (t) { if (t) left.appendChild(h("span", { class: "db-sub", text: t })); });
     bar.appendChild(left);
     var right = h("div", { class: "db-actions" });
-    if (draftN && !publishing) {
-      right.appendChild(h("button", { type: "button", class: "btn", text: "Preview draft ↗", onclick: openPreview }));
-      if (!confirmPub) {
-        right.appendChild(h("button", { type: "button", class: "btn primary", text: "Publish to live site", onclick: function () { confirmPub = true; renderDraft(); } }));
-        right.appendChild(h("button", { type: "button", class: "link", text: "Discard draft", onclick: function () { draftN = 0; noteMsg = "Draft reset to the live site"; renderDraft(); } }));
-      } else {
-        right.appendChild(h("span", { class: "db-ask", text: "Make these changes public on sajgal.cz?" }));
-        right.appendChild(h("button", { type: "button", class: "btn primary", text: "Yes, publish", onclick: function () {
-          confirmPub = false; publishing = true; renderDraft();
-          setTimeout(function () { publishing = false; draftN = 0; noteMsg = "Published. The live site updates in about a minute."; renderDraft(); }, 1400);
-        } }));
+    var kind = meta(tab).kind;
+    if (kind === "photos" || (kind === "entries" && editing)) right.appendChild(h("button", { type: "button", class: "btn", text: "Screen-size preview", onclick: openPreview }));
+    if (D.ahead && !publishing) {
+      right.appendChild(h("a", { class: "btn", href: previewBase() + "/", target: "_blank", rel: "noopener", text: "Open draft site ↗" }));
+      if (confirmPub) {
+        right.appendChild(h("span", { class: "db-ask", text: "Make these changes public on the live site?" }));
+        right.appendChild(h("button", { type: "button", class: "btn primary", text: "Yes, publish", onclick: publish }));
         right.appendChild(h("button", { type: "button", class: "link", text: "Cancel", onclick: function () { confirmPub = false; renderDraft(); } }));
+      } else if (confirmDiscard) {
+        right.appendChild(h("span", { class: "db-ask", text: "Throw away all unpublished changes?" }));
+        right.appendChild(h("button", { type: "button", class: "btn primary", text: "Yes, discard", onclick: discard }));
+        right.appendChild(h("button", { type: "button", class: "link", text: "Cancel", onclick: function () { confirmDiscard = false; renderDraft(); } }));
+      } else {
+        right.appendChild(h("button", { type: "button", class: "btn primary", text: "Publish to live site", onclick: function () { confirmPub = true; renderDraft(); } }));
+        right.appendChild(h("button", { type: "button", class: "link", text: "Discard draft", onclick: function () { confirmDiscard = true; renderDraft(); } }));
       }
     }
     bar.appendChild(right);
@@ -839,7 +924,7 @@
 
   /* ---------- Grid (photos and videos) ---------- */
   function mediaEl(p, isVid) {
-    var el, rawUrl = "https://raw.githubusercontent.com/" + cfg.repo + "/" + cfg.branch + (isVid ? p.src : (p.thumb || p.src));
+    var el, rawUrl = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + (isVid ? p.src : (p.thumb || p.src));
     if (isVid) {
       el = document.createElement("video");
       el.muted = true; el.loop = true; el.playsInline = true; el.preload = "metadata";
@@ -1053,7 +1138,7 @@
       var file = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm,.mp4,.mov,.m4v", hidden: "" });
       function paint() {
         thumb.innerHTML = "";
-        if (v.thumb) { var im = new Image(); im.alt = ""; im.src = v.preview || v.thumb.replace(/^\//, ""); im.onerror = function () { im.onerror = null; im.src = "https://raw.githubusercontent.com/" + cfg.repo + "/" + cfg.branch + v.thumb; }; thumb.appendChild(im); }
+        if (v.thumb) { var im = new Image(); im.alt = ""; im.src = v.preview || v.thumb.replace(/^\//, ""); im.onerror = function () { im.onerror = null; im.src = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + v.thumb; }; thumb.appendChild(im); }
         thumb.appendChild(h("span", { class: "rt-label", text: v.thumb ? "Change" : "Add thumbnail" }));
         thumb.appendChild(file);
       }
@@ -1136,7 +1221,7 @@
 
     var shareImg = h("img", { class: "ogprev", alt: "Share image preview" });
     shareImg.src = S.ogPreview || (site.ogImage || "/images/og.jpg").replace(/^\//, "");
-    shareImg.onerror = function () { shareImg.onerror = null; shareImg.src = "https://raw.githubusercontent.com/" + cfg.repo + "/" + cfg.branch + (site.ogImage || "/images/og.jpg"); };
+    shareImg.onerror = function () { shareImg.onerror = null; shareImg.src = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + (site.ogImage || "/images/og.jpg"); };
     var ogFile = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp", hidden: "" });
     ogFile.onchange = function () {
       var f = ogFile.files[0]; ogFile.value = ""; if (!f) return;
@@ -1228,8 +1313,8 @@
   function start() {
     $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false;
     setStatus("Loading…");
-    Promise.all(TABS.map(function (c) { return load(c.id); })).then(function () {
-      setStatus(""); tabs(); layout();
+    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); })); }).then(function () {
+      setStatus(""); tabs(); layout(); refreshDraft();
     }).catch(function (e) { setStatus(e.message, true); });
   }
 

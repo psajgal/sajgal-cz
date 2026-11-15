@@ -9,6 +9,9 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PREVIEW = process.argv.includes("--preview");
+// Cloudflare Pages builds every branch; only "main" is the public site. Other branches (the admin's draft) are previews: kept out of Google.
+const BRANCH = process.env.CF_PAGES_BRANCH || "main";
+const DRAFT_BUILD = BRANCH !== "main";
 const OUT = path.join(ROOT, PREVIEW ? "dist-preview" : "dist");
 const THUMB_EDGE = 1000;
 const warnings = [];
@@ -156,7 +159,7 @@ function checkMeta(route, title, desc) {
 function shell({ route, title, description, ogImage, ogAlt, ogType = "website", noindex = false, jsonld, preloads = [], bodyClass = "", body, scripts = [], lang = "en" }) {
   const url = SITE + (route === "/" ? "/" : route);
   const img = ogImage && isRaster(ogImage.src) ? ogImage : { src: S.site.ogImage, w: 1200, h: 630 };
-  const robots = noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+  const robots = noindex || DRAFT_BUILD ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -543,8 +546,8 @@ function sitemapXml() {
   });
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.join("\n")}\n</urlset>\n`;
 }
-const robotsTxt = () => `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${SITE}/sitemap.xml\n`;
-const headersTxt = () => `/images/*\n  Cache-Control: public, max-age=31536000, immutable\n/videos/*\n  Cache-Control: public, max-age=31536000, immutable\n/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/admin*\n  X-Robots-Tag: noindex, nofollow\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n`;
+const robotsTxt = () => DRAFT_BUILD ? `User-agent: *\nDisallow: /\n` : `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${SITE}/sitemap.xml\n`;
+const headersTxt = () => `/_build.json\n  Access-Control-Allow-Origin: *\n  Cache-Control: no-store\n${DRAFT_BUILD ? "/*\n  X-Robots-Tag: noindex, nofollow\n" : ""}/images/*\n  Cache-Control: public, max-age=31536000, immutable\n/videos/*\n  Cache-Control: public, max-age=31536000, immutable\n/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/admin*\n  X-Robots-Tag: noindex, nofollow\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n`;
 
 /* ---------- write ---------- */
 function copy(rel) {
@@ -563,7 +566,8 @@ for (const p of pages) {
 ["style.css", "site.js", "home.js", "video.js", "favicon.svg", "fonts", "images", "videos"].forEach(copy);
 if (!PREVIEW) {
   ["admin.html", "admin.css", "admin.js"].forEach(copy);
-  fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemapXml());
+  if (!DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemapXml());
+  fs.writeFileSync(path.join(OUT, "_build.json"), JSON.stringify({ sha: process.env.CF_PAGES_COMMIT_SHA || "", branch: BRANCH }));
   fs.writeFileSync(path.join(OUT, "robots.txt"), robotsTxt());
   fs.writeFileSync(path.join(OUT, "_headers"), headersTxt());
   if (fs.existsSync(path.join(ROOT, "redirects.txt"))) fs.copyFileSync(path.join(ROOT, "redirects.txt"), path.join(OUT, "_redirects"));
