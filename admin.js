@@ -347,6 +347,102 @@
     else if (m.kind === "photos" || editing) addPhotos(files);
   }
 
+  /* ---------- Selected fashion: photos from the shows ---------- */
+  function showsRanked() {
+    var ss = (state.shows || []).filter(function (s) { return s.photos.some(function (p) { return !p.blob; }); });
+    if (ss.length && ss.every(function (s) { return /^\d{4}/.test(s.date || ""); })) ss = ss.slice().sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+    return ss; // newest first: by date when every show has one, otherwise in the order of the All shows list
+  }
+  function fashionItem(p, s) { return { id: ++uid, src: p.src, thumb: p.thumb || "", caption: s.title || "", alt: p.alt || "", w: p.w, h: p.h }; }
+  function putInFashion(picked, replace) {
+    var list = state.fashion, have = {}, added = 0;
+    if (replace) list.length = 0;
+    list.forEach(function (p) { have[p.src] = 1; });
+    picked.forEach(function (x) { if (!have[x.p.src]) { have[x.p.src] = 1; list.push(fashionItem(x.p, x.s)); added++; } });
+    lay = null; dirty.fashion = true;
+    if (tab === "fashion") { renderGrid(); refreshSave(); }
+    setStatus(added + " photo" + (added === 1 ? "" : "s") + (replace ? " now in Selected fashion." : " added to Selected fashion.") + " Save to draft to keep them.");
+  }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  // Random photos from every show; newer shows are more likely (and get more photos in "from each show" mode).
+  function randomPick(n, perShow) {
+    var ss = showsRanked(), out = [];
+    var pools = ss.map(function (s) { return { s: s, left: shuffle(s.photos.filter(function (p) { return !p.blob; })), got: 0 }; });
+    var rec = function (i) { return 1 / (1 + i * 0.35); };
+    if (perShow) {
+      pools.forEach(function (pl, i) {
+        var k = Math.max(1, Math.round(n * (0.4 + 0.6 * rec(i))));
+        pl.left.slice(0, k).forEach(function (p) { out.push({ p: p, s: pl.s }); });
+      });
+      return out;
+    }
+    while (out.length < n) {
+      var live = pools.map(function (pl, i) { return pl.left.length ? { pl: pl, w: rec(i) / (1 + pl.got) } : null; }).filter(Boolean);
+      if (!live.length) break;
+      var tot = live.reduce(function (a, x) { return a + x.w; }, 0), r = Math.random() * tot, pick = live[live.length - 1];
+      for (var k = 0; k < live.length; k++) { r -= live[k].w; if (r <= 0) { pick = live[k]; break; } }
+      out.push({ p: pick.pl.left.shift(), s: pick.pl.s }); pick.pl.got++;
+    }
+    return out;
+  }
+  function modal(title, body, actions) {
+    var ov = h("div", { class: "pk-over", role: "dialog", "aria-label": title });
+    var close = function () { document.removeEventListener("keydown", key); ov.remove(); };
+    var key = function (e) { if (e.key === "Escape") close(); };
+    document.addEventListener("keydown", key);
+    var panel = h("div", { class: "pk-panel" }, [h("div", { class: "pk-head" }, [h("h2", { text: title }), h("button", { type: "button", class: "link", text: "Close", onclick: close })]), body, h("div", { class: "pk-foot" }, actions(close))]);
+    ov.appendChild(panel); ov.onclick = function (e) { if (e.target === ov) close(); };
+    document.body.appendChild(ov);
+    return close;
+  }
+  function openFromShows() {
+    var ss = showsRanked(), sel = [], have = {};
+    state.fashion.forEach(function (p) { have[p.src] = 1; });
+    if (!ss.length) { setStatus("No show has saved photos yet.", true); return; }
+    var body = h("div", { class: "pk-body" }), count = h("span", { class: "pk-count" }), addBtn;
+    function upd() { count.textContent = sel.length ? sel.length + " selected" : "Click photos to select them"; if (addBtn) { addBtn.disabled = !sel.length; addBtn.textContent = sel.length ? "Add " + sel.length + " photo" + (sel.length > 1 ? "s" : "") : "Add photos"; } }
+    ss.forEach(function (s) {
+      var photos = s.photos.filter(function (p) { return !p.blob; }), grid = h("div", { class: "pk-grid" }), btns = [];
+      var sec = h("section", { class: "pk-show" }, [h("div", { class: "pk-sh" }, [h("strong", { text: s.title || s.slug }), h("span", { class: "hint", text: photos.length + " photos" }),
+        h("button", { type: "button", class: "link", text: "Select all", onclick: function () { var all = btns.every(function (b) { return b.on; }); btns.forEach(function (b) { if (b.on === all) b.toggle(); }); } })]), grid]);
+      photos.forEach(function (p) {
+        var item = { p: p, s: s }, b = h("button", { type: "button", class: "pk-ph", "aria-pressed": "false", title: have[p.src] ? "Already in Selected fashion" : "" });
+        var im = h("img", { alt: "", loading: "lazy", decoding: "async" }); var u = p.thumb || p.src; im.src = /^(data|blob):/.test(u) ? u : "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + u;
+        b.appendChild(im); if (have[p.src]) b.classList.add("had");
+        b.on = false;
+        b.toggle = function () { b.on = !b.on; b.setAttribute("aria-pressed", String(b.on)); if (b.on) sel.push(item); else sel.splice(sel.indexOf(item), 1); upd(); };
+        b.onclick = b.toggle; btns.push(b); grid.appendChild(b);
+      });
+      body.appendChild(sec);
+    });
+    modal("Add photos from your shows", body, function (close) {
+      addBtn = h("button", { type: "button", class: "btn primary", text: "Add photos", disabled: "", onclick: function () { putInFashion(sel, false); close(); } });
+      upd(); return [count, h("button", { type: "button", class: "btn", text: "Cancel", onclick: close }), addBtn];
+    });
+  }
+  function openRandom() {
+    var n = h("input", { type: "number", min: "1", max: "300", value: "25", class: "pk-num" }), mode = "total", repl = false;
+    function radio(name, opts, cur, set) {
+      var wrap = h("div", { class: "seg" });
+      opts.forEach(function (o) { wrap.appendChild(h("button", { type: "button", "aria-pressed": String(o[0] === cur), text: o[1], onclick: function () { set(o[0]); Array.prototype.forEach.call(wrap.children, function (b, i) { b.setAttribute("aria-pressed", String(opts[i][0] === o[0])); }); } })); });
+      return wrap;
+    }
+    var body = h("div", { class: "pk-body pk-rand" }, [
+      h("p", { text: "Picks random photos from your shows and puts them in Selected fashion. Newer shows (higher in the All shows list) are more likely." }),
+      h("label", { class: "fld" }, [h("span", { text: "How many photos" }), n]),
+      radio("mode", [["total", "In total"], ["each", "From each show"]], mode, function (v) { mode = v; }),
+      h("p", { class: "hint", text: "“From each show” gives every show that many photos, a bit fewer for older shows." }),
+      radio("repl", [[false, "Add to the photos already there"], [true, "Replace what is there"]], repl, function (v) { repl = v; })
+    ]);
+    modal("Random pick", body, function (close) {
+      return [h("button", { type: "button", class: "btn", text: "Cancel", onclick: close }), h("button", { type: "button", class: "btn primary", text: "Pick photos", onclick: function () {
+        var k = Math.max(1, Math.min(300, parseInt(n.value, 10) || 25)), picked = randomPick(k, mode === "each");
+        if (!picked.length) { setStatus("No show has saved photos yet.", true); close(); return; }
+        putInFashion(picked, repl); close();
+      } })];
+    });
+  }
+
   /* ---------- UI helpers ---------- */
   function setStatus(t, err) { var s = $("#status"); s.textContent = t; s.className = "msg" + (err ? " err" : ""); }
   function refreshSave() { $("#save").disabled = !dirty[tab]; }
@@ -1521,6 +1617,7 @@
     try { localStorage.setItem("sajgal-admin-pos", JSON.stringify({ tab: tab, view: view, slug: editing ? editing.slug : "" })); } catch (x) {}
     var m = meta(tab), k = m.kind, grid = k === "photos" || k === "videos" || (k === "entries" && !!editing);
     $("#addbtn").hidden = !grid; $("#drop").hidden = !grid;
+    $("#fromshows").hidden = $("#randombtn").hidden = !(tab === "fashion" && !editing);
     $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels";
     $("#exporthint").hidden = k !== "videos"; $("#p-seo").hidden = k !== "seo";
     applyHints();
@@ -1542,6 +1639,7 @@
       } }));
     });
   }
+  $("#fromshows").onclick = openFromShows; $("#randombtn").onclick = openRandom;
   $("#seolink").onclick = function (e) {
     e.preventDefault(); if (tab === "seo" && !editing) return;
     tab = "seo"; editing = null; view = "text"; lay = null; setStatus(""); tabs(); layout();
