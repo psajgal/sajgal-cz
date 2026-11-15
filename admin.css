@@ -197,4 +197,4 @@ body.dnd{cursor:grabbing;user-select:none}
 .draftbar.s-busy{background:#e8f1fb;border-color:#1565c0}
 .draftbar.s-err{background:#fdeaea;border-color:#c62828}
 .draftbar .db-sub{color:inherit;opacity:.75}
-@media (prefers-color-scheme:dark){.draftbar.s-ok{background:#12301a}.draftbar.s-warn{background:#3a2c0a}.draftbar.s-busy{background:#0f2a47}.draftbar.s-err{background:#3d1414}}
+.draftbar{color:#111}
