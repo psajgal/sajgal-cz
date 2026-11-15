@@ -235,7 +235,7 @@
       });
     }).then(function () {
       noteMsg = ""; setStatus("Saved to the draft. Open the preview in about a minute, then publish when you are happy.");
-      layout(); refreshSave(); refreshDraft();
+      layout(); refreshSave(); refreshDraft(); [2500, 7000].forEach(function (ms) { setTimeout(refreshDraft, ms); });
     }).catch(function (e) {
       setStatus(String(e.message || e).indexOf("does not match") > -1
         ? "The site changed elsewhere. Reload this page and try again." : "Could not save: " + (e.message || e), true);
@@ -900,6 +900,7 @@
     } else { left.appendChild(h("span", { class: "db-dot ok" })); left.appendChild(h("strong", { text: noteMsg || "Draft and live site are the same" })); }
     if (unsaved) subs.push("You have edits that are not saved yet.");
     subs.forEach(function (t) { if (t) left.appendChild(h("span", { class: "db-sub", text: t })); });
+    left.appendChild(h("button", { type: "button", class: "link db-check", text: "Check again", onclick: function () { refreshDraft(); } }));
     bar.appendChild(left);
     var right = h("div", { class: "db-actions" });
     var kind = meta(tab).kind;
@@ -1379,5 +1380,7 @@
     if (Object.keys(dirty).some(function (k) { return dirty[k]; })) { e.preventDefault(); e.returnValue = ""; }
   });
 
+  setInterval(function () { if (cfg && cfg.token && D.loaded && !publishing && !document.hidden) refreshDraft(); }, 20000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && cfg && cfg.token && D.loaded && !publishing) refreshDraft(); });
   if (cfg && cfg.token) start(); else $("#setup").hidden = false;
 })();

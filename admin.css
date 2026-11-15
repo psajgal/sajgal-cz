@@ -188,3 +188,4 @@ body.dnd{cursor:grabbing;user-select:none}
 .rfields{flex:1;min-width:0;display:grid;gap:.6rem}
 .rlinks{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem}
 .reelrow.dropping{outline:2px dashed var(--ink);outline-offset:-2px}.reelrow:focus{outline:none}
+.db-check{font-size:.8rem;margin-left:.2rem}
