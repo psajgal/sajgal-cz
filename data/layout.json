@@ -1,5 +1,6 @@
 {
   "fashion": {
-    "cols": 3
+    "cols": 4,
+    "even": false
   }
 }
