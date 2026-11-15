@@ -45,7 +45,7 @@
   var KEY = "sajgal-admin", MAX_EDGE = 2200, THUMB_EDGE = 1000, MAX_VIDEO_MB = 25;
   var $ = function (s) { return document.querySelector(s); };
   var cfg = null, tab = "fashion", state = {}, shas = {}, dirty = {}, uid = 0, replacing = null;
-  var WB = "draft", D = { loaded: false, ahead: 0, behind: 0, files: [], head: "", main: "" }, pv = { state: "", timer: null }, view = "text", lay = null, layoutSort = [], layBackup = [], draftN = 0, phoneFor = null, editing = null, deletedSlugs = { shows: [], brands: [] }, sortGrid = null, sortList = null, seoRefresh = [];
+  var WB = "draft", D = { loaded: false, ahead: 0, behind: 0, files: [], head: "", main: "" }, pv = { state: "", timer: null }, view = "text", lay = null, layoutSort = [], layBackup = [], draftN = 0, phoneFor = null, editing = null, deletedSlugs = { shows: [], brands: [] }, sortGrid = null, sortList = null, seoRefresh = [], layoutFile = {}, layoutSha = null, layoutDirty = {}, apMode = "desktop", msrc = null;
 
   try { cfg = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
 
@@ -100,14 +100,14 @@
 
   /* ---------- Data shapes ---------- */
   function photoItem(p) {
-    return { id: ++uid, src: p.image || "", thumb: p.thumb || "", caption: p.caption || "", alt: p.alt || "", w: p.w, h: p.h, row: p.row, cols: p.cols, stack: p.stack, al: p.al, ar: p.ar, fx: p.fx, fy: p.fy, z: p.z };
+    return { id: ++uid, src: p.image || "", thumb: p.thumb || "", caption: p.caption || "", alt: p.alt || "", w: p.w, h: p.h, row: p.row, cols: p.cols, stack: p.stack, al: p.al, ar: p.ar, fx: p.fx, fy: p.fy, z: p.z, col: p.col };
   }
   function videoItem(p) { return { id: ++uid, src: p.video || "", mobile: p.mobile || "", poster: p.poster || "" }; }
   function showModel(s) {
     return {
       key: ++uid, slug: s.slug || "", origSlug: s.slug || "", title: s.title || "", summary: s.summary || "", event: s.event || "", designer: s.designer || "",
       date: s.date || "", location: s.location || "", description: s.description || "", seoTitle: s.seoTitle || "",
-      seoDescription: s.seoDescription || "", cover: s.cover || "", photos: (s.photos || []).filter(function (p) { return p.image; }).map(photoItem)
+      seoDescription: s.seoDescription || "", layout: s.layout || null, cover: s.cover || "", photos: (s.photos || []).filter(function (p) { return p.image; }).map(photoItem)
     };
   }
   function parse(id, data) {
@@ -125,6 +125,7 @@
     o.caption = p.caption;
     if (p.alt && p.alt.trim()) o.alt = p.alt.trim();
     if (p.w && p.h) { o.w = p.w; o.h = p.h; }
+    if (p.col != null && p.row == null) o.col = p.col;
     if (p.row != null) { o.row = p.row; if (p.cols) o.cols = p.cols; if (p.stack) o.stack = true; if (p.al) o.al = p.al; }
     if (p.ar) { o.ar = p.ar; if (p.fx != null && p.fx !== 50) o.fx = p.fx; if (p.fy != null && p.fy !== 50) o.fy = p.fy; if (p.z > 1) o.z = p.z; }
     return o;
@@ -149,6 +150,7 @@
         if (id === "shows") base.location = x.location.trim();
         base.description = x.description.trim(); base.seoTitle = x.seoTitle.trim(); base.seoDescription = x.seoDescription.trim();
         base.cover = x.cover; base.photos = x.photos.map(outPhoto);
+        if (x.layout && Object.keys(x.layout).length) base.layout = x.layout;
         return base;
       });
     }
@@ -163,6 +165,13 @@
       if (r.status === 404) { shas[id] = null; state[id] = parse(id, meta(id).kind === "seo" ? {} : []); return; }
       if (!r.ok) throw new Error(r.status === 401 ? "The token was rejected. Reconnect with a new one." : "Could not load " + id + " (" + r.status + ").");
       return r.json().then(function (j) { shas[id] = j.sha; state[id] = parse(id, JSON.parse(textFromB64(j.content))); });
+    });
+  }
+  function loadLayoutFile() {
+    return api("/contents/data/layout.json?ref=" + encodeURIComponent(WB)).then(function (r) {
+      if (r.status === 404) { layoutSha = null; layoutFile = {}; return; }
+      if (!r.ok) throw new Error("Could not load the photo layout settings (" + r.status + ").");
+      return r.json().then(function (j) { layoutSha = j.sha; try { layoutFile = JSON.parse(textFromB64(j.content)) || {}; } catch (e) { layoutFile = {}; } });
     });
   }
   function filesToUpload(id) {
@@ -215,7 +224,7 @@
   function save() {
     var id = tab, btn = $("#save"), bad = validate(id);
     if (bad) { setStatus(bad, true); return; }
-    btn.disabled = true; setStatus("Saving…");
+    btn.disabled = true; setStatus("Saving…"); saving = true; renderDraft();
     var files = filesToUpload(id), chain = Promise.resolve(), lines = meta(id).kind === "entries" ? redirectLines(id) : [];
     files.forEach(function (f, n) {
       chain = chain.then(function () {
@@ -230,16 +239,17 @@
       return put("data/" + id + ".json", b64FromText(json), "Update " + id, shas[id]);
     }).then(function (j) {
       shas[id] = j.content.sha; dirty[id] = false;
-      return addRedirects(lines).then(function () {
+      var lp = layoutDirty[id] ? put("data/layout.json", b64FromText(JSON.stringify(layoutFile, null, 2) + "\n"), "Update photo layout", layoutSha).then(function (r) { layoutSha = r.content.sha; layoutDirty[id] = false; }) : Promise.resolve();
+      return lp.then(function () { return addRedirects(lines); }).then(function () {
         if (meta(id).kind === "entries") { state[id].forEach(function (s) { s.origSlug = s.slug; }); deletedSlugs[id] = []; }
       });
     }).then(function () {
-      noteMsg = ""; setStatus("Saved to the draft. Open the preview in about a minute, then publish when you are happy.");
+      saving = false; noteMsg = ""; setStatus("Saved to the draft.");
       layout(); refreshSave(); refreshDraft(); [2500, 7000].forEach(function (ms) { setTimeout(refreshDraft, ms); });
     }).catch(function (e) {
       setStatus(String(e.message || e).indexOf("does not match") > -1
         ? "The site changed elsewhere. Reload this page and try again." : "Could not save: " + (e.message || e), true);
-      btn.disabled = false;
+      btn.disabled = false; saving = false; renderDraft();
     });
   }
 
@@ -528,22 +538,8 @@
   function renderLayout() {
     var box = $("#lay"), list = curItems();
     box.innerHTML = ""; layoutSort.forEach(function (x) { x.destroy(); }); layoutSort = [];
-    if (!layoutOn(list)) {
-      lay = null;
-      box.appendChild(h("div", { class: "lay-intro" }, [
-        h("h2", { text: "Automatic columns" }),
-        h("p", { text: "Photos flow into columns in the order you set. To place photos yourself, side by side and in rows like on your old Google Sites page, start a custom layout." }),
-        h("button", { type: "button", class: "btn primary", text: "Start custom layout", onclick: function () {
-          if (!list.length) { setStatus("Add photos first.", true); return; }
-          if (layBackup.length && layBackup.length === list.length && layBackup.every(function (b) { return list.indexOf(b.p) > -1; })) {
-            layBackup.forEach(function (b) { if (b.row != null) { b.p.row = b.row; b.p.cols = b.cols; b.p.stack = b.stack; if (b.al) b.p.al = b.al; } });
-          }
-          if (!layoutOn(list)) { lay = { rows: toRows(list) }; writeRows(list, lay.rows); }
-          markDirty(); renderLayout();
-        } })
-      ]));
-      return;
-    }
+    box.appendChild(modeSwitch(list, layoutOn(list)));
+    if (!layoutOn(list)) { lay = null; renderAutoPanel(box, list); return; }
     if (!lay) lay = { rows: toRows(list) };
     writeRows(list, lay.rows);
     box.appendChild(h("p", { class: "hint", text: "Drag a photo onto the left or right edge of another to put them side by side, onto the top or bottom half to stack them, or between rows to start a new row. Rows re-balance on their own. Use − and + to resize a box, ✂ to crop. Visitors on phones always see one column." }));
@@ -599,8 +595,7 @@
     rowsEl.appendChild(ghostRow(true));
     box.appendChild(rowsEl);
     box.appendChild(h("div", { class: "lfoot" }, [
-      h("button", { type: "button", class: "btn", text: "+ Add row", onclick: function () { readDom(box); lay.rows.push({ al: "", cols: [{ w: 6, items: [] }, { w: 6, items: [] }] }); markDirty(); renderLayout(); } }),
-      backAuto(list)
+      h("button", { type: "button", class: "btn", text: "+ Add row", onclick: function () { readDom(box); lay.rows.push({ al: "", cols: [{ w: 6, items: [] }, { w: 6, items: [] }] }); markDirty(); renderLayout(); } })
     ]));
   }
 
@@ -728,14 +723,219 @@
     e.preventDefault();
   }
 
-  function backAuto(list) {
+  /* ---------- Automatic layout settings ---------- */
+  function layCfgObj() { return editing ? (editing.layout || {}) : (layoutFile[tab] || {}); }
+  function layCfg() { var o = layCfgObj(); return { cols: +o.cols >= 2 && +o.cols <= 6 ? +o.cols : 0, phone: +o.phone === 2 ? 2 : 1, even: o.even !== false, offs: Array.isArray(o.offs) ? o.offs.slice(0, 6) : [] }; }
+  function setLayCfg(patch) {
+    var c = Object.assign(layCfg(), patch), o = {};
+    if (c.cols) o.cols = c.cols;
+    if (c.phone === 2) o.phone = 2;
+    if (!c.even) { o.even = false; if (c.offs && c.offs.length) o.offs = c.offs; }
+    if (editing) editing.layout = Object.keys(o).length ? o : null;
+    else { if (Object.keys(o).length) layoutFile[tab] = o; else delete layoutFile[tab]; layoutDirty[tab] = true; }
+    markDirty();
+  }
+  function autoRows(list) {
+    var c = layCfg(), n = Math.max(2, Math.min(4, c.cols || 4, list.length));
+    if (list.length < 2 || !window.sajgalMasonry) return toRows(list);
+    var rs = list.map(function (p) { return p.w && p.h ? p.h / p.w : 1.25; }), r = window.sajgalMasonry.plan(n, rs, 0.04, !c.even, list.map(function (p) { return (p.preview || p.src.replace(/^\//, "")).slice(-60); })), cols = [], i;
+    for (i = 0; i < n; i++) cols.push({ w: 12 / n, items: [] });
+    list.forEach(function (p, k) { cols[r.colOf[k]].items.push(p); });
+    return [{ al: "", cols: cols }];
+  }
+  function startManual(list) {
+    if (!list.length) { setStatus("Add photos first.", true); return; }
+    if (layBackup.length && layBackup.length === list.length && layBackup.every(function (b) { return list.indexOf(b.p) > -1; })) {
+      layBackup.forEach(function (b) { if (b.row != null) { b.p.row = b.row; b.p.cols = b.cols; b.p.stack = b.stack; if (b.al) b.p.al = b.al; } });
+    }
+    if (!layoutOn(list)) { lay = { rows: autoRows(list) }; writeRows(list, lay.rows); }
+    markDirty(); renderLayout();
+  }
+  function modeSwitch(list, manual) {
     var armed = false, t = null;
-    var b = h("button", { type: "button", class: "link", text: "Back to automatic columns" });
-    b.onclick = function () {
-      if (!armed) { armed = true; b.textContent = "Click again: your row layout is removed"; t = setTimeout(function () { armed = false; b.textContent = "Back to automatic columns"; }, 4000); return; }
+    var a = h("button", { type: "button", "aria-pressed": String(!manual), text: "Automatic" });
+    var m = h("button", { type: "button", "aria-pressed": String(manual), text: "Manual", onclick: function () { if (!manual) startManual(list); } });
+    a.onclick = function () {
+      if (!manual) return;
+      if (!armed) { armed = true; a.textContent = "Click again: your row layout is removed"; t = setTimeout(function () { armed = false; a.textContent = "Automatic"; }, 4000); return; }
       clearTimeout(t); clearLayout(list); lay = null; markDirty(); renderLayout();
     };
-    return b;
+    return h("div", { class: "lay-modebar" }, [h("div", { class: "seg lay-mode", role: "group", "aria-label": "Layout mode" }, [a, m]),
+      h("span", { class: "hint", text: manual ? "You place every photo yourself. Visitors on phones always see one column." : "The site arranges the photos in even columns for every screen size." })]);
+  }
+  function getMasonrySrc() {
+    if (window.__MASONRY_SRC__) return Promise.resolve(window.__MASONRY_SRC__);
+    return msrc || (msrc = fetch("masonry.js", { cache: "no-store" }).then(function (r) { return r.text(); }));
+  }
+  var DRAG_JS = "(" + function () {
+    if (document.documentElement.hasAttribute("data-nodrag")) return;
+    var d = null, root = document.getElementById("gallery");
+    function idOf(a) { return +a.getAttribute("data-id"); }
+    function groups() {
+      var cs = root.querySelectorAll(".mcol");
+      if (!cs.length) return [[].map.call(root.querySelectorAll("a"), idOf)];
+      return [].map.call(cs, function (c) { return [].map.call(c.querySelectorAll("a"), idOf); });
+    }
+    function colEls() { var cs = root.querySelectorAll(".mcol"); return cs.length ? [].slice.call(cs) : [root]; }
+    document.addEventListener("click", function (e) { e.preventDefault(); });
+    document.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    document.addEventListener("pointerdown", function (e) {
+      var a = e.target.closest && e.target.closest("#gallery a"); if (!a || e.button) return;
+      d = { a: a, x: e.clientX, y: e.clientY, on: false, g: null, t: null };
+    });
+    var bar = null;
+    function clear() { if (bar) { bar.remove(); bar = null; } }
+    function place(cls, l, t, w, h) { bar = document.createElement("div"); bar.className = cls; bar.style.cssText = "left:" + (l + window.scrollX) + "px;top:" + (t + window.scrollY) + "px;width:" + w + "px;height:" + h + "px"; document.body.appendChild(bar); }
+    // Where would a drop at this point go? Over the middle of a photo: swap with it. Between photos (or on their edges): move in there.
+    function target(x, y) {
+      var cs = colEls(), best = 0, bd = 1e9;
+      cs.forEach(function (c, k) { var r = c.getBoundingClientRect(), dd = Math.abs(x - (r.left + r.width / 2)); if (dd < bd) { bd = dd; best = k; } });
+      var as = [].slice.call(cs[best].querySelectorAll("a")), cr = cs[best].getBoundingClientRect(), slot = as.length, i;
+      for (i = 0; i < as.length; i++) {
+        var r = as[i].getBoundingClientRect();
+        if (y >= r.top + r.height * .27 && y <= r.bottom - r.height * .27) return as[i] === d.a ? null : { kind: "swap", a: as[i], r: r };
+        if (y < r.top + r.height / 2) { slot = i; break; }
+      }
+      var yy = slot === 0 ? as[0].getBoundingClientRect().top - 7 : slot === as.length ? as[as.length - 1].getBoundingClientRect().bottom + 1 : (as[slot - 1].getBoundingClientRect().bottom + as[slot].getBoundingClientRect().top) / 2 - 3;
+      return { kind: "ins", col: best, slot: slot, as: as, x: cr.left, w: cr.width, y: yy };
+    }
+    document.addEventListener("pointermove", function (e) {
+      if (!d) return;
+      if (!d.on) {
+        if (Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y) < 8) return;
+        d.on = true; var r = d.a.getBoundingClientRect(); d.g = d.a.cloneNode(true); d.g.className = "dg-ghost"; d.g.style.cssText = "width:" + r.width + "px;height:" + r.height + "px;overflow:hidden;transform:scale(.5);transform-origin:0 0"; d.ox = (e.clientX - r.left) * .5; d.oy = (e.clientY - r.top) * .5;
+        document.body.appendChild(d.g); d.a.classList.add("dg-src");
+      }
+      d.g.style.left = (e.clientX - d.ox) + "px"; d.g.style.top = (e.clientY - d.oy) + "px";
+      clear(); d.t = target(e.clientX, e.clientY);
+      if (!d.t) return;
+      if (d.t.kind === "swap") place("dg-line", d.t.r.left, d.t.r.top, d.t.r.width, d.t.r.height);
+      else place("dg-hbar", d.t.x, d.t.y, d.t.w, 10);
+    });
+    function end(e) {
+      if (!d) return; var x = d; d = null; clear();
+      if (!x.on) return;
+      x.g.remove(); x.a.classList.remove("dg-src");
+      if (!x.t) return;
+      var gs = groups(), me = idOf(x.a), gi = -1, pi = -1, k;
+      gs.forEach(function (g, c) { var p = g.indexOf(me); if (p > -1) { gi = c; pi = p; } });
+      if (x.t.kind === "swap") {
+        var tid = idOf(x.t.a), tg = -1, tp = -1; gs.forEach(function (g, c) { var p = g.indexOf(tid); if (p > -1) { tg = c; tp = p; } });
+        gs[gi][pi] = tid; gs[tg][tp] = me;
+      } else {
+        var slot = x.t.slot; if (x.t.col === gi && pi < slot) slot--;
+        if (x.t.col === gi && slot === pi) return;
+        gs[gi].splice(pi, 1); gs[x.t.col].splice(slot, 0, me);
+      }
+      parent.__apGroups(gs);
+    }
+    var cols = document.querySelectorAll("#gallery .mcol"), cd = null, cbar = null, natural = document.getElementById("gallery").getAttribute("data-even") === "0";
+    function clearC() { if (cbar) { cbar.remove(); cbar = null; } [].forEach.call(cols, function (c) { c.style.opacity = ""; }); }
+    document.addEventListener("pointermove", function (e) {
+      if (!cd) return;
+      if (cd.kind === "off") {
+        var v = Math.max(0, Math.min(1.5, cd.v0 + (e.clientY - cd.y0) / cd.unit)); cd.v = v; cols[cd.i].style.marginTop = (v * cd.unit) + "px";
+        var wb = cols[cd.i].__cb; if (wb) wb.style.top = (cols[cd.i].getBoundingClientRect().top + window.scrollY - 50) + "px";
+        return;
+      }
+      var to = cd.to, best = 1e9;
+      [].forEach.call(cols, function (c, k) { var r = c.getBoundingClientRect(), d = Math.abs(e.clientX - (r.left + r.width / 2)); if (d < best) { best = d; to = k; } });
+      cd.to = to; clearC();
+      cols[cd.i].style.opacity = ".3";
+      if (to !== cd.i) {
+        var r = cols[to].getBoundingClientRect(), x = to > cd.i ? r.right + 3 : r.left - 3, g = document.getElementById("gallery").getBoundingClientRect();
+        cbar = document.createElement("div"); cbar.className = "dg-ins";
+        cbar.style.cssText = "left:" + (x + window.scrollX - 4) + "px;top:" + (g.top + window.scrollY - 6) + "px;height:" + (g.height + 12) + "px";
+        document.body.appendChild(cbar);
+      }
+    });
+    function cend() {
+      if (!cd) return; var x = cd; cd = null; document.body.style.cursor = ""; clearC();
+      if (x.kind === "off") { if (x.v !== x.v0) parent.__apOff(x.i, x.v, cols.length); }
+      else if (x.to !== x.i) { var gs = groups(), m = gs.splice(x.i, 1)[0]; gs.splice(x.to, 0, m); parent.__apGroups(gs, { from: x.i, to: x.to }); }
+    }
+    document.addEventListener("pointerup", cend); document.addEventListener("pointercancel", cend);
+    function overlay() {
+      [].forEach.call(document.querySelectorAll(".dg-cb"), function (o) { o.remove(); }); clearC();
+      cols = document.querySelectorAll("#gallery .mcol");
+      if (cols.length < 2) return;
+      var anchors = document.querySelectorAll("#gallery a"), unit = [].reduce.call(anchors, function (t, a) { return t + a.getBoundingClientRect().height; }, 0) / anchors.length;
+      var mt = function (c) { return parseFloat(c.style.marginTop) || 0; };
+      [].forEach.call(cols, function (c, i) {
+        var r = c.getBoundingClientRect(), w = document.createElement("div"); w.className = "dg-cb"; c.__cb = w;
+        w.style.cssText = "left:" + (r.left + window.scrollX) + "px;width:" + r.width + "px;top:" + (r.top + window.scrollY - 50) + "px";
+        var mv = document.createElement("button"); mv.type = "button"; mv.className = "dg-mv"; mv.innerHTML = "<b>\u2194</b>"; mv.title = "Drag sideways to put this column somewhere else";
+        mv.onpointerdown = function (e) { e.preventDefault(); e.stopPropagation(); cd = { kind: "mv", i: i, to: i }; try { mv.setPointerCapture(e.pointerId); } catch (x) {} document.body.style.cursor = "grabbing"; cols[i].style.opacity = ".3"; };
+        w.appendChild(mv);
+        if (natural) {
+          var ud = document.createElement("button"); ud.type = "button"; ud.className = "dg-ud"; ud.innerHTML = "<b>\u2195</b>"; ud.title = "Drag up or down to set where this column starts";
+          ud.onpointerdown = function (e) { e.preventDefault(); e.stopPropagation(); cd = { kind: "off", i: i, y0: e.clientY, v0: mt(c) / unit, v: mt(c) / unit, unit: unit }; try { ud.setPointerCapture(e.pointerId); } catch (x) {} document.body.style.cursor = "ns-resize"; };
+          w.appendChild(ud);
+        }
+        document.body.appendChild(w);
+      });
+    }
+    document.getElementById("gallery").addEventListener("mbuilt", overlay); overlay();
+    document.addEventListener("pointerup", end); document.addEventListener("pointercancel", end);
+  }.toString() + ")();";
+  function autoPreview(list, c) {
+    var box = h("div", { class: "ap" }), seg = h("div", { class: "seg" }), stage = h("div", { class: "ap-stage" });
+    var frame = h("iframe", { class: "ap-frame", title: "Preview of the automatic layout", sandbox: "allow-same-origin allow-scripts" });
+    [["desktop", "Computer"], ["phone", "Phone"]].forEach(function (x) {
+      seg.appendChild(h("button", { type: "button", "aria-pressed": String(apMode === x[0]), text: x[1], onclick: function () { if (apMode !== x[0]) { apMode = x[0]; renderLayout(); } } }));
+    });
+    box.appendChild(h("div", { class: "ap-head" }, [h("strong", { text: "Preview" }), seg, h("span", { class: "hint", text: apMode === "phone" ? "Switch to Computer to rearrange photos and columns." : "Drag a photo onto another to swap them, or between two photos to move it there. Use ↔ above a column to move it" + (layCfg().even ? "." : ", ↕ to raise or lower it.") })]));
+    window.__apGroups = function (gs, mv) {
+      var n = gs.length, byId = {}, i, r;
+      list.forEach(function (p) { byId[p.id] = p; });
+      var next = [], longest = Math.max.apply(null, gs.map(function (g) { return g.length; }));
+      for (r = 0; r < longest; r++) gs.forEach(function (g, c) { if (g[r] != null && byId[g[r]]) { next.push(byId[g[r]]); if (n > 1) byId[g[r]].col = c; } });
+      if (next.length !== list.length) return;
+      for (i = 0; i < next.length; i++) list[i] = next[i];
+      if (n > 1 && n <= 6) {
+        var cc = layCfg(), patch = { cols: n };
+        if (mv && cc.offs.length) { var of = []; for (i = 0; i < n; i++) of.push(cc.offs[i] != null ? cc.offs[i] : 0); var y = of.splice(mv.from, 1)[0]; of.splice(mv.to, 0, y); patch.offs = of; }
+        setLayCfg(patch);
+      }
+      markDirty(); renderLayout();
+    };
+    window.__apOff = function (idx, val, n) {
+      var cc = layCfg(), of = [], i, pat = [0, 0.3, 0.1, 0.42, 0.19, 0.36];
+      for (i = 0; i < n; i++) of.push(cc.offs[i] != null ? cc.offs[i] : pat[i % pat.length]);
+      of[idx] = Math.max(0, Math.min(1.5, Math.round(val * 20) / 20)); setLayCfg({ offs: of }); renderLayout();
+    };
+    stage.appendChild(frame); box.appendChild(stage);
+    var W = apMode === "phone" ? 390 : 1440;
+    function link(p) {
+      var q = cropOf(p), src = p.preview || p.src.replace(/^\//, ""), raw = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + p.src;
+      return '<a href="#" data-id="' + p.id + '"' + (p.col != null ? ' data-col="' + p.col + '"' : "") + (q ? ' class="crop" style="aspect-ratio:' + q.ar + '"' : "") + '><img src="' + escA(src) + '" alt="" ' + (p.w && p.h ? 'width="' + p.w + '" height="' + p.h + '" ' : "") + "onerror=\"this.onerror=null;this.src='" + escA(raw) + "'\"" + (q ? ' style="' + q.css + '"' : "") + "></a>";
+    }
+    var opts = JSON.stringify({ cols: c.cols, phone: c.phone, even: c.even, offs: c.offs });
+    getMasonrySrc().then(function (src) {
+      frame.srcdoc = '<!doctype html><html' + (apMode === 'phone' ? ' data-nodrag' : '') + '><head><meta charset="utf-8"><base href="' + escA(location.href) + '"><meta name="viewport" content="width=device-width,initial-scale=1"><style>' + pageCss() + '</style></head><body><main class="gut"><div class="gallery" id="gallery'+(c.even?'':'" data-even="0')+'">' + list.map(link).join("") + "</div></main><script>" + src.replace(/<\/script/gi, "<\\/script") + ";window.__m=sajgalMasonry(document.getElementById('gallery'),[].slice.call(document.querySelectorAll('#gallery a'))," + opts + ");" + DRAG_JS + "</scr" + "ipt><style>#gallery a{cursor:grab}.dg-ghost{position:fixed;z-index:9;pointer-events:none;opacity:.8;box-shadow:0 6px 24px rgba(0,0,0,.3)}.dg-src{opacity:.3}.dg-cb{position:absolute;z-index:7;display:flex;gap:6px;justify-content:center}.dg-cb button{font:600 14px/1 sans-serif;height:36px;border:0;border-radius:18px;background:#111;color:#fff;touch-action:none;display:flex;align-items:center;gap:6px;padding:0 14px}.dg-cb b{font-size:28px;line-height:1;font-weight:400}.dg-cb button{width:48px;justify-content:center;padding:0}.dg-mv{cursor:grab}.dg-ud{cursor:ns-resize}.dg-cb button:hover{background:#1565c0}.dg-ins{position:absolute;z-index:8;width:8px;border-radius:4px;background:#1565c0;box-shadow:0 0 0 2px #fff;pointer-events:none}.dg-hbar{position:absolute;z-index:8;border-radius:5px;background:#1565c0;box-shadow:0 0 0 2px #fff;pointer-events:none}.dg-line{position:absolute;z-index:8;box-sizing:border-box;border:8px solid #1565c0;background:rgba(21,101,192,.25);pointer-events:none}</style></body></html>";
+    });
+    function fit() {
+      var sw = stage.clientWidth || 900, k = Math.min(1, sw / W), d = frame.contentDocument, hh = d && d.documentElement ? d.documentElement.scrollHeight : 800;
+      frame.style.width = W + "px"; frame.style.height = hh + "px"; frame.style.transform = "scale(" + k + ")"; frame.style.transformOrigin = "top left";
+      frame.style.left = apMode === "phone" ? Math.max(0, (sw - W * k) / 2) + "px" : "0px";
+      stage.style.height = Math.round(hh * k) + "px";
+    }
+    frame.onload = function () { fit(); setTimeout(fit, 400); setTimeout(fit, 1500); };
+    return box;
+  }
+  function renderAutoPanel(box, list) {
+    var c = layCfg(), ctl = h("div", { class: "auto-ctl" });
+    function row(label, opts, cur, key, note) {
+      var seg = h("div", { class: "seg" });
+      opts.forEach(function (o) {
+        seg.appendChild(h("button", { type: "button", "aria-pressed": String(o[0] === cur), text: o[1], onclick: function () { if (o[0] === cur) return; var p = {}; p[key] = o[0]; setLayCfg(p); renderLayout(); } }));
+      });
+      return h("div", { class: "auto-row" }, [h("span", { class: "auto-label", text: label }), seg, note ? h("span", { class: "hint", text: note }) : null]);
+    }
+    ctl.appendChild(row("Columns on a computer", [[0, "Auto"], [2, "2"], [3, "3"], [4, "4"], [5, "5"], [6, "6"]], c.cols, "cols", "Auto uses 3 to 5, depending on the screen width."));
+    ctl.appendChild(row("Columns on a phone", [[1, "1"], [2, "2"]], c.phone, "phone", "One column shows each photo large."));
+    ctl.appendChild(row("Bottom edge", [[true, "Even"], [false, "Natural"]], c.even, "even", "Even: all columns end at the same height, with slightly wider columns where there is less to show. Natural: equal columns with staggered tops and bottoms."));
+    box.appendChild(h("div", { class: "auto-panel" }, [ctl, autoPreview(list, c)]));
   }
   function renderViewToggle() {
     var box = $("#viewtoggle"), m = meta(tab);
@@ -750,7 +950,7 @@
   }
 
   /* ---------- Draft, preview and publish ---------- */
-  var publishing = false, confirmPub = false, confirmDiscard = false, noteMsg = "";
+  var publishing = false, saving = false, liveWait = "", confirmPub = false, confirmDiscard = false, noteMsg = "";
   try { noteMsg = sessionStorage.getItem("sajgal-note") || ""; sessionStorage.removeItem("sajgal-note"); } catch (x) {}
   function pageCss() {
     var out = "";
@@ -777,7 +977,7 @@
       g = '<div class="gallery rows">' + toRows(list).map(function (r) {
         return '<div class="row"' + (r.al === "center" ? ' style="--j:center"' : r.al === "end" ? ' style="--j:flex-end"' : "") + ">" + r.cols.map(function (c) { return '<div class="col" style="--w:' + c.w + '">' + c.items.map(link).join("") + "</div>"; }).join("") + "</div>";
       }).join("") + "</div>";
-    } else g = '<div class="gallery">' + list.map(link).join("") + "</div>";
+    } else { var lc = layCfg(); g = '<div class="gallery" id="gallery"' + (lc.cols ? ' data-cols="' + lc.cols + '"' : "") + (lc.phone === 2 ? ' data-phone="2"' : "") + (lc.even ? "" : ' data-even="0"' + (lc.offs.length ? ' data-offs="' + lc.offs.join(",") + '"' : "")) + ">" + list.map(link).join("") + "</div>"; }
     var arrow = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10H3M8 5l-5 5 5 5"/></svg>';
     return { name: name, html: '<!doctype html><html><head><meta charset="utf-8"><base href="' + escA(location.href) + '"><meta name="viewport" content="width=device-width,initial-scale=1"><style>' + pageCss() + '</style></head><body><a class="back" href="#">' + arrow + '</a><main class="gut">' + g + "</main></body></html>" };
   }
@@ -808,7 +1008,7 @@
     window.addEventListener("resize", fit);
     document.body.appendChild(ov); fit();
   }
-  var FRIENDLY = { fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
+  var FRIENDLY = { layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
   function previewBase() { return cfg.previewBase || "https://" + WB + "." + cfg.repo.split("/")[1] + ".pages.dev"; }
   function ghJson(path, opts) {
     return api(path, opts).then(function (r) {
@@ -836,6 +1036,11 @@
         /* nothing unpublished, but the live site moved on (for example a code update): bring the draft up to date */
         return api("/git/refs/heads/" + WB, { method: "PATCH", body: JSON.stringify({ sha: D.main, force: true }) }).then(function () { D.head = D.main; D.behind = 0; D.loaded = true; pv.state = ""; renderDraft(); });
       }
+      if (D.ahead && D.behind && !D.merging) {
+        /* unpublished edits, and the live site got a code update: bring the update into the draft so the preview uses the same code */
+        D.merging = true;
+        return api("/merges", { method: "POST", body: JSON.stringify({ base: WB, head: cfg.branch, commit_message: "Bring site updates into the draft" }) }).then(function () { D.merging = false; return refreshDraft(); }, function () { D.merging = false; D.loaded = true; pv.state = ""; renderDraft(); watchPreview(); });
+      }
       D.loaded = true; pv.state = ""; renderDraft(); watchPreview();
     }).catch(function (e) { D.loaded = true; D.error = e.message; renderDraft(); });
   }
@@ -861,6 +1066,16 @@
       });
     })();
   }
+  function watchLive(sha) {
+    liveWait = sha; renderDraft(); var tries = 0;
+    (function tick() {
+      fetch("/_build.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
+        if (liveWait !== sha) return;
+        if (j && j.sha === sha) { liveWait = ""; renderDraft(); }
+        else if (++tries < 90) setTimeout(tick, 6000); else { liveWait = ""; renderDraft(); }
+      });
+    })();
+  }
   function publish() {
     publishing = true; confirmPub = false; renderDraft();
     ghJson("/git/ref/heads/" + WB).then(function (d) {
@@ -873,7 +1088,7 @@
         return api("/git/refs/heads/" + WB, { method: "PATCH", body: JSON.stringify({ sha: m.object.sha, force: true }) });
       });
     }).then(function () {
-      publishing = false; noteMsg = "Published. The live site updates in about a minute."; return refreshDraft();
+      publishing = false; noteMsg = "Published. The live site is up to date."; return refreshDraft().then(function () { watchLive(D.main); });
     }).catch(function (e) { publishing = false; noteMsg = ""; setStatus("Could not publish: " + e.message, true); refreshDraft(); });
   }
   function discard() {
@@ -889,22 +1104,26 @@
     var bar = $("#draftbar");
     bar.hidden = false; bar.innerHTML = "";
     var unsaved = Object.keys(dirty).some(function (k) { return dirty[k]; });
-    var left = h("div", { class: "db-state" }), subs = [];
-    if (!D.loaded) { left.appendChild(h("span", { class: "db-dot busy" })); left.appendChild(h("strong", { text: "Checking the draft…" })); }
-    else if (D.error) { left.appendChild(h("span", { class: "db-dot warn" })); left.appendChild(h("strong", { text: "Could not read the draft state: " + D.error })); }
-    else if (publishing) { left.appendChild(h("span", { class: "db-dot busy" })); left.appendChild(h("strong", { text: "Working…" })); }
+    var left = h("div", { class: "db-state" }), subs = [], tone = "ok", head = "";
+    if (!D.loaded) { tone = "busy"; head = "Checking the draft…"; }
+    else if (D.error) { tone = "err"; head = "Could not read the draft state: " + D.error; }
+    else if (saving) { tone = "busy"; head = "Saving to the draft…"; }
+    else if (publishing) { tone = "busy"; head = "Working…"; }
     else if (D.ahead) {
-      left.appendChild(h("span", { class: "db-dot warn" })); left.appendChild(h("strong", { text: "Draft has changes that are not public yet" }));
-      subs.push(areas());
-      subs.push(pv.state === "ready" ? "Preview is ready." : "Preview is building, usually about a minute…");
-    } else { left.appendChild(h("span", { class: "db-dot ok" })); left.appendChild(h("strong", { text: noteMsg || "Draft and live site are the same" })); }
+      areas() && subs.push("Changed: " + areas());
+      if (pv.state === "ready") { tone = "warn"; head = "Draft is ready to preview. Not public yet."; }
+      else { tone = "busy"; head = "Updating the draft preview… usually about a minute."; }
+    } else if (liveWait) { tone = "busy"; head = "Publishing… the live site is updating, usually about a minute."; }
+    else { head = noteMsg || "Draft and live site are the same"; }
+    left.appendChild(h("span", { class: "db-dot " + (tone === "err" ? "warn" : tone) })); left.appendChild(h("strong", { text: head }));
+    bar.className = "draftbar s-" + tone;
     if (unsaved) subs.push("You have edits that are not saved yet.");
     subs.forEach(function (t) { if (t) left.appendChild(h("span", { class: "db-sub", text: t })); });
     left.appendChild(h("button", { type: "button", class: "link db-check", text: "Check again", onclick: function () { refreshDraft(); } }));
     bar.appendChild(left);
     var right = h("div", { class: "db-actions" });
-    var kind = meta(tab).kind;
-    if (kind === "photos" || (kind === "entries" && editing)) right.appendChild(h("button", { type: "button", class: "btn", text: "Screen-size preview", onclick: openPreview }));
+    var kind = meta(tab).kind, pb = $("#prevbtn");
+    pb.hidden = !(kind === "photos" || (kind === "entries" && editing)); pb.onclick = openPreview;
     if (D.ahead && !publishing) {
       right.appendChild(h("a", { class: "btn", href: previewBase() + "/", target: "_blank", rel: "noopener", text: "Open draft site ↗" }));
       if (confirmPub) {
@@ -977,7 +1196,7 @@
     if (sortGrid) { sortGrid.destroy(); sortGrid = null; }
     if (window.Sortable) {
       sortGrid = Sortable.create(grid, {
-        animation: 150, ghostClass: "sortable-ghost", filter: "input,.del,.rep", preventOnFilter: false, disabled: layoutOn(items),
+        animation: 150, ghostClass: "sortable-ghost", filter: "input,.del,.rep", preventOnFilter: false, disabled: true,
         onEnd: function () {
           var order = Array.prototype.map.call(grid.children, function (li) { return +li.dataset.id; }), list = curItems();
           var next = order.map(function (id) { return list.filter(function (p) { return p.id === id; })[0]; });
@@ -1196,6 +1415,7 @@
   function renderSeo() {
     var box = $("#p-seo"); box.innerHTML = ""; seoRefresh = [];
     var S = state.seo, site = S.site;
+    box.appendChild(h("h1", { class: "pg-title", text: "SEO and contact details" }));
     function setSite(k) { return function (v) { site[k] = v; markDirty(); }; }
 
     var health = h("section", { class: "seo-health" });
@@ -1285,8 +1505,8 @@
     if (view === "layout" && (k === "photos" || (k === "entries" && editing))) hint = "Place photos side by side in rows, like a printed layout.";
     else if (k === "videos") hint = "Drag to reorder. Desktop has three columns, each plays its own clips in turn (clip 1, 4, 7 in the left column; 2, 5 in the middle; 3, 6 on the right). Phones play them all in one column.";
     else if (k === "reels") hint = "Drag to reorder. The first video appears first on the Video page.";
-    else if (k === "photos") hint = (layoutOn(curItems()) ? "This page has a custom layout: change the order in the Layout view. " : "Drag photos to reorder. ") + "Alt text describes the photo for Google and screen readers; blank is filled in automatically.";
-    else if (k === "entries" && editing) hint = (layoutOn(curItems()) ? "This page has a custom layout: change the order in the Layout view. " : "Drag photos to reorder. ") + "The first photo is the cover.";
+    else if (k === "photos") hint = "Captions and alt text. To reorder photos, use the Layout view. Alt text describes the photo for Google and screen readers; blank is filled in automatically.";
+    else if (k === "entries" && editing) hint = "Captions and alt text. To reorder photos, use the Layout view; the first photo is the cover.";
     $("#hint").textContent = hint;
     $("#empty").textContent = k === "videos" ? "No videos yet. Add up to " + m.max + " MP4 or WebM clips." : "No photos yet. Drop images here or use Add photos.";
   }
@@ -1305,17 +1525,23 @@
   }
   function tabs() {
     var t = $("#tabs"); t.innerHTML = "";
+    var sl = $("#seolink"); sl.hidden = false; sl.setAttribute("aria-current", tab === "seo" ? "page" : "false");
     TABS.forEach(function (c) {
-      t.appendChild(h("button", { type: "button", role: "tab", "aria-selected": String(c.id === tab), text: c.label, onclick: function () {
+      if (c.id === "seo") return;
+      t.appendChild(h("button", { type: "button", role: "tab", class: c.id === "videos" ? "sep" : false, "aria-selected": String(c.id === tab), text: c.label, onclick: function () {
         if (c.id === tab && !editing) return;
         tab = c.id; editing = null; view = "text"; lay = null; setStatus(""); tabs(); layout();
       } }));
     });
   }
+  $("#seolink").onclick = function (e) {
+    e.preventDefault(); if (tab === "seo" && !editing) return;
+    tab = "seo"; editing = null; view = "text"; lay = null; setStatus(""); tabs(); layout();
+  };
   function start() {
     $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false;
     setStatus("Loading…");
-    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); })); }).then(function () {
+    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile()])); }).then(function () {
       setStatus(""); tabs(); layout(); refreshDraft();
     }).catch(function (e) { setStatus(e.message, true); });
   }

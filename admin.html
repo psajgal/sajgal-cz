@@ -10,8 +10,12 @@
 </head>
 <body>
 <header class="adm-top gut">
-  <a class="name disp" href="./">Petr Šajgal</a>
-  <nav aria-label="Editor"><a href="./">View site</a><a href="#" id="disconnect" hidden>Disconnect</a></nav>
+  <a class="name disp" href="./">Petr Šajgal <span class="crumb">Edit site</span></a>
+  <nav aria-label="Editor">
+    <a href="#seo" id="seolink" hidden>SEO &amp; contact</a>
+    <a href="./" target="_blank" rel="noopener">View site ↗</a>
+    <a href="#" id="disconnect" hidden>Disconnect</a>
+  </nav>
 </header>
 
 <main class="adm gut">
@@ -40,12 +44,17 @@
     <div id="draftbar" class="draftbar" hidden></div>
     <div class="tabs" role="tablist" id="tabs"></div>
     <div class="bar">
-      <label class="btn" id="addbtn"><span id="addlabel">Add photos</span><input id="file" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden></label>
-      <span class="hint" id="hint"></span>
-      <span class="spacer"></span>
-      <span id="status" class="msg" role="status"></span>
-      <button id="save" class="btn primary" disabled>Save changes</button>
+      <div class="bar-l">
+        <label class="btn" id="addbtn"><span id="addlabel">Add photos</span><input id="file" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden></label>
+        <div id="viewtoggle" class="seg" role="group" aria-label="View" hidden></div>
+      </div>
+      <div class="bar-r">
+        <span id="status" class="msg" role="status"></span>
+        <button type="button" id="prevbtn" class="btn" hidden>Screen-size preview</button>
+        <button id="save" class="btn primary" disabled>Save to draft</button>
+      </div>
     </div>
+    <p class="hint tabhint" id="hint"></p>
     <div id="exporthint" class="exporthint" hidden>
       <strong>Export settings for home videos</strong>
       <ul>
@@ -57,7 +66,6 @@
     <div id="p-shows" hidden></div>
     <div id="p-reels" hidden></div>
     <div id="p-seo" hidden></div>
-    <div id="viewtoggle" class="seg" role="group" aria-label="View" hidden></div>
     <div id="drop" class="drop">
       <div id="lay" class="lay" hidden></div>
       <ul id="grid" class="grid"></ul>
@@ -67,6 +75,7 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="masonry.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>
