@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Edit site – Petr Šajgal</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<header class="adm-top gut">
+  <a class="name disp" href="./">Petr Šajgal</a>
+  <nav aria-label="Editor"><a href="./">View site</a><a href="#" id="disconnect" hidden>Disconnect</a></nav>
+</header>
+
+<main class="adm gut">
+  <section id="setup" hidden>
+    <h1>Connect to GitHub</h1>
+    <p>One-time setup on this device. The token stays in this browser only.</p>
+    <form id="setup-form">
+      <label>Repository <input id="f-repo" placeholder="your-username/your-repo" required></label>
+      <label>Branch <input id="f-branch" value="main" required></label>
+      <label>Access token <input id="f-token" type="password" autocomplete="off" required></label>
+      <button type="submit" class="btn primary">Connect</button>
+      <p id="setup-msg" class="msg" role="status"></p>
+    </form>
+    <details>
+      <summary>How to get a token</summary>
+      <ol>
+        <li>On GitHub: profile picture &gt; Settings &gt; Developer settings &gt; Personal access tokens &gt; Fine-grained tokens &gt; Generate new token.</li>
+        <li>Expiration: 1 year. Repository access: Only select repositories, then choose this site's repository.</li>
+        <li>Permissions &gt; Repository permissions &gt; Contents: Read and write.</li>
+        <li>Generate, copy the token and paste it above.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section id="editor" hidden>
+    <div id="draftbar" class="draftbar" hidden></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="bar">
+      <label class="btn" id="addbtn"><span id="addlabel">Add photos</span><input id="file" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden></label>
+      <span class="hint" id="hint"></span>
+      <span class="spacer"></span>
+      <span id="status" class="msg" role="status"></span>
+      <button id="save" class="btn primary" disabled>Save changes</button>
+    </div>
+    <div id="exporthint" class="exporthint" hidden>
+      <strong>Export settings for home videos</strong>
+      <ul>
+        <li><b>Desktop file:</b> MP4 (H.264), 1080 × 1920 portrait, 24 or 25 fps, about 8 Mbps (CRF 20 to 22), no audio. About 20 MB for 20 seconds, under the 25 MB limit.</li>
+        <li><b>Phone file (optional):</b> MP4 (H.264), 720 × 1280, about 3 Mbps, no audio. About 7 MB for 20 seconds. Without it, phones use the desktop file.</li>
+        <li>Clips of 10 to 20 seconds, all the same shape, so they cross-fade neatly. Phones on data saver or a slow connection see a still image instead.</li>
+      </ul>
+    </div>
+    <div id="p-shows" hidden></div>
+    <div id="p-reels" hidden></div>
+    <div id="p-seo" hidden></div>
+    <div id="viewtoggle" class="seg" role="group" aria-label="View" hidden></div>
+    <div id="drop" class="drop">
+      <div id="lay" class="lay" hidden></div>
+      <ul id="grid" class="grid"></ul>
+      <p id="empty" class="empty" hidden></p>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "image": "/images/editorial/01.svg",
+    "caption": "",
+    "w": 1200,
+    "h": 1600
+  },
+  {
+    "image": "/images/editorial/02.svg",
+    "caption": "",
+    "w": 1200,
+    "h": 800
+  },
+  {
+    "image": "/images/editorial/03.svg",
+    "caption": "",
+    "w": 1200,
+    "h": 1500
+  },
+  {
+    "image": "/images/editorial/04.svg",
+    "caption": "",
+    "w": 1200,
+    "h": 1800
+  },
+  {
+    "image": "/images/editorial/05.svg",
+    "caption": "",
+    "w": 1200,
+    "h": 900
+  },
+  {
+    "image": "/images/editorial/06.svg",
+    "caption": "",
+    "w": 1200,
+    "h": 1600
+  }
+]

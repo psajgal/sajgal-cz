@@ -1,0 +1,90 @@
+[
+  {
+    "image": "/images/fashion/01.jpg",
+    "caption": "Designblok Prague, Diploma Selection 2026",
+    "w": 1080,
+    "h": 1350,
+    "thumb": "/images/fashion/01-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/02.jpg",
+    "caption": "Designblok Prague, Diploma Selection 2026",
+    "w": 1080,
+    "h": 1350,
+    "thumb": "/images/fashion/02-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/03.jpg",
+    "caption": "",
+    "w": 1080,
+    "h": 1350,
+    "thumb": "/images/fashion/03-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/04.jpg",
+    "caption": "",
+    "w": 1080,
+    "h": 1350,
+    "thumb": "/images/fashion/04-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/05.jpg",
+    "caption": "",
+    "w": 1080,
+    "h": 1350,
+    "thumb": "/images/fashion/05-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/06.jpg",
+    "caption": "",
+    "w": 1080,
+    "h": 1350,
+    "thumb": "/images/fashion/06-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/07.jpg",
+    "caption": "",
+    "w": 1500,
+    "h": 1200,
+    "thumb": "/images/fashion/07-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/08.jpg",
+    "caption": "",
+    "w": 1200,
+    "h": 1500,
+    "thumb": "/images/fashion/08-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/09.jpg",
+    "caption": "",
+    "w": 1200,
+    "h": 1500,
+    "thumb": "/images/fashion/09-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/10.jpg",
+    "caption": "",
+    "w": 1200,
+    "h": 1500,
+    "thumb": "/images/fashion/10-1000.jpg",
+    "alt": ""
+  },
+  {
+    "image": "/images/fashion/11.jpg",
+    "caption": "",
+    "w": 1500,
+    "h": 1200,
+    "thumb": "/images/fashion/11-1000.jpg",
+    "alt": ""
+  }
+]

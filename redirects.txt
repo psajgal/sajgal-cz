@@ -1,0 +1,6 @@
+# Old Google Sites addresses -> new pages (301 = permanent, passes search ranking).
+# One rule per line: old-path new-path 301. Edit this file on GitHub if you need more.
+/main-page / 301
+/landscape /personal 301
+/about /contact 301
+# The old show and brand addresses (/fashion/bfw-aw26, /commercial/kamera and the rest) keep working as real pages.

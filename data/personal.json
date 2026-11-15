@@ -1,0 +1,287 @@
+[
+  {
+    "image": "/images/personal/01.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1024,
+    "thumb": "/images/personal/01-1000.jpg",
+    "row": 1,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/02.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1024,
+    "thumb": "/images/personal/02-1000.jpg",
+    "row": 1,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/03.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1600,
+    "thumb": "/images/personal/03-1000.jpg",
+    "row": 2,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/04.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1600,
+    "thumb": "/images/personal/04-1000.jpg",
+    "row": 2,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/05.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1024,
+    "thumb": "/images/personal/05-1000.jpg",
+    "alt": "Film photo of the beach shot on Kodak ColorPlus200",
+    "row": 3,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/06.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1024,
+    "thumb": "/images/personal/06-1000.jpg",
+    "alt": "Film photo of a pool in the summer on Kodak ColorPlus 200",
+    "row": 3,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/07.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1280,
+    "thumb": "/images/personal/07-1000.jpg",
+    "alt": "Winter picture of windmills shot on film, medium format Lomography 400",
+    "row": 4,
+    "cols": 5
+  },
+  {
+    "image": "/images/personal/08.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1159,
+    "thumb": "/images/personal/08-1000.jpg",
+    "row": 4,
+    "stack": true
+  },
+  {
+    "image": "/images/personal/09.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1768,
+    "thumb": "/images/personal/09-1000.jpg",
+    "alt": "Winter street picture, shot on film, Kodak Ultramax 400",
+    "row": 4,
+    "cols": 7
+  },
+  {
+    "image": "/images/personal/10.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 511,
+    "thumb": "/images/personal/10-1000.jpg",
+    "row": 5,
+    "cols": 12
+  },
+  {
+    "image": "/images/personal/11.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1025,
+    "thumb": "/images/personal/11-1000.jpg",
+    "row": 6,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/12.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1024,
+    "thumb": "/images/personal/12-1000.jpg",
+    "row": 6,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/13.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 678,
+    "thumb": "/images/personal/13-1000.jpg",
+    "alt": "Evening Prague film picture, Kodak Gold 200",
+    "row": 7,
+    "cols": 12
+  },
+  {
+    "image": "/images/personal/14.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1300,
+    "thumb": "/images/personal/14-1000.jpg",
+    "row": 8,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/15.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1302,
+    "thumb": "/images/personal/15-1000.jpg",
+    "row": 8,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/16.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 960,
+    "thumb": "/images/personal/16-1000.jpg",
+    "row": 9,
+    "cols": 12
+  },
+  {
+    "image": "/images/personal/17.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1913,
+    "thumb": "/images/personal/17-1000.jpg",
+    "row": 10,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/18.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1913,
+    "thumb": "/images/personal/18-1000.jpg",
+    "row": 10,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/19.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1259,
+    "thumb": "/images/personal/19-1000.jpg",
+    "row": 11,
+    "cols": 5
+  },
+  {
+    "image": "/images/personal/20.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 884,
+    "thumb": "/images/personal/20-1000.jpg",
+    "alt": "Brutalist building shot on Fomapan 400",
+    "row": 11,
+    "cols": 7
+  },
+  {
+    "image": "/images/personal/21.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1600,
+    "thumb": "/images/personal/21-1000.jpg",
+    "row": 12,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/22.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1600,
+    "thumb": "/images/personal/22-1000.jpg",
+    "row": 12,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/23.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 2048,
+    "thumb": "/images/personal/23-1000.jpg",
+    "row": 13,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/24.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1025,
+    "thumb": "/images/personal/24-1000.jpg",
+    "row": 13,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/25.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 961,
+    "thumb": "/images/personal/25-1000.jpg",
+    "row": 13,
+    "stack": true
+  },
+  {
+    "image": "/images/personal/26.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1919,
+    "thumb": "/images/personal/26-1000.jpg",
+    "row": 14,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/27.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1919,
+    "thumb": "/images/personal/27-1000.jpg",
+    "row": 14,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/28.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1919,
+    "thumb": "/images/personal/28-1000.jpg",
+    "row": 15,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/29.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1919,
+    "thumb": "/images/personal/29-1000.jpg",
+    "row": 15,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/30.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1920,
+    "thumb": "/images/personal/30-1000.jpg",
+    "row": 16,
+    "cols": 6
+  },
+  {
+    "image": "/images/personal/31.jpg",
+    "caption": "",
+    "w": 1280,
+    "h": 1919,
+    "thumb": "/images/personal/31-1000.jpg",
+    "row": 16,
+    "cols": 6
+  }
+]
