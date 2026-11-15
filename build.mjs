@@ -355,19 +355,29 @@ ${gallery(items, c.ctx, "", LAYOUTS[c.data])}
     checkMeta("/fashion", pg.title, pg.description);
     const live = published.length > 0;
     if (!live) warn("/fashion: no show has photos yet, so the page is hidden from search engines.");
+    // Computer: like the Commercial page, a row of photos per show with its title and a short line. Phone: one cover per show.
     const cards = published.map((s, i) => {
-      const cover = coverOf(s), t = thumbOf(cover);
+      const cover = coverOf(s), href = L("/fashion/" + s.slug);
       const sub = [s.event, niceDate(s.date)].filter(Boolean).join(" · ");
-      return `<li><a class="show" href="${L("/fashion/" + s.slug)}">
-<img src="${esc(A(t ? t.src : cover.image))}" alt="${esc(altFor(cover, s.title + " fashion show", 0))}"${cover.w && cover.h ? ` width="${cover.w}" height="${cover.h}"` : ""}${i < 4 ? "" : ' loading="lazy"'} decoding="async">
-<span class="t disp">${esc(s.title)}</span>${sub ? `<span class="m">${esc(sub)}</span>` : ""}</a></li>`;
+      const line = ((s.summary && s.summary.trim()) || ((s.description || "").split(/(?<=[.!?])\s/)[0] || "")).trim();
+      const shown = [cover, ...s.photos.filter((p) => p !== cover)].slice(0, 4);
+      const imgs = shown.map((p, k) => {
+        const t = thumbOf(p), attrs = `src="${esc(A(t ? t.src : p.image))}" alt="${k === 0 ? esc(altFor(p, s.title + " fashion show", 0)) : ""}"${p.w && p.h ? ` width="${p.w}" height="${p.h}"` : ""}${i < 2 && k < 4 ? "" : ' loading="lazy"'} decoding="async"`;
+        return k === 0 ? `<a href="${href}"><img ${attrs}></a>` : `<a href="${href}" tabindex="-1" aria-hidden="true"><img ${attrs}></a>`;
+      }).join("");
+      return `<section class="brand fshow">
+<div class="cluster">${imgs}</div>
+<h2 class="disp"><a href="${href}">${esc(s.title)}</a></h2>
+${sub ? `<p class="meta">${esc(sub)}</p>` : ""}${line ? `\n<p class="line">${esc(line)}</p>` : ""}
+<a class="all" href="${href}">View all ${s.photos.length} photos <span aria-hidden="true">→</span></a>
+</section>`;
     }).join("\n");
     const body = `${back("/fashion-shows", "Back to selected fashion shows work")}
 <main class="gut">
 <h1 class="sr">All fashion shows</h1>
-<ul class="shows">
+<div class="fshows">
 ${cards}
-</ul>
+</div>
 </main>`;
     const first = published[0] ? coverOf(published[0]) : null;
     emit("/fashion", shell({

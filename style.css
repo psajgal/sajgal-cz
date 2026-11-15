@@ -139,3 +139,15 @@ body.noscroll{overflow:hidden}
 .gallery.mason{columns:auto;display:flex;gap:var(--gap);align-items:flex-start}
 .mcol{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:var(--gap)}
 .gallery.mason a{margin:0}
+
+/* All shows: Commercial-style blocks on a computer, one cover per show on a phone */
+.fshows{display:grid;gap:clamp(2.5rem,6vw,5rem);padding:calc(var(--pad) + 3.5rem) 0 var(--pad)}
+.fshow .meta{margin:.35rem 0 0;color:var(--muted);font-size:.9rem}
+.fshow .line{margin-top:.3rem}
+@media (max-width:700px){
+  .fshows{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:calc(var(--gap)*2) var(--gap)}
+  .fshow .cluster{display:block}
+  .fshow .cluster a:nth-child(n+2){display:none}
+  .fshow h2{margin:.6rem 0 0;font-size:1.05rem;font-weight:inherit;line-height:1.25}
+  .fshow .line,.fshow .all{display:none}
+}
