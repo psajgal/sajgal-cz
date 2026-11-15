@@ -215,7 +215,7 @@
   function save() {
     var id = tab, btn = $("#save"), bad = validate(id);
     if (bad) { setStatus(bad, true); return; }
-    btn.disabled = true; setStatus("Saving…");
+    btn.disabled = true; setStatus("Saving…"); saving = true; renderDraft();
     var files = filesToUpload(id), chain = Promise.resolve(), lines = meta(id).kind === "entries" ? redirectLines(id) : [];
     files.forEach(function (f, n) {
       chain = chain.then(function () {
@@ -234,12 +234,12 @@
         if (meta(id).kind === "entries") { state[id].forEach(function (s) { s.origSlug = s.slug; }); deletedSlugs[id] = []; }
       });
     }).then(function () {
-      noteMsg = ""; setStatus("Saved to the draft. Open the preview in about a minute, then publish when you are happy.");
+      saving = false; noteMsg = ""; setStatus("Saved to the draft. Open the preview in about a minute, then publish when you are happy.");
       layout(); refreshSave(); refreshDraft(); [2500, 7000].forEach(function (ms) { setTimeout(refreshDraft, ms); });
     }).catch(function (e) {
       setStatus(String(e.message || e).indexOf("does not match") > -1
         ? "The site changed elsewhere. Reload this page and try again." : "Could not save: " + (e.message || e), true);
-      btn.disabled = false;
+      btn.disabled = false; saving = false; renderDraft();
     });
   }
 
@@ -750,7 +750,7 @@
   }
 
   /* ---------- Draft, preview and publish ---------- */
-  var publishing = false, confirmPub = false, confirmDiscard = false, noteMsg = "";
+  var publishing = false, saving = false, liveWait = "", confirmPub = false, confirmDiscard = false, noteMsg = "";
   try { noteMsg = sessionStorage.getItem("sajgal-note") || ""; sessionStorage.removeItem("sajgal-note"); } catch (x) {}
   function pageCss() {
     var out = "";
@@ -861,6 +861,16 @@
       });
     })();
   }
+  function watchLive(sha) {
+    liveWait = sha; renderDraft(); var tries = 0;
+    (function tick() {
+      fetch("/_build.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
+        if (liveWait !== sha) return;
+        if (j && j.sha === sha) { liveWait = ""; renderDraft(); }
+        else if (++tries < 90) setTimeout(tick, 6000); else { liveWait = ""; renderDraft(); }
+      });
+    })();
+  }
   function publish() {
     publishing = true; confirmPub = false; renderDraft();
     ghJson("/git/ref/heads/" + WB).then(function (d) {
@@ -873,7 +883,7 @@
         return api("/git/refs/heads/" + WB, { method: "PATCH", body: JSON.stringify({ sha: m.object.sha, force: true }) });
       });
     }).then(function () {
-      publishing = false; noteMsg = "Published. The live site updates in about a minute."; return refreshDraft();
+      publishing = false; noteMsg = "Published. The live site is up to date."; return refreshDraft().then(function () { watchLive(D.main); });
     }).catch(function (e) { publishing = false; noteMsg = ""; setStatus("Could not publish: " + e.message, true); refreshDraft(); });
   }
   function discard() {
@@ -889,15 +899,19 @@
     var bar = $("#draftbar");
     bar.hidden = false; bar.innerHTML = "";
     var unsaved = Object.keys(dirty).some(function (k) { return dirty[k]; });
-    var left = h("div", { class: "db-state" }), subs = [];
-    if (!D.loaded) { left.appendChild(h("span", { class: "db-dot busy" })); left.appendChild(h("strong", { text: "Checking the draft…" })); }
-    else if (D.error) { left.appendChild(h("span", { class: "db-dot warn" })); left.appendChild(h("strong", { text: "Could not read the draft state: " + D.error })); }
-    else if (publishing) { left.appendChild(h("span", { class: "db-dot busy" })); left.appendChild(h("strong", { text: "Working…" })); }
+    var left = h("div", { class: "db-state" }), subs = [], tone = "ok", head = "";
+    if (!D.loaded) { tone = "busy"; head = "Checking the draft…"; }
+    else if (D.error) { tone = "err"; head = "Could not read the draft state: " + D.error; }
+    else if (saving) { tone = "busy"; head = "Saving to the draft…"; }
+    else if (publishing) { tone = "busy"; head = "Working…"; }
     else if (D.ahead) {
-      left.appendChild(h("span", { class: "db-dot warn" })); left.appendChild(h("strong", { text: "Draft has changes that are not public yet" }));
-      subs.push(areas());
-      subs.push(pv.state === "ready" ? "Preview is ready." : "Preview is building, usually about a minute…");
-    } else { left.appendChild(h("span", { class: "db-dot ok" })); left.appendChild(h("strong", { text: noteMsg || "Draft and live site are the same" })); }
+      areas() && subs.push("Changed: " + areas());
+      if (pv.state === "ready") { tone = "warn"; head = "Draft is ready to preview. Not public yet."; }
+      else { tone = "busy"; head = "Updating the draft preview… usually about a minute."; }
+    } else if (liveWait) { tone = "busy"; head = "Publishing… the live site is updating, usually about a minute."; }
+    else { head = noteMsg || "Draft and live site are the same"; }
+    left.appendChild(h("span", { class: "db-dot " + (tone === "err" ? "warn" : tone) })); left.appendChild(h("strong", { text: head }));
+    bar.className = "draftbar s-" + tone;
     if (unsaved) subs.push("You have edits that are not saved yet.");
     subs.forEach(function (t) { if (t) left.appendChild(h("span", { class: "db-sub", text: t })); });
     left.appendChild(h("button", { type: "button", class: "link db-check", text: "Check again", onclick: function () { refreshDraft(); } }));

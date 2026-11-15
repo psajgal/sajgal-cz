@@ -189,3 +189,12 @@ body.dnd{cursor:grabbing;user-select:none}
 .rlinks{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem}
 .reelrow.dropping{outline:2px dashed var(--ink);outline-offset:-2px}.reelrow:focus{outline:none}
 .db-check{font-size:.8rem;margin-left:.2rem}
+
+/* colour-coded status bar */
+.draftbar{border-width:1px 1px 1px 6px;transition:background .3s,border-color .3s}
+.draftbar.s-ok{background:#eef7ee;border-color:#2e7d32}
+.draftbar.s-warn{background:#fff5e0;border-color:#d98a00}
+.draftbar.s-busy{background:#e8f1fb;border-color:#1565c0}
+.draftbar.s-err{background:#fdeaea;border-color:#c62828}
+.draftbar .db-sub{color:inherit;opacity:.75}
+@media (prefers-color-scheme:dark){.draftbar.s-ok{background:#12301a}.draftbar.s-warn{background:#3a2c0a}.draftbar.s-busy{background:#0f2a47}.draftbar.s-err{background:#3d1414}}

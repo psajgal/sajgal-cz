@@ -12,6 +12,7 @@ const PREVIEW = process.argv.includes("--preview");
 // Cloudflare Pages builds every branch; only "main" is the public site. Other branches (the admin's draft) are previews: kept out of Google.
 const BRANCH = process.env.CF_PAGES_BRANCH || "main";
 const DRAFT_BUILD = BRANCH !== "main";
+const REPO = (JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).repository || "").replace(/^https?:\/\/github\.com\//, "");
 const OUT = path.join(ROOT, PREVIEW ? "dist-preview" : "dist");
 const THUMB_EDGE = 1000;
 const warnings = [];
@@ -187,7 +188,7 @@ ${preloads.join("\n")}${preloads.length ? "\n" : ""}<link rel="stylesheet" href=
 ${jsonld ? `<script type="application/ld+json">${ld(jsonld)}</script>\n` : ""}</head>
 <body${bodyClass ? ` class="${bodyClass}"` : ""}>
 ${body}
-${scripts.map((s) => `<script src="${A(s)}" defer></script>`).join("\n")}
+${scripts.concat(DRAFT_BUILD ? ["draft.js"] : []).map((s) => `<script src="${A(s)}" defer></script>`).join("\n")}
 </body>
 </html>
 `;
@@ -564,6 +565,7 @@ for (const p of pages) {
   fs.writeFileSync(f, p.html);
 }
 ["style.css", "site.js", "home.js", "video.js", "favicon.svg", "fonts", "images", "videos"].forEach(copy);
+if (DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "draft.js"), fs.readFileSync(path.join(ROOT, "draft.js"), "utf8").replace("__REPO__", REPO).replace("__BRANCH__", BRANCH));
 if (!PREVIEW) {
   ["admin.html", "admin.css", "admin.js"].forEach(copy);
   if (!DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemapXml());
