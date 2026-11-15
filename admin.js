@@ -1036,6 +1036,11 @@
         /* nothing unpublished, but the live site moved on (for example a code update): bring the draft up to date */
         return api("/git/refs/heads/" + WB, { method: "PATCH", body: JSON.stringify({ sha: D.main, force: true }) }).then(function () { D.head = D.main; D.behind = 0; D.loaded = true; pv.state = ""; renderDraft(); });
       }
+      if (D.ahead && D.behind && !D.merging) {
+        /* unpublished edits, and the live site got a code update: bring the update into the draft so the preview uses the same code */
+        D.merging = true;
+        return api("/merges", { method: "POST", body: JSON.stringify({ base: WB, head: cfg.branch, commit_message: "Bring site updates into the draft" }) }).then(function () { D.merging = false; return refreshDraft(); }, function () { D.merging = false; D.loaded = true; pv.state = ""; renderDraft(); watchPreview(); });
+      }
       D.loaded = true; pv.state = ""; renderDraft(); watchPreview();
     }).catch(function (e) { D.loaded = true; D.error = e.message; renderDraft(); });
   }
