@@ -443,6 +443,82 @@
     });
   }
 
+  /* ---------- Remove all, and saved galleries (presets) for the photo pages ---------- */
+  var presets = [], presetsSha = null;
+  function loadPresets() {
+    return api("/contents/data/presets.json?ref=" + encodeURIComponent(WB)).then(function (r) {
+      if (r.status === 404) { presets = []; presetsSha = null; return; }
+      if (!r.ok) throw new Error("Could not load the saved galleries (" + r.status + ").");
+      return r.json().then(function (j) { presetsSha = j.sha; try { var d = JSON.parse(textFromB64(j.content)); presets = Array.isArray(d) ? d : []; } catch (e) { presets = []; } });
+    });
+  }
+  function writePresets(msg) {
+    var text = JSON.stringify(presets, null, 2) + "\n";
+    return put("data/presets.json", b64FromText(text), msg, presetsSha).then(function (j) { presetsSha = j.content.sha; refreshDraft(); }, function (e) {
+      if (!/does not match|sha/i.test(String(e.message))) throw e;
+      return loadPresets().then(function () { throw new Error("The saved galleries changed in another window. Try again."); });
+    });
+  }
+  function removeAllClick(btn) {
+    var list = curItems();
+    if (!list.length) { setStatus("There are no photos to remove."); return; }
+    if (!btn._armed) {
+      btn._armed = true; btn.textContent = "Click again to remove all " + list.length + " photos";
+      btn._t = setTimeout(function () { btn._armed = false; btn.textContent = "Remove all"; }, 4500); return;
+    }
+    clearTimeout(btn._t); btn._armed = false; btn.textContent = "Remove all";
+    list.length = 0; lay = null; markDirty(); renderGrid();
+    setStatus("All photos removed. Save to draft to keep that." + (tab === "fashion" ? " Saved galleries can bring a gallery back." : ""));
+  }
+  function currentPreset(name) {
+    var photos = state.fashion.filter(function (p) { return !p.blob; }).map(outPhoto), cfgNow = layoutFile.fashion || null;
+    var o = { id: "g" + Date.now().toString(36), name: name, saved: new Date().toISOString(), photos: photos };
+    if (cfgNow && Object.keys(cfgNow).length) o.layout = JSON.parse(JSON.stringify(cfgNow));
+    return o;
+  }
+  function usePreset(pr) {
+    var list = state.fashion;
+    list.length = 0; pr.photos.forEach(function (p) { list.push(photoItem(p)); });
+    if (pr.layout && Object.keys(pr.layout).length) layoutFile.fashion = JSON.parse(JSON.stringify(pr.layout)); else delete layoutFile.fashion;
+    layoutDirty.fashion = true; lay = null; markDirty(); if (tab === "fashion") renderGrid();
+    setStatus("Gallery “" + pr.name + "” is in Selected fashion. Save to draft to keep it.");
+  }
+  function openPresets() {
+    var body = h("div", { class: "pk-body pk-pre" }), nameIn = h("input", { type: "text", placeholder: "Name, for example Autumn 2026 picks", maxlength: "60", "aria-label": "Name of the gallery" }), msg = h("span", { class: "msg" });
+    var listEl = h("div", { class: "pre-list" }), close;
+    function paint() {
+      listEl.innerHTML = "";
+      if (!presets.length) listEl.appendChild(h("p", { class: "hint", text: "No saved galleries yet." }));
+      presets.slice().reverse().forEach(function (pr) {
+        var thumbs = h("div", { class: "pre-th" });
+        pr.photos.slice(0, 6).forEach(function (p) { var im = h("img", { alt: "", loading: "lazy" }); var u = p.thumb || p.image; im.src = /^(data|blob):/.test(u) ? u : "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + u; thumbs.appendChild(im); });
+        var use = h("button", { type: "button", class: "btn", text: "Use this gallery" }), del = h("button", { type: "button", class: "link", text: "Delete" }), ua = false, da = false;
+        use.onclick = function () {
+          if (state.fashion.length && !ua) { ua = true; use.textContent = "Click again: replaces the current photos"; setTimeout(function () { ua = false; use.textContent = "Use this gallery"; }, 4500); return; }
+          usePreset(pr); close();
+        };
+        del.onclick = function () {
+          if (!da) { da = true; del.textContent = "Click again to delete"; setTimeout(function () { da = false; del.textContent = "Delete"; }, 4500); return; }
+          presets = presets.filter(function (x) { return x !== pr; }); msg.textContent = "Deleting…";
+          writePresets("Delete saved gallery").then(function () { msg.textContent = ""; paint(); }).catch(function (e) { msg.className = "msg err"; msg.textContent = e.message; });
+        };
+        var date = pr.saved ? new Date(pr.saved).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "";
+        listEl.appendChild(h("div", { class: "pre-row" }, [thumbs, h("div", { class: "pre-info" }, [h("strong", { text: pr.name }), h("span", { class: "hint", text: pr.photos.length + " photos" + (date ? " · saved " + date : "") })]), use, del]));
+      });
+    }
+    var save = h("button", { type: "button", class: "btn primary", text: "Save current gallery", onclick: function () {
+      var nm = nameIn.value.trim(), n = state.fashion.filter(function (p) { return !p.blob; }).length;
+      if (!nm) { msg.className = "msg err"; msg.textContent = "Give it a name first."; nameIn.focus(); return; }
+      if (!n) { msg.className = "msg err"; msg.textContent = "There are no saved photos in Selected fashion to keep."; return; }
+      var pr = currentPreset(nm); presets.push(pr); msg.className = "msg"; msg.textContent = "Saving…"; save.disabled = true;
+      writePresets("Save gallery: " + nm).then(function () { msg.textContent = "Saved."; nameIn.value = ""; save.disabled = false; paint(); }).catch(function (e) { presets.pop(); save.disabled = false; msg.className = "msg err"; msg.textContent = e.message; });
+    } });
+    body.appendChild(h("div", { class: "pre-save" }, [h("strong", { text: "Keep the current Selected fashion gallery" }), h("div", { class: "pre-form" }, [nameIn, save]),
+      h("p", { class: "hint", text: "Saves the photos and their layout. Photos that are not saved to the draft yet are left out." })]));
+    body.appendChild(h("strong", { text: "Saved galleries" })); body.appendChild(listEl); paint();
+    close = modal("Saved galleries", body, function (c) { return [msg, h("button", { type: "button", class: "btn", text: "Close", onclick: c })]; });
+  }
+
   /* ---------- UI helpers ---------- */
   function setStatus(t, err) { var s = $("#status"); s.textContent = t; s.className = "msg" + (err ? " err" : ""); }
   function refreshSave() { $("#save").disabled = !dirty[tab]; }
@@ -1104,7 +1180,7 @@
     window.addEventListener("resize", fit);
     document.body.appendChild(ov); fit();
   }
-  var FRIENDLY = { layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
+  var FRIENDLY = { presets: "Saved galleries", layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
   // The page of the site that matches what is being edited, so the draft opens right there.
   function draftPath() {
     if (editing && ENT[tab]) return editing.origSlug ? ENT[tab].base + "/" + editing.origSlug : ENT[tab].base;
@@ -1617,7 +1693,8 @@
     try { localStorage.setItem("sajgal-admin-pos", JSON.stringify({ tab: tab, view: view, slug: editing ? editing.slug : "" })); } catch (x) {}
     var m = meta(tab), k = m.kind, grid = k === "photos" || k === "videos" || (k === "entries" && !!editing);
     $("#addbtn").hidden = !grid; $("#drop").hidden = !grid;
-    $("#fromshows").hidden = $("#randombtn").hidden = !(tab === "fashion" && !editing);
+    $("#fromshows").hidden = $("#randombtn").hidden = $("#presetbtn").hidden = !(tab === "fashion" && !editing);
+    $("#removeall").hidden = !(k === "photos" && !editing);
     $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels";
     $("#exporthint").hidden = k !== "videos"; $("#p-seo").hidden = k !== "seo";
     applyHints();
@@ -1639,6 +1716,7 @@
       } }));
     });
   }
+  $("#presetbtn").onclick = openPresets; $("#removeall").onclick = function () { removeAllClick(this); };
   $("#fromshows").onclick = openFromShows; $("#randombtn").onclick = openRandom;
   $("#seolink").onclick = function (e) {
     e.preventDefault(); if (tab === "seo" && !editing) return;
@@ -1647,7 +1725,7 @@
   function start() {
     $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false;
     setStatus("Loading…");
-    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile()])); }).then(function () {
+    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile(), loadPresets()])); }).then(function () {
       setStatus("");
       try {
         var pos = JSON.parse(localStorage.getItem("sajgal-admin-pos") || "null");
