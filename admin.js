@@ -1009,6 +1009,11 @@
     document.body.appendChild(ov); fit();
   }
   var FRIENDLY = { layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
+  // The page of the site that matches what is being edited, so the draft opens right there.
+  function draftPath() {
+    if (editing && ENT[tab]) return editing.origSlug ? ENT[tab].base + "/" + editing.origSlug : ENT[tab].base;
+    return { fashion: "/fashion-shows", shows: "/fashion", editorial: "/editorial", personal: "/personal", brands: "/commercial", videos: "/video", landing: "/", seo: "/" }[tab] || "/";
+  }
   function previewBase() { return cfg.previewBase || "https://" + WB + "." + cfg.repo.split("/")[1] + ".pages.dev"; }
   function ghJson(path, opts) {
     return api(path, opts).then(function (r) {
@@ -1125,7 +1130,9 @@
     var kind = meta(tab).kind, pb = $("#prevbtn");
     pb.hidden = !(kind === "photos" || (kind === "entries" && editing)); pb.onclick = openPreview;
     if (D.ahead && !publishing) {
-      right.appendChild(h("a", { class: "btn", href: previewBase() + "/", target: "_blank", text: "Open draft site ↗" }));
+      var dl = h("a", { class: "btn", href: previewBase() + draftPath(), target: "_blank", text: "Open draft site ↗" });
+      dl.onclick = function () { dl.href = previewBase() + draftPath(); };
+      right.appendChild(dl);
       if (confirmPub) {
         right.appendChild(h("span", { class: "db-ask", text: "Make these changes public on the live site?" }));
         right.appendChild(h("button", { type: "button", class: "btn primary", text: "Yes, publish", onclick: publish }));
