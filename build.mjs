@@ -331,12 +331,12 @@ function render() {
     if (!live) warn(`${c.route}: no real photos yet (empty or only grey placeholders), so the page is hidden from search engines until you add some.`);
     let more = "";
     if (c.key === "fashion-shows" && published.length) {
-      more = `\n<p class="more"><a class="disp" href="${L("/fashion")}">All shows <span aria-hidden="true">→</span></a><span class="count">${published.length} ${published.length === 1 ? "show" : "shows"}, one page each</span></p>`;
+      more = `<a class="toplink" href="${L("/fashion")}">All shows <span aria-hidden="true">→</span></a>\n`;
     }
     const body = `${back("/", "Back to home")}
-<main class="gut">
+${more}<main class="gut">
 <h1 class="sr">${esc(c.h1)}</h1>
-${gallery(items, c.ctx, "", LAYOUTS[c.data])}${more}
+${gallery(items, c.ctx, "", LAYOUTS[c.data])}
 </main>`;
     const first = items.find((p) => isRaster(p.image));
     emit(c.route, shell({

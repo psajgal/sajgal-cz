@@ -41,6 +41,8 @@ a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offs
 /* Back arrow on every inner page: plain, in the same spot and weight as the name on the home page.
    White with a difference blend, so it reads black on white and flips over photos as you scroll. */
 .back{position:fixed;top:var(--pad);left:var(--pad);z-index:12;display:flex;align-items:center;height:1.44rem;color:#fff;mix-blend-mode:difference;text-decoration:none;transition:opacity .15s}
+.toplink{position:fixed;top:var(--pad);right:var(--pad);z-index:12;display:flex;align-items:center;gap:.4em;height:1.44rem;color:#fff;mix-blend-mode:difference;text-decoration:none;font-size:1rem;letter-spacing:.02em;transition:opacity .15s}
+.toplink:hover,.toplink:focus-visible{opacity:.65}
 .back svg{display:block;width:26px;height:26px}
 .back:hover,.back:focus-visible{opacity:.65}
 
