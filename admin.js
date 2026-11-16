@@ -107,7 +107,7 @@
     return {
       key: ++uid, slug: s.slug || "", origSlug: s.slug || "", title: s.title || "", summary: s.summary || "", event: s.event || "", designer: s.designer || "",
       date: s.date || "", location: s.location || "", description: s.description || "", seoTitle: s.seoTitle || "",
-      seoDescription: s.seoDescription || "", layout: s.layout || null, cover: s.cover || "", photos: (s.photos || []).filter(function (p) { return p.image; }).map(photoItem)
+      seoDescription: s.seoDescription || "", hidden: s.hidden === true, layout: s.layout || null, cover: s.cover || "", photos: (s.photos || []).filter(function (p) { return p.image; }).map(photoItem)
     };
   }
   function parse(id, data) {
@@ -151,6 +151,7 @@
         base.description = x.description.trim(); base.seoTitle = x.seoTitle.trim(); base.seoDescription = x.seoDescription.trim();
         base.cover = x.cover; base.photos = x.photos.map(outPhoto);
         if (x.layout && Object.keys(x.layout).length) base.layout = x.layout;
+        if (x.hidden) base.hidden = true;
         return base;
       });
     }
@@ -1417,6 +1418,7 @@
 
   /* ---------- Shows ---------- */
   function showStatus(s) {
+    if (s.hidden) return "Hidden from the live site";
     return s.photos.length ? "Live · " + s.photos.length + " photo" + (s.photos.length > 1 ? "s" : "") : "Draft · add photos to publish";
   }
   function uniqueSlug(base, except) {
@@ -1446,7 +1448,8 @@
       if (s.photos[0]) thumb.appendChild(mediaEl(s.photos[0], false));
       var li = h("li", { class: "showrow", "data-key": s.key }, [
         h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }), thumb,
-        h("div", { class: "tx" }, [h("strong", { text: s.title || "Untitled" }), h("span", { class: "sub", text: E.base + "/" + s.slug }), h("span", { class: "st" + (s.photos.length ? " live" : ""), text: showStatus(s) })]),
+        h("div", { class: "tx" }, [h("strong", { text: s.title || "Untitled" }), h("span", { class: "sub", text: E.base + "/" + s.slug }), h("span", { class: "st" + (s.photos.length && !s.hidden ? " live" : ""), text: showStatus(s) })]),
+        h("button", { type: "button", class: "btn", text: s.hidden ? "Show on site" : "Hide", title: s.hidden ? "Put this back on the live site" : "Take this off the live site but keep it here", onclick: function () { s.hidden = !s.hidden; markDirty(); layout(); } }),
         h("button", { type: "button", class: "btn", text: "Edit", onclick: function () { openShow(s); } })
       ]);
       ul.appendChild(li);
@@ -1508,6 +1511,15 @@
       textField("Description", s.description, function (v) { s.description = v; markDirty(); upd.forEach(function (f) { f(); }); }, { area: true, rows: 5, wide: true, note: E.descNote })
     ]);
     lockState();
+    var vis = h("div", { class: "vis" }), visBtn = h("button", { type: "button", class: "btn" }), visTxt = h("span", { class: "hint" });
+    function paintVis() {
+      vis.className = "vis" + (s.hidden ? " off" : "");
+      visBtn.textContent = s.hidden ? "Show on the live site" : "Hide from the live site";
+      visTxt.textContent = s.hidden ? "Hidden: visitors and Google do not see this " + E.noun + ", but it stays here in the admin." : "Visible on the live site once it has photos.";
+    }
+    visBtn.onclick = function () { s.hidden = !s.hidden; markDirty(); paintVis(); };
+    vis.appendChild(visBtn); vis.appendChild(visTxt); paintVis();
+    box.appendChild(vis);
     box.appendChild(fields);
 
     var st = textField("Title in Google (optional)", s.seoTitle, function (v) { s.seoTitle = v; markDirty(); upd.forEach(function (f) { f(); }); }, { wide: true });

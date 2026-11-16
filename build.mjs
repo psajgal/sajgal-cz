@@ -98,11 +98,11 @@ const CATS = [
 const photos = (arr) => (Array.isArray(arr) ? arr : []).filter((p) => p && p.image);
 const shows = (Array.isArray(readJSON("data/shows.json", [])) ? readJSON("data/shows.json", []) : [])
   .filter((s) => s && s.slug && s.title)
-  .map((s) => ({ ...s, photos: photos(s.photos) }));
+  .map((s) => ({ ...s, photos: s.hidden === true ? [] : photos(s.photos) })); // hidden: kept in the admin, left out of the site
 const published = shows.filter((s) => s.photos.length > 0);
 const brands = (Array.isArray(readJSON("data/brands.json", [])) ? readJSON("data/brands.json", []) : [])
   .filter((b) => b && b.slug && b.title)
-  .map((b) => ({ ...b, photos: photos(b.photos) }));
+  .map((b) => ({ ...b, photos: b.hidden === true ? [] : photos(b.photos) }));
 const liveBrands = brands.filter((b) => b.photos.length > 0);
 // Videos on the /video page: an Instagram link, a title and a thumbnail. Instagram only loads when a visitor clicks.
 const igId = (u) => { const m = /instagram\.com\/(?:[^/?#]+\/)?(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/.exec(String(u || "")); return m ? m[2] : ""; };
@@ -404,6 +404,7 @@ ${cards}
   };
   function entryPages(cfg, list) {
     list.forEach((s) => {
+      if (s.hidden === true) return; // hidden in the admin: no page at all
       const route = cfg.base + "/" + s.slug;
       CUR = route;
       const live = s.photos.length > 0;
@@ -592,7 +593,7 @@ if (!PREVIEW) {
   if (fs.existsSync(path.join(ROOT, "redirects.txt"))) fs.copyFileSync(path.join(ROOT, "redirects.txt"), path.join(OUT, "_redirects"));
 }
 
-const drafts = shows.concat(brands).filter((s) => !s.photos.length).map((s) => s.slug);
+const drafts = shows.concat(brands).filter((s) => !s.photos.length && s.hidden !== true).map((s) => s.slug);
 if (drafts.length) warn(`${drafts.length} shows have no photos yet and stay hidden (not listed, noindex, not in the sitemap): ${drafts.join(", ")}.`);
 console.log(`Built ${pages.length} pages into ${path.basename(OUT)}/ (${published.length} shows live, ${shows.length - published.length} drafts).`);
 if (warnings.length) { console.log("\nSEO notes:"); warnings.forEach((w) => console.log("  - " + w)); }

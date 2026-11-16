@@ -274,3 +274,5 @@ body.dnd{cursor:grabbing;user-select:none}
 .pre-th{display:flex;gap:3px}.pre-th img{width:44px;height:55px;object-fit:cover;display:block;background:var(--line,#eee)}
 .pre-info{display:grid;flex:1;min-width:10rem}
 .pk-foot .msg{margin-right:auto}
+.vis{display:flex;gap:.8rem 1rem;align-items:center;flex-wrap:wrap;margin:0 0 1.2rem;padding:.7rem .9rem;border:1px solid var(--line,#ddd)}
+.vis.off{border-color:#b86e00;background:rgba(184,110,0,.12)}.vis.off .hint{color:inherit}
