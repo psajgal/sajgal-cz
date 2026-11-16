@@ -7,8 +7,8 @@
     { id: "personal", label: "Personal work", kind: "photos", cap: "Caption" },
     { id: "brands", label: "Commercial", kind: "entries" },
     { id: "videos", label: "Video page", kind: "reels" },
-    { id: "landing", label: "Home background", kind: "videos", max: 12 },
-    { id: "menu", label: "Home menu", kind: "menu" },
+    { id: "landing", label: "Home", kind: "videos", max: 12 },
+    { id: "menu", label: "Home menu", kind: "menu", hide: true },
     { id: "seo", label: "SEO", kind: "seo" }
   ];
   var PAGES = [
@@ -251,7 +251,8 @@
     }).then(function (j) {
       shas[id] = j.content.sha; dirty[id] = false;
       var lp = layoutDirty[id] ? put("data/layout.json", b64FromText(JSON.stringify(layoutFile, null, 2) + "\n"), "Update photo layout", layoutSha).then(function (r) { layoutSha = r.content.sha; layoutDirty[id] = false; }) : Promise.resolve();
-      return lp.then(function () { return addRedirects(lines); }).then(function () {
+      var mp = id === "landing" && dirty.menu ? put("data/menu.json", b64FromText(JSON.stringify(serialize("menu"), null, 2) + "\n"), "Update home menu", shas.menu).then(function (r) { shas.menu = r.content.sha; dirty.menu = false; }) : Promise.resolve();
+      return lp.then(function () { return mp; }).then(function () { return addRedirects(lines); }).then(function () {
         if (meta(id).kind === "entries") { state[id].forEach(function (s) { s.origSlug = s.slug; }); deletedSlugs[id] = []; }
       });
     }).then(function () {
@@ -1220,7 +1221,7 @@
     window.addEventListener("resize", fit);
     document.body.appendChild(ov); fit();
   }
-  var FRIENDLY = { menu: "Home menu", presets: "Saved galleries", layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
+  var FRIENDLY = { menu: "Home menu", presets: "Saved galleries", layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home", seo: "SEO and contact" };
   // The page of the site that matches what is being edited, so the draft opens right there.
   function draftPath() {
     if (editing && ENT[tab]) return editing.origSlug ? ENT[tab].base + "/" + editing.origSlug : ENT[tab].base;
@@ -1572,20 +1573,22 @@
   }
   function renderMenu() {
     var box = $("#p-menu"), id = "menu"; box.innerHTML = "";
+    box.appendChild(h("h2", { class: "sec", text: "Menu" }));
+    box.appendChild(h("p", { class: "hint", text: "The words on the home page, from top to bottom. Drag to reorder. Hide takes a section off the home page only: its page stays online and reachable by its address." }));
     var ul = h("ul", { class: "showrows menurows" });
     state[id].forEach(function (m) {
       var off = m.hidden;
       ul.appendChild(h("li", { class: "showrow" + (off ? " off" : ""), "data-key": m.key }, [
         h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }),
         h("div", { class: "tx" }, [h("strong", { text: m.label }), h("span", { class: "sub", text: m.url }), h("span", { class: "st" + (off ? "" : " live"), text: off ? "Hidden on the home page" : "Shown on the home page" + (m.key === "video" ? " (when the Video page has videos)" : "") })]),
-        h("button", { type: "button", class: "btn", text: off ? "Show" : "Hide", onclick: function () { m.hidden = !m.hidden; markDirty(); renderMenu(); } })
+        h("button", { type: "button", class: "btn", text: off ? "Show" : "Hide", onclick: function () { m.hidden = !m.hidden; dirty.menu = true; markDirty(); renderMenu(); } })
       ]));
     });
     box.appendChild(ul);
     if (sortList) { sortList.destroy(); sortList = null; }
     if (window.Sortable) sortList = Sortable.create(ul, { animation: 150, handle: ".grab", ghostClass: "sortable-ghost", onEnd: function () {
       var order = Array.prototype.map.call(ul.children, function (li) { return li.dataset.key; });
-      state[id] = order.map(function (k) { return state[id].filter(function (m) { return m.key === k; })[0]; }); markDirty(); renderMenu();
+      state[id] = order.map(function (k) { return state[id].filter(function (m) { return m.key === k; })[0]; }); dirty.menu = true; markDirty(); renderMenu();
     } });
   }
   function renderReels() {
@@ -1751,9 +1754,8 @@
     $("#file").accept = k === "videos" ? "video/mp4,video/webm" : "image/jpeg,image/png,image/webp";
     var hint = "";
     if (view === "layout" && (k === "photos" || (k === "entries" && editing))) hint = "Place photos side by side in rows, like a printed layout.";
-    else if (k === "videos") hint = "Drag to reorder. Desktop has three columns, each plays its own clips in turn (clip 1, 4, 7 in the left column; 2, 5 in the middle; 3, 6 on the right). Phones play them all in one column.";
+    else if (k === "videos") { var vh = $("#vidhint"); vh.hidden = false; vh.textContent = "Drag to reorder. Desktop has three columns, each plays its own clips in turn (clip 1, 4, 7 in the left column; 2, 5 in the middle; 3, 6 on the right). Phones play them all in one column."; }
     else if (k === "reels") hint = "Drag to reorder. The first video appears first on the Video page.";
-    else if (k === "menu") hint = "The words on the home page, from top to bottom. Drag to reorder. Hide takes a section off the home page only: its page stays online and reachable by its address.";
     else if (k === "photos") hint = "Captions and alt text. To reorder photos, use the Layout view. Alt text describes the photo for Google and screen readers; blank is filled in automatically.";
     else if (k === "entries" && editing) hint = "Captions and alt text. To reorder photos, use the Layout view; the first photo is the cover.";
     $("#hint").textContent = hint;
@@ -1765,12 +1767,12 @@
     $("#addbtn").hidden = !grid; $("#drop").hidden = !grid;
     $("#fromshows").hidden = $("#randombtn").hidden = $("#presetbtn").hidden = !(tab === "fashion" && !editing);
     $("#removeall").hidden = !(k === "photos" && !editing);
-    $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels"; $("#p-menu").hidden = k !== "menu";
+    $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels"; $("#p-menu").hidden = tab !== "landing"; $("#vidhead").hidden = $("#vidhint").hidden = tab !== "landing";
     $("#exporthint").hidden = k !== "videos"; $("#p-seo").hidden = k !== "seo";
     applyHints();
     if (k === "entries") renderShowList();
     if (k === "reels") renderReels();
-    if (k === "menu") renderMenu();
+    if (tab === "landing") renderMenu();
     if (k === "seo") renderSeo();
     if (grid) renderGrid();
     renderViewToggle(); renderDraft();
@@ -1780,7 +1782,7 @@
     var t = $("#tabs"); t.innerHTML = "";
     var sl = $("#seolink"); sl.hidden = false; sl.setAttribute("aria-current", tab === "seo" ? "page" : "false");
     TABS.forEach(function (c) {
-      if (c.id === "seo") return;
+      if (c.id === "seo" || c.hide) return;
       t.appendChild(h("button", { type: "button", role: "tab", class: c.id === "videos" ? "sep" : false, "aria-selected": String(c.id === tab), text: c.label, onclick: function () {
         if (c.id === tab && !editing) return;
         tab = c.id; editing = null; view = "text"; lay = null; setStatus(""); tabs(); layout();
@@ -1801,7 +1803,7 @@
       try {
         var pos = JSON.parse(localStorage.getItem("sajgal-admin-pos") || "null");
         if (pos && pos.tab && meta(pos.tab)) {
-          tab = pos.tab;
+          tab = pos.tab === "menu" ? "landing" : pos.tab;
           if (pos.slug && ENT[tab]) editing = (state[tab] || []).filter(function (x) { return x.slug === pos.slug; })[0] || null;
           if ((pos.view === "layout") && (meta(tab).kind === "photos" || editing)) view = "layout";
         }
