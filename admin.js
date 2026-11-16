@@ -8,6 +8,7 @@
     { id: "brands", label: "Commercial", kind: "entries" },
     { id: "videos", label: "Video page", kind: "reels" },
     { id: "landing", label: "Home background", kind: "videos", max: 12 },
+    { id: "menu", label: "Home menu", kind: "menu" },
     { id: "seo", label: "SEO", kind: "seo" }
   ];
   var PAGES = [
@@ -110,10 +111,18 @@
       seoDescription: s.seoDescription || "", hidden: s.hidden === true, layout: s.layout || null, cover: s.cover || "", photos: (s.photos || []).filter(function (p) { return p.image; }).map(photoItem)
     };
   }
+  var MENU = [["fashion-shows", "Fashion shows", "/fashion-shows"], ["editorial", "Editorial", "/editorial"], ["commercial", "Commercial", "/commercial"], ["video", "Video", "/video"], ["personal", "Personal work", "/personal"]];
+  function parseMenu(list) {
+    var out = [], seen = {};
+    list.forEach(function (m) { var d = m && MENU.filter(function (x) { return x[0] === m.id; })[0]; if (d && !seen[d[0]]) { seen[d[0]] = 1; out.push({ key: d[0], label: d[1], url: d[2], hidden: m.hidden === true }); } });
+    MENU.forEach(function (d) { if (!seen[d[0]]) out.push({ key: d[0], label: d[1], url: d[2], hidden: false }); });
+    return out;
+  }
   function parse(id, data) {
     var k = meta(id).kind;
     if (k === "seo") return { site: Object.assign({}, data.site || {}), pages: Object.assign({}, data.pages || {}) };
     var list = Array.isArray(data) ? data : [];
+    if (k === "menu") return parseMenu(list);
     if (k === "entries") return list.filter(function (s) { return s && s.slug; }).map(showModel);
     if (k === "videos") return list.filter(function (p) { return p.video; }).map(videoItem);
     if (k === "reels") return list.filter(function (v) { return v && v.ig; }).map(function (v) { return { id: ++uid, ig: v.ig, title: v.title || "", date: v.date || "", thumb: v.thumb || "" }; });
@@ -156,6 +165,7 @@
       });
     }
     if (k === "reels") return s.map(function (v) { return { ig: v.ig, title: v.title.trim(), date: v.date, thumb: v.thumb }; });
+    if (k === "menu") return s.map(function (m) { var o = { id: m.key }; if (m.hidden) o.hidden = true; return o; });
     if (k === "videos") return s.map(function (p) { var o = { video: p.src }; if (p.mobile) o.mobile = p.mobile; if (p.poster) o.poster = p.poster; return o; });
     return s.map(outPhoto);
   }
@@ -1210,11 +1220,11 @@
     window.addEventListener("resize", fit);
     document.body.appendChild(ov); fit();
   }
-  var FRIENDLY = { presets: "Saved galleries", layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
+  var FRIENDLY = { menu: "Home menu", presets: "Saved galleries", layout: "Photo layout", fashion: "Selected fashion", shows: "All shows", editorial: "Editorial", personal: "Personal work", brands: "Commercial", videos: "Video page", landing: "Home background", seo: "SEO and contact" };
   // The page of the site that matches what is being edited, so the draft opens right there.
   function draftPath() {
     if (editing && ENT[tab]) return editing.origSlug ? ENT[tab].base + "/" + editing.origSlug : ENT[tab].base;
-    return { fashion: "/fashion-shows", shows: "/fashion", editorial: "/editorial", personal: "/personal", brands: "/commercial", videos: "/video", landing: "/", seo: "/" }[tab] || "/";
+    return { fashion: "/fashion-shows", shows: "/fashion", editorial: "/editorial", personal: "/personal", brands: "/commercial", videos: "/video", landing: "/", menu: "/", seo: "/" }[tab] || "/";
   }
   function previewBase() { return cfg.previewBase || "https://" + WB + "." + cfg.repo.split("/")[1] + ".pages.dev"; }
   function ghJson(path, opts) {
@@ -1560,6 +1570,24 @@
     var who = /A post shared by ([^<(]+?)\s*\(@/.exec(String(text));
     return { id: m[2], link: "https://www.instagram.com/" + (m[1] === "p" ? "p" : "reel") + "/" + m[2] + "/", name: who ? who[1].trim() : "" };
   }
+  function renderMenu() {
+    var box = $("#p-menu"), id = "menu"; box.innerHTML = "";
+    var ul = h("ul", { class: "showrows menurows" });
+    state[id].forEach(function (m) {
+      var off = m.hidden;
+      ul.appendChild(h("li", { class: "showrow" + (off ? " off" : ""), "data-key": m.key }, [
+        h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }),
+        h("div", { class: "tx" }, [h("strong", { text: m.label }), h("span", { class: "sub", text: m.url }), h("span", { class: "st" + (off ? "" : " live"), text: off ? "Hidden on the home page" : "Shown on the home page" + (m.key === "video" ? " (when the Video page has videos)" : "") })]),
+        h("button", { type: "button", class: "btn", text: off ? "Show" : "Hide", onclick: function () { m.hidden = !m.hidden; markDirty(); renderMenu(); } })
+      ]));
+    });
+    box.appendChild(ul);
+    if (sortList) { sortList.destroy(); sortList = null; }
+    if (window.Sortable) sortList = Sortable.create(ul, { animation: 150, handle: ".grab", ghostClass: "sortable-ghost", onEnd: function () {
+      var order = Array.prototype.map.call(ul.children, function (li) { return li.dataset.key; });
+      state[id] = order.map(function (k) { return state[id].filter(function (m) { return m.key === k; })[0]; }); markDirty(); renderMenu();
+    } });
+  }
   function renderReels() {
     var box = $("#p-reels"), list = state[tab]; box.innerHTML = "";
     var paste = h("textarea", { rows: "2", placeholder: "Paste an Instagram link, or the whole embed code from Instagram", "aria-label": "Instagram link or embed code" });
@@ -1725,6 +1753,7 @@
     if (view === "layout" && (k === "photos" || (k === "entries" && editing))) hint = "Place photos side by side in rows, like a printed layout.";
     else if (k === "videos") hint = "Drag to reorder. Desktop has three columns, each plays its own clips in turn (clip 1, 4, 7 in the left column; 2, 5 in the middle; 3, 6 on the right). Phones play them all in one column.";
     else if (k === "reels") hint = "Drag to reorder. The first video appears first on the Video page.";
+    else if (k === "menu") hint = "The words on the home page, from top to bottom. Drag to reorder. Hide takes a section off the home page only: its page stays online and reachable by its address.";
     else if (k === "photos") hint = "Captions and alt text. To reorder photos, use the Layout view. Alt text describes the photo for Google and screen readers; blank is filled in automatically.";
     else if (k === "entries" && editing) hint = "Captions and alt text. To reorder photos, use the Layout view; the first photo is the cover.";
     $("#hint").textContent = hint;
@@ -1736,11 +1765,12 @@
     $("#addbtn").hidden = !grid; $("#drop").hidden = !grid;
     $("#fromshows").hidden = $("#randombtn").hidden = $("#presetbtn").hidden = !(tab === "fashion" && !editing);
     $("#removeall").hidden = !(k === "photos" && !editing);
-    $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels";
+    $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels"; $("#p-menu").hidden = k !== "menu";
     $("#exporthint").hidden = k !== "videos"; $("#p-seo").hidden = k !== "seo";
     applyHints();
     if (k === "entries") renderShowList();
     if (k === "reels") renderReels();
+    if (k === "menu") renderMenu();
     if (k === "seo") renderSeo();
     if (grid) renderGrid();
     renderViewToggle(); renderDraft();

@@ -298,6 +298,13 @@ function render() {
     const clipsJson = esc(JSON.stringify(landing.map((v) => ({ d: A(v.video), m: A(v.mobile || v.video), p: v.poster ? A(v.poster) : "" }))));
     const vids = [0, 1, 2].map((k) => { const c = landing.filter((_, i) => i % 3 === k)[0] || landing[0]; return c ? `<div class="vcol"${c.poster ? ` style="background-image:url('${esc(A(c.poster))}')"` : ""}></div>` : ""; }).join("");
     if (!landing.length) warn("Home: no background videos in data/landing.json.");
+    // Home menu: order and visibility come from data/menu.json (edited in the admin). Missing sections go last; Video only shows when there are videos.
+    const MENU_ALL = [["fashion-shows", "Fashion shows", "/fashion-shows"], ["editorial", "Editorial", "/editorial"], ["commercial", "Commercial", "/commercial"], ["video", "Video", "/video"], ["personal", "Personal work", "/personal"]];
+    const menuData = Array.isArray(readJSON("data/menu.json", [])) ? readJSON("data/menu.json", []) : [];
+    const menuOrder = [], menuOff = {};
+    menuData.forEach((m) => { if (m && MENU_ALL.some((d) => d[0] === m.id) && !menuOrder.includes(m.id)) { menuOrder.push(m.id); if (m.hidden === true) menuOff[m.id] = true; } });
+    MENU_ALL.forEach((d) => { if (!menuOrder.includes(d[0])) menuOrder.push(d[0]); });
+    const menuItems = menuOrder.filter((k) => !menuOff[k] && (k !== "video" || videos.length)).map((k) => MENU_ALL.find((d) => d[0] === k));
     const body = `<main class="home">
   <div class="bg" id="bg" aria-hidden="true" data-clips="${clipsJson}">${vids}</div>
   <header class="top gut">
@@ -305,11 +312,7 @@ function render() {
     <nav aria-label="Contact"><a href="${L("/contact")}">Contact</a></nav>
   </header>
   <nav class="menu gut" aria-label="Sections">
-    <a class="disp" href="${L("/fashion-shows")}">Fashion shows</a>
-    <a class="disp" href="${L("/editorial")}">Editorial</a>
-    <a class="disp" href="${L("/commercial")}">Commercial</a>${videos.length ? `
-    <a class="disp" href="${L("/video")}">Video</a>` : ""}
-    <a class="disp" href="${L("/personal")}">Personal work</a>
+${menuItems.map((m) => `    <a class="disp" href="${L(m[2])}">${m[1]}</a>`).join("\n")}
   </nav>
 </main>`;
     emit("/", shell({
