@@ -121,19 +121,34 @@ body.noscroll{overflow:hidden}
 .gallery a.crop{position:relative;overflow:hidden}
 
 /* Video page */
-.vgrid{list-style:none;margin:0;padding:calc(var(--pad) + 3.5rem) 0 var(--pad);display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--gap)}
+.vpage{padding-top:calc(var(--pad) + 3.5rem);padding-bottom:var(--pad)}
 .vt{display:block;text-decoration:none;color:inherit}
-.vt .ph{position:relative;display:block;aspect-ratio:9/16;overflow:hidden;background:var(--line)}
-.vt img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s}
-.vt:hover img,.vt:focus-visible img{opacity:.85}
-.vt .play{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(255,255,255,.92)}
-.vt .play::after{content:"";position:absolute;left:23px;top:17px;border-left:17px solid #000;border-top:11px solid transparent;border-bottom:11px solid transparent}
-.vt .t{display:block;padding-top:.5rem;font-size:1rem}
+.vt .ph{position:relative;display:block;overflow:hidden;background:var(--line)}
+.vt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.vt:hover img,.vt:focus-visible img{transform:scale(1.04)}
+.vt .play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:1.5px solid #fff;background:rgba(0,0,0,.28);transition:transform .3s,background .3s}
+.vt .play::after{content:"";position:absolute;left:25px;top:20px;border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent}
+.vt:hover .play,.vt:focus-visible .play{transform:scale(1.12);background:rgba(0,0,0,.45)}
+.vfeat{display:grid;grid-template-columns:2fr 1fr;gap:clamp(1.25rem,3vw,2.75rem);align-items:end;margin-bottom:3.5rem}
+.vfeat .vt.feat .ph{aspect-ratio:16/10}
+.vtag{margin:0 0 .6rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.vinfo h2{margin:0 0 1rem;font-size:clamp(1.4rem,2.4vw,2.1rem);line-height:1.15}
+.vinfo dl{margin:0 0 1.2rem;display:grid;grid-template-columns:auto 1fr;gap:.25rem 1.1rem;font-size:.88rem;border-top:1px solid var(--line);padding-top:.9rem}
+.vinfo dt{color:var(--muted)}.vinfo dd{margin:0}
+.vtext{margin:0 0 1.4rem;font-size:.92rem;max-width:34ch}
+.vbtns{margin:0;display:flex;gap:.6rem;flex-wrap:wrap}
+.vbtns .btn{display:inline-block;font:400 .8rem var(--body);font-stretch:110%;letter-spacing:.04em;padding:.7rem 1.1rem;border:1px solid var(--ink);color:var(--ink);text-decoration:none;transition:background .2s,color .2s}
+.vbtns .btn.fill{background:var(--ink);color:var(--bg)}
+.vbtns .btn:hover,.vbtns .btn:focus-visible{background:var(--ink);color:var(--bg)}.vbtns .btn.fill:hover,.vbtns .btn.fill:focus-visible{background:var(--bg);color:var(--ink)}
+.vrule{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:.6rem;margin-bottom:1.4rem;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.vgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.9rem,2vw,1.75rem)}
+.vcard .vt .ph{aspect-ratio:4/5}
+.vname{padding-top:.7rem}.vname .t{display:block;font-size:1rem}.vname small{display:block;color:var(--muted);font-size:.8rem}
 .vo{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.88);display:grid;place-items:center;padding:1rem;overflow:auto}
 .vo[hidden]{display:none}
 .vbox{width:min(100%,540px);max-height:100%;overflow:auto}
 .vx{position:fixed;top:var(--pad);right:var(--pad);z-index:31;font:inherit;color:#fff;background:none;border:0;cursor:pointer;font-size:1.05rem}
-@media (max-width:600px){.vgrid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:800px){.vfeat{grid-template-columns:1fr;gap:1.1rem;margin-bottom:2.5rem}.vfeat .vt.feat .ph{aspect-ratio:4/5}.vgrid{grid-template-columns:repeat(2,1fr)}.vbtns .btn{flex:1;text-align:center}.vbtns .btn:nth-child(n+3){flex-basis:100%}}
 
 /* even columns (see site.js): the photos are spread over equal-height columns */
 .gallery.mason{columns:auto;display:flex;gap:var(--gap);align-items:flex-start}
