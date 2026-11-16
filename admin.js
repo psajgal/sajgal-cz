@@ -301,10 +301,10 @@
       v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = url;
       v.onloadeddata = function () { v.currentTime = Math.min(1.5, (v.duration || 2) / 2); };
       v.onseeked = function () {
-        var k = Math.min(1, 720 / Math.max(v.videoWidth, v.videoHeight)), c = document.createElement("canvas");
+        var k = Math.min(1, 1920 / Math.max(v.videoWidth, v.videoHeight)), c = document.createElement("canvas");
         c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
         c.getContext("2d").drawImage(v, 0, 0, c.width, c.height);
-        c.toBlob(finish, "image/jpeg", 0.72);
+        c.toBlob(finish, "image/jpeg", 0.9);
       };
       v.onerror = function () { finish(null); };
       setTimeout(function () { finish(null); }, 10000);
@@ -1625,7 +1625,7 @@
           setStatus("Taking a still from the video…");
           posterOf(f).then(function (b) { if (b) { setThumb(b); setStatus("Thumbnail set from the video."); } else setStatus("That video could not be read. Try a screenshot instead.", true); });
         } else if (/^image\//.test(f.type)) {
-          createImageBitmap(f).then(function (bmp) { return scaled(bmp, 720, 0.82); }).then(function (r) { setThumb(r.blob); setStatus(""); })
+          createImageBitmap(f).then(function (bmp) { return scaled(bmp, 1920, 0.9); }).then(function (r) { setThumb(r.blob); setStatus(""); })
             .catch(function () { setStatus("That image could not be read.", true); });
         } else setStatus("Use an image (JPG, PNG, WebP) or a video (MP4, MOV).", true);
       }
@@ -1657,7 +1657,7 @@
     });
     box.appendChild(ul);
     if (!list.length) box.appendChild(h("p", { class: "empty", text: "No videos yet. Paste an Instagram link above." }));
-    else box.appendChild(h("p", { class: "hint", text: "Thumbnail: click it and choose the video file (a still is taken automatically) or a screenshot. You can also drop a file on the row, or click the row and paste a screenshot. Instagram only loads when a visitor clicks a video, so the page stays fast." }));
+    else box.appendChild(h("p", { class: "hint", text: "Thumbnail: click it and choose the video file (a full-resolution still is taken automatically) or a screenshot. You can also drop a file on the row, or click the row and paste a screenshot. Instagram only loads when a visitor clicks a video, so the page stays fast." }));
     if (window.Sortable) {
       Sortable.create(ul, { animation: 150, handle: ".grab", ghostClass: "sortable-ghost", onEnd: function () {
         var order = Array.prototype.map.call(ul.children, function (li) { return +li.dataset.id; });
