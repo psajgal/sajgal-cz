@@ -125,7 +125,7 @@
     if (k === "menu") return parseMenu(list);
     if (k === "entries") return list.filter(function (s) { return s && s.slug; }).map(showModel);
     if (k === "videos") return list.filter(function (p) { return p.video; }).map(videoItem);
-    if (k === "reels") return list.filter(function (v) { return v && v.ig; }).map(function (v) { return { id: ++uid, ig: v.ig, title: v.title || "", date: v.date || "", thumb: v.thumb || "" }; });
+    if (k === "reels") return list.filter(function (v) { return v && v.ig; }).map(function (v) { return { id: ++uid, ig: v.ig, title: v.title || "", date: v.date || "", thumb: v.thumb || "", client: v.client || "", role: v.role || "", text: v.text || "", article: v.article || "", articleLabel: v.articleLabel || "" }; });
     return list.filter(function (p) { return p.image; }).map(photoItem);
   }
   function outPhoto(p) {
@@ -164,7 +164,7 @@
         return base;
       });
     }
-    if (k === "reels") return s.map(function (v) { return { ig: v.ig, title: v.title.trim(), date: v.date, thumb: v.thumb }; });
+    if (k === "reels") return s.map(function (v) { var o = { ig: v.ig, title: v.title.trim(), date: v.date, thumb: v.thumb }; ["client", "role", "text", "article", "articleLabel"].forEach(function (k) { var x = String(v[k] || "").trim(); if (x) o[k] = x; }); return o; });
     if (k === "menu") return s.map(function (m) { var o = { id: m.key }; if (m.hidden) o.hidden = true; return o; });
     if (k === "videos") return s.map(function (p) { var o = { video: p.src }; if (p.mobile) o.mobile = p.mobile; if (p.poster) o.poster = p.poster; return o; });
     return s.map(outPhoto);
@@ -1600,7 +1600,7 @@
       var r = igParse(paste.value);
       if (!r) { msg.className = "msg err"; msg.textContent = "That does not look like an Instagram post or reel link."; return; }
       if (list.some(function (v) { return igParse(v.ig) && igParse(v.ig).id === r.id; })) { msg.className = "msg err"; msg.textContent = "That video is already in the list."; return; }
-      list.unshift({ id: ++uid, ig: r.link, title: r.name, date: "", thumb: "" });
+      list.unshift({ id: ++uid, ig: r.link, title: r.name, date: "", thumb: "", client: "", role: "", text: "", article: "", articleLabel: "" });
       paste.value = ""; msg.textContent = ""; markDirty(); renderReels();
     };
     box.appendChild(h("div", { class: "reeladd" }, [h("label", { class: "fld wide" }, [h("span", { text: "New video" }), paste]), h("div", { class: "reelbtn" }, [add, msg])]));
@@ -1635,6 +1635,11 @@
       paint();
       var title = textField("Title", v.title, function (x) { v.title = x; markDirty(); }, { placeholder: "e.g. ELLE Czech, MBPFW SS27" });
       var date = textField("Date (optional)", v.date, function (x) { v.date = x; markDirty(); }, { type: "date", note: "Helps Google list the video." });
+      var client = textField("Client", v.client, function (x) { v.client = x; markDirty(); }, { placeholder: "e.g. ELLE Czech" });
+      var role = textField("Your role", v.role, function (x) { v.role = x; markDirty(); }, { placeholder: "e.g. Photography & video" });
+      var text = textField("Short text (shown for the first video)", v.text, function (x) { v.text = x; markDirty(); }, { placeholder: "One or two lines about the shoot" });
+      var art = textField("Article link (optional)", v.article, function (x) { v.article = x; markDirty(); }, { placeholder: "https://www.elle.cz/…" });
+      var artl = textField("Article button text", v.articleLabel, function (x) { v.articleLabel = x; markDirty(); }, { placeholder: "Read the article" });
       var link = h("a", { href: v.ig, target: "_blank", rel: "noopener", class: "link", text: v.ig.replace(/^https?:\/\/(www\.)?/, "") });
       var del = h("button", { type: "button", class: "link danger", text: "Remove" });
       var armed = false, t = null;
@@ -1642,7 +1647,7 @@
         if (!armed) { armed = true; del.textContent = "Click again to remove"; t = setTimeout(function () { armed = false; del.textContent = "Remove"; }, 4000); return; }
         clearTimeout(t); var i = list.indexOf(v); if (i > -1) list.splice(i, 1); markDirty(); renderReels();
       };
-      var li = h("li", { class: "reelrow", "data-id": v.id, tabindex: "-1" }, [h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }), thumb, h("div", { class: "rfields" }, [title, date, h("div", { class: "rlinks" }, [link, del])])]);
+      var li = h("li", { class: "reelrow", "data-id": v.id, tabindex: "-1" }, [h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }), thumb, h("div", { class: "rfields" }, [title, date, client, role, text, art, artl, h("div", { class: "rlinks" }, [link, del])])]);
       li.ondragover = function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, "Files") > -1) { e.preventDefault(); li.classList.add("dropping"); } };
       li.ondragleave = function () { li.classList.remove("dropping"); };
       li.ondrop = function (e) { li.classList.remove("dropping"); var f = e.dataTransfer && e.dataTransfer.files[0]; if (f) { e.preventDefault(); row.useFile(f); } };
@@ -1755,7 +1760,7 @@
     var hint = "";
     if (view === "layout" && (k === "photos" || (k === "entries" && editing))) hint = "Place photos side by side in rows, like a printed layout.";
     else if (k === "videos") { var vh = $("#vidhint"); vh.hidden = false; vh.textContent = "Drag to reorder. Desktop has three columns, each plays its own clips in turn (clip 1, 4, 7 in the left column; 2, 5 in the middle; 3, 6 on the right). Phones play them all in one column."; }
-    else if (k === "reels") hint = "Drag to reorder. The first video appears first on the Video page.";
+    else if (k === "reels") hint = "Drag to reorder. The first video is the big featured one on the Video page; the rest form the grid.";
     else if (k === "photos") hint = "Captions and alt text. To reorder photos, use the Layout view. Alt text describes the photo for Google and screen readers; blank is filled in automatically.";
     else if (k === "entries" && editing) hint = "Captions and alt text. To reorder photos, use the Layout view; the first photo is the cover.";
     $("#hint").textContent = hint;

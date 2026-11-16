@@ -22,7 +22,7 @@
     ensureScript();
   }
   function close() { vo.hidden = true; box.innerHTML = ""; document.body.classList.remove("noscroll"); if (last) last.focus(); }
-  Array.prototype.forEach.call(document.querySelectorAll(".vt"), function (el) {
+  Array.prototype.forEach.call(document.querySelectorAll("a.vt"), function (el) {
     el.addEventListener("click", function (e) { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; e.preventDefault(); open(el.getAttribute("data-ig"), el); });
   });
   x.addEventListener("click", close);
