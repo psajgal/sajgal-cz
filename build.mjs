@@ -114,9 +114,9 @@ const layoutAttrs = (cfg) => {
   return (cols ? ` data-cols="${cols}"` : "") + (+cfg.phone === 2 ? ' data-phone="2"' : "") + (cfg.even === false ? ' data-even="0"' : "") + (cfg.even === false && Array.isArray(cfg.offs) && cfg.offs.length ? ` data-offs="${cfg.offs.slice(0, 6).map((v) => Math.max(0, Math.min(1.5, +v || 0))).join(",")}"` : "");
 };
 const videos = (Array.isArray(readJSON("data/videos.json", [])) ? readJSON("data/videos.json", []) : [])
-  .map((v) => ({ ...v, id: igId(v.ig) }))
+  .map((v) => ({ ...v, id: igId(v.ig) || (v.video ? String(v.video).replace(/^.*\//, "").replace(/\.[a-z0-9]+$/i, "") : "") }))
   .filter((v) => v.id)
-  .map((v) => ({ ...v, permalink: `https://www.instagram.com/${/instagram\.com\/(?:[^/?#]+\/)?(?:p)\//.test(v.ig) ? "p" : "reel"}/${v.id}/` }));
+  .map((v) => ({ ...v, permalink: igId(v.ig) ? `https://www.instagram.com/${/instagram\.com\/(?:[^/?#]+\/)?(?:p)\//.test(v.ig) ? "p" : "reel"}/${v.id}/` : "" }));
 const landing = (Array.isArray(readJSON("data/landing.json", [])) ? readJSON("data/landing.json", []) : []).filter((v) => v && v.video);
 
 /* ---------- helpers ---------- */
@@ -500,9 +500,10 @@ ${blocks}
     checkMeta("/video", pg.title, pg.description);
     const yr = (v) => (/^\d{4}/.test(v.date || "") ? v.date.slice(0, 4) : "");
     const okUrl = (u) => (/^https?:\/\//i.test(String(u || "")) ? String(u) : "");
+    const vdata = (v) => (v.video ? `data-video="${esc(A(v.video))}" data-poster="${esc(v.thumb ? A(v.thumb) : "")}"` : `data-ig="${esc(v.permalink)}"`);
     const poster = (v, cls) => {
       const alt = `${v.title || "Video"} – video by ${NAME}`;
-      return `<a class="vt ${cls}" href="${esc(v.permalink)}" target="_blank" rel="noopener" data-ig="${esc(v.permalink)}" aria-label="${esc("Watch: " + (v.title || "video"))}"><span class="ph">${v.thumb ? `<img src="${esc(A(v.thumb))}" alt="${esc(alt)}" ${cls === "feat" ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">` : ""}<span class="play" aria-hidden="true"></span></span></a>`;
+      return `<a class="vt ${cls}" href="${esc(v.video ? A(v.video) : v.permalink)}" target="_blank" rel="noopener" ${vdata(v)} aria-label="${esc("Watch: " + (v.title || "video"))}"><span class="ph">${v.thumb ? `<img src="${esc(A(v.thumb))}" alt="${esc(alt)}" ${cls === "feat" ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">` : ""}<span class="play" aria-hidden="true"></span></span></a>`;
     };
     const feat = videos[0], rest = videos.slice(1);
     const facts = (v) => [["Client", v.client], ["Role", v.role], ["Year", yr(v)]].filter((r) => r[1]).map((r) => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("");
@@ -513,10 +514,10 @@ ${poster(feat, "feat")}
 <h2 class="disp">${esc(feat.title || "Video")}</h2>
 ${facts(feat) ? `<dl>${facts(feat)}</dl>` : ""}
 ${feat.text ? `<p class="vtext">${esc(feat.text)}</p>` : ""}
-<p class="vbtns"><a class="btn fill vt" href="${esc(feat.permalink)}" target="_blank" rel="noopener" data-ig="${esc(feat.permalink)}">Watch</a><a class="btn" href="${esc(feat.permalink)}" target="_blank" rel="noopener">See on Instagram ↗</a>${okUrl(feat.article) ? `<a class="btn" href="${esc(okUrl(feat.article))}" target="_blank" rel="noopener">${esc(feat.articleLabel || "Read the article")} ↗</a>` : ""}</p>
+<p class="vbtns"><a class="btn fill vt" href="${esc(feat.video ? A(feat.video) : feat.permalink)}" target="_blank" rel="noopener" ${vdata(feat)}>Watch</a>${feat.permalink ? `<a class="btn" href="${esc(feat.permalink)}" target="_blank" rel="noopener">See on Instagram ↗</a>` : ""}${okUrl(feat.article) ? `<a class="btn" href="${esc(okUrl(feat.article))}" target="_blank" rel="noopener">${esc(feat.articleLabel || "Read the article")} ↗</a>` : ""}</p>
 </div>
 </section>` : "";
-    const tiles = rest.map((v) => `<li class="vcard">${poster(v, "")}<a class="vname vt" href="${esc(v.permalink)}" target="_blank" rel="noopener" data-ig="${esc(v.permalink)}"><span class="t disp">${esc(v.title || "Watch on Instagram")}</span>${[v.client, yr(v)].filter(Boolean).length ? `<small>${esc([v.client, yr(v)].filter(Boolean).join(" · "))}</small>` : ""}</a></li>`).join("\n");
+    const tiles = rest.map((v) => `<li class="vcard">${poster(v, "")}<a class="vname vt" href="${esc(v.video ? A(v.video) : v.permalink)}" target="_blank" rel="noopener" ${vdata(v)}><span class="t disp">${esc(v.title || "Watch on Instagram")}</span>${[v.client, yr(v)].filter(Boolean).length ? `<small>${esc([v.client, yr(v)].filter(Boolean).join(" · "))}</small>` : ""}</a></li>`).join("\n");
     const body = `${back("/", "Back to home")}
 <main class="gut vpage">
 <h1 class="sr">Fashion video</h1>
@@ -531,7 +532,7 @@ ${tiles}
     emit("/video", shell({
       route: "/video", title: pg.title, description: pg.description, noindex: !live,
       ogImage: videos[0] && videos[0].thumb && isRaster(videos[0].thumb) ? { src: videos[0].thumb } : null,
-      jsonld: { "@context": "https://schema.org", "@graph": [crumbs([["Home", "/"], ["Video", "/video"]]), { "@type": "CollectionPage", "@id": SITE + "/video#page", url: SITE + "/video", name: "Fashion video", description: pg.description, isPartOf: { "@id": SITE + "/#website" }, mainEntity: { "@type": "ItemList", itemListElement: videos.map((v, i) => ({ "@type": "ListItem", position: i + 1, url: v.permalink, name: v.title || v.id })) } }, ...withThumb.map((v) => ({ "@type": "VideoObject", name: v.title || v.id, description: v.text || v.title || v.id, thumbnailUrl: abs(v.thumb), uploadDate: v.date, embedUrl: `${v.permalink}embed/`, contentUrl: v.permalink, author: { "@type": "Person", name: NAME, url: SITE + "/" } }))] },
+      jsonld: { "@context": "https://schema.org", "@graph": [crumbs([["Home", "/"], ["Video", "/video"]]), { "@type": "CollectionPage", "@id": SITE + "/video#page", url: SITE + "/video", name: "Fashion video", description: pg.description, isPartOf: { "@id": SITE + "/#website" }, mainEntity: { "@type": "ItemList", itemListElement: videos.map((v, i) => ({ "@type": "ListItem", position: i + 1, url: v.permalink || SITE + "/video", name: v.title || v.id })) } }, ...withThumb.map((v) => ({ "@type": "VideoObject", name: v.title || v.id, description: v.text || v.title || v.id, thumbnailUrl: abs(v.thumb), uploadDate: v.date, ...(v.video ? { contentUrl: abs(v.video) } : { embedUrl: `${v.permalink}embed/`, contentUrl: v.permalink }), author: { "@type": "Person", name: NAME, url: SITE + "/" } }))] },
       body, scripts: ["video.js"]
     }));
     if (live) sitemap.push({ route: "/video", images: videos.filter((v) => v.thumb && isRaster(v.thumb)).map((v) => ({ loc: v.thumb, title: `${v.title || "Video"} – video by ${NAME}`, caption: "" })) });

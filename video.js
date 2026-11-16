@@ -22,8 +22,21 @@
     ensureScript();
   }
   function close() { vo.hidden = true; box.innerHTML = ""; document.body.classList.remove("noscroll"); if (last) last.focus(); }
+  function play(el) {
+    var host = el.closest(".vfeat, .vcard"), ph = host && host.querySelector(".ph");
+    if (!ph || ph.querySelector("video")) return;
+    var v = document.createElement("video");
+    v.src = el.getAttribute("data-video"); v.controls = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", "");
+    var p = el.getAttribute("data-poster"); if (p) v.poster = p;
+    v.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2";
+    ph.appendChild(v); ph.classList.add("playing");
+    var pl = v.play(); if (pl && pl.catch) pl.catch(function () {});
+  }
   Array.prototype.forEach.call(document.querySelectorAll("a.vt"), function (el) {
-    el.addEventListener("click", function (e) { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; e.preventDefault(); open(el.getAttribute("data-ig"), el); });
+    el.addEventListener("click", function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; e.preventDefault();
+      if (el.getAttribute("data-video")) play(el); else open(el.getAttribute("data-ig"), el);
+    });
   });
   x.addEventListener("click", close);
   vo.addEventListener("click", function (e) { if (e.target === vo) close(); });

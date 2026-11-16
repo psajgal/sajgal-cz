@@ -125,7 +125,7 @@
     if (k === "menu") return parseMenu(list);
     if (k === "entries") return list.filter(function (s) { return s && s.slug; }).map(showModel);
     if (k === "videos") return list.filter(function (p) { return p.video; }).map(videoItem);
-    if (k === "reels") return list.filter(function (v) { return v && v.ig; }).map(function (v) { return { id: ++uid, ig: v.ig, title: v.title || "", date: v.date || "", thumb: v.thumb || "", client: v.client || "", role: v.role || "", text: v.text || "", article: v.article || "", articleLabel: v.articleLabel || "" }; });
+    if (k === "reels") return list.filter(function (v) { return v && v.ig; }).map(function (v) { return { id: ++uid, ig: v.ig || "", title: v.title || "", date: v.date || "", thumb: v.thumb || "", client: v.client || "", role: v.role || "", text: v.text || "", article: v.article || "", articleLabel: v.articleLabel || "", video: v.video || "" }; });
     return list.filter(function (p) { return p.image; }).map(photoItem);
   }
   function outPhoto(p) {
@@ -164,7 +164,7 @@
         return base;
       });
     }
-    if (k === "reels") return s.map(function (v) { var o = { ig: v.ig, title: v.title.trim(), date: v.date, thumb: v.thumb }; ["client", "role", "text", "article", "articleLabel"].forEach(function (k) { var x = String(v[k] || "").trim(); if (x) o[k] = x; }); return o; });
+    if (k === "reels") return s.map(function (v) { var o = { title: v.title.trim(), date: v.date, thumb: v.thumb }; if (v.ig) o.ig = v.ig; if (v.video) o.video = v.video; ["client", "role", "text", "article", "articleLabel"].forEach(function (k) { var x = String(v[k] || "").trim(); if (x) o[k] = x; }); return o; });
     if (k === "menu") return s.map(function (m) { var o = { id: m.key }; if (m.hidden) o.hidden = true; return o; });
     if (k === "videos") return s.map(function (p) { var o = { video: p.src }; if (p.mobile) o.mobile = p.mobile; if (p.poster) o.poster = p.poster; return o; });
     return s.map(outPhoto);
@@ -194,6 +194,7 @@
         if (p.blob) out.push({ path: p.src, blob: p.blob, item: p, key: "blob" });
         if (p.thumbBlob) out.push({ path: p.thumb, blob: p.thumbBlob, item: p, key: "thumbBlob" });
         if (p.posterBlob) out.push({ path: p.poster, blob: p.posterBlob, item: p, key: "posterBlob" });
+        if (p.videoBlob) out.push({ path: p.video, blob: p.videoBlob, item: p, key: "videoBlob" });
         if (p.mobileBlob) out.push({ path: p.mobile, blob: p.mobileBlob, item: p, key: "mobileBlob" });
       });
     });
@@ -201,7 +202,7 @@
     return out;
   }
   function validate(id) {
-    if (meta(id).kind === "reels") { for (var q = 0; q < state[id].length; q++) if (!igParse(state[id][q].ig)) return "One video has no valid Instagram link."; return ""; }
+    if (meta(id).kind === "reels") { for (var q = 0; q < state[id].length; q++) if (!state[id][q].video && !igParse(state[id][q].ig)) return "One video has neither a video file nor a valid Instagram link."; return ""; }
     if (meta(id).kind !== "entries") return "";
     var seen = {}, E = ENT[id];
     for (var i = 0; i < state[id].length; i++) {
@@ -1599,11 +1600,24 @@
     add.onclick = function () {
       var r = igParse(paste.value);
       if (!r) { msg.className = "msg err"; msg.textContent = "That does not look like an Instagram post or reel link."; return; }
-      if (list.some(function (v) { return igParse(v.ig) && igParse(v.ig).id === r.id; })) { msg.className = "msg err"; msg.textContent = "That video is already in the list."; return; }
-      list.unshift({ id: ++uid, ig: r.link, title: r.name, date: "", thumb: "", client: "", role: "", text: "", article: "", articleLabel: "" });
+      if (list.some(function (v) { return v.ig && igParse(v.ig) && igParse(v.ig).id === r.id; })) { msg.className = "msg err"; msg.textContent = "That video is already in the list."; return; }
+      list.unshift({ id: ++uid, ig: r.link, title: r.name, date: "", thumb: "", client: "", role: "", text: "", article: "", articleLabel: "", video: "" });
       paste.value = ""; msg.textContent = ""; markDirty(); renderReels();
     };
-    box.appendChild(h("div", { class: "reeladd" }, [h("label", { class: "fld wide" }, [h("span", { text: "New video" }), paste]), h("div", { class: "reelbtn" }, [add, msg])]));
+    var upl = h("button", { type: "button", class: "btn", text: "Upload video file" }), upf = h("input", { type: "file", accept: "video/mp4,video/webm,.mp4,.webm", hidden: "" });
+    upl.onclick = function () { upf.click(); };
+    upf.onchange = function () {
+      var f = upf.files[0]; upf.value = ""; if (!f) return;
+      var e = checkVideo(f); if (e) { msg.className = "msg err"; msg.textContent = e; return; }
+      msg.className = "msg"; msg.textContent = "Preparing video…";
+      var base = slug(f.name) + "-" + stamp();
+      posterOf(f).then(function (pb) {
+        var nv = { id: ++uid, ig: "", title: f.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " "), date: "", thumb: "", client: "", role: "", text: "", article: "", articleLabel: "", video: "/videos/video/" + base + (f.type === "video/webm" ? ".webm" : ".mp4"), videoBlob: f };
+        if (pb) { nv.thumb = "/images/video/" + base + ".jpg"; nv.thumbBlob = pb; nv.preview = URL.createObjectURL(pb); }
+        list.unshift(nv); markDirty(); renderReels();
+      });
+    };
+    box.appendChild(h("div", { class: "reeladd" }, [h("label", { class: "fld wide" }, [h("span", { text: "New video: paste an Instagram link, or upload the original file" }), paste]), h("div", { class: "reelbtn" }, [add, upl, upf, msg])]));
     var ul = h("ul", { class: "reelrows", id: "reelrows" });
     list.forEach(function (v) {
       var row = {}, thumb = h("div", { class: "rthumb", tabindex: "0", title: "Click to choose an image or video. Or drop a file here, or paste a screenshot while this row is selected." });
@@ -1640,14 +1654,26 @@
       var text = textField("Short text (shown for the first video)", v.text, function (x) { v.text = x; markDirty(); }, { placeholder: "One or two lines about the shoot" });
       var art = textField("Article link (optional)", v.article, function (x) { v.article = x; markDirty(); }, { placeholder: "https://www.elle.cz/…" });
       var artl = textField("Article button text", v.articleLabel, function (x) { v.articleLabel = x; markDirty(); }, { placeholder: "Read the article" });
-      var link = h("a", { href: v.ig, target: "_blank", rel: "noopener", class: "link", text: v.ig.replace(/^https?:\/\/(www\.)?/, "") });
+      var igIn = textField("Instagram link (optional)", v.ig, function (x) { v.ig = x.trim(); markDirty(); }, { placeholder: "https://www.instagram.com/reel/…" });
+      var vfile = h("input", { type: "file", accept: "video/mp4,video/webm,.mp4,.webm", hidden: "" });
+      var vbtn = h("button", { type: "button", class: "btn", text: v.video ? "Replace video file" : "Upload video file" });
+      vbtn.onclick = function () { vfile.click(); };
+      vfile.onchange = function () {
+        var f = vfile.files[0]; vfile.value = ""; if (!f) return;
+        var e = checkVideo(f); if (e) { setStatus(e, true); return; }
+        var base = slug(f.name) + "-" + stamp();
+        v.video = "/videos/video/" + base + (f.type === "video/webm" ? ".webm" : ".mp4"); v.videoBlob = f; markDirty();
+        if (!v.thumb) { posterOf(f).then(function (pb) { if (pb) setThumb(pb); renderReels(); }); } else renderReels();
+      };
+      var vinfo = h("span", { class: "msg", text: v.video ? "Plays on your site: " + v.video.split("/").pop() : "No file: the Instagram player is used." });
+      var link = h("span");
       var del = h("button", { type: "button", class: "link danger", text: "Remove" });
       var armed = false, t = null;
       del.onclick = function () {
         if (!armed) { armed = true; del.textContent = "Click again to remove"; t = setTimeout(function () { armed = false; del.textContent = "Remove"; }, 4000); return; }
         clearTimeout(t); var i = list.indexOf(v); if (i > -1) list.splice(i, 1); markDirty(); renderReels();
       };
-      var li = h("li", { class: "reelrow", "data-id": v.id, tabindex: "-1" }, [h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }), thumb, h("div", { class: "rfields" }, [title, date, client, role, text, art, artl, h("div", { class: "rlinks" }, [link, del])])]);
+      var li = h("li", { class: "reelrow", "data-id": v.id, tabindex: "-1" }, [h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }), thumb, h("div", { class: "rfields" }, [title, date, h("div", { class: "rvid" }, [vbtn, vfile, vinfo]), igIn, client, role, text, art, artl, h("div", { class: "rlinks" }, [link, del])])]);
       li.ondragover = function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, "Files") > -1) { e.preventDefault(); li.classList.add("dropping"); } };
       li.ondragleave = function () { li.classList.remove("dropping"); };
       li.ondrop = function (e) { li.classList.remove("dropping"); var f = e.dataTransfer && e.dataTransfer.files[0]; if (f) { e.preventDefault(); row.useFile(f); } };
