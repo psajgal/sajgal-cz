@@ -123,8 +123,12 @@ const landing = (Array.isArray(readJSON("data/landing.json", [])) ? readJSON("da
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 // Optional separate address for photos and videos (for example https://media.sajgal.cz). Empty = same site.
 const MEDIA = String(S.site.mediaUrl || "").trim().replace(/\/+$/, "");
+const BIG = String((readJSON("data/media.json", {}) || {}).base || "").trim().replace(/\/+$/, ""); // big videos stored in R2 ("/r2/video/…")
+const isBig = (p) => /^\/?r2\//.test(p);
+const bigUrl = (p) => (BIG ? BIG + "/" + p.replace(/^\/?r2\//, "") : "");
 const isMedia = (p) => /^\/?(images|videos)\//.test(p);
-const abs = (p) => (/^https?:/.test(p) ? p : (MEDIA && isMedia(p) ? MEDIA : SITE) + (p.startsWith("/") ? p : "/" + p));
+const abs = (p) => (isBig(p) ? bigUrl(p) : /^https?:/.test(p) ? p : (MEDIA && isMedia(p) ? MEDIA : SITE) + (p.startsWith("/") ? p : "/" + p));
+if (videos.some((v) => isBig(v.video || "")) && !BIG) warn("Video page: a video is stored in R2 but data/media.json has no base address (set it with Cloudflare login in the admin).");
 const isRaster = (p) => !/\.svg(\?|$)/i.test(p);
 const ld = (o) => JSON.stringify(o).replace(/</g, "\\u003c");
 const trim = (s, n) => { s = String(s || "").replace(/\s+/g, " ").trim(); if (s.length <= n) return s; const cut = s.slice(0, n - 1); return cut.slice(0, cut.lastIndexOf(" ") > 60 ? cut.lastIndexOf(" ") : cut.length).replace(/[,;:.\s]+$/, "") + "…"; };
@@ -149,6 +153,7 @@ function L(route) {
 }
 function A(p) {
   if (/^https?:\/\//i.test(p)) return p;
+  if (isBig(p)) return bigUrl(p);
   p = p.replace(/^\//, "");
   if (MEDIA && isMedia(p)) return MEDIA + "/" + p;
   if (!PREVIEW) return "/" + p;

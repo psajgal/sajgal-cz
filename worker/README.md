@@ -9,6 +9,10 @@ Why: Cloudflare Pages allows 25 MB per file and GitHub's API 100 MB, so 50 to 15
 - Abandoned uploads are cleaned up after 24 hours.
 - Reads (visitors watching) bypass the Worker and cost nothing in egress. Class A/B operations are far below the free tier for a portfolio.
 
+## Testing first, domain later
+- For testing, on the bucket turn ON Settings > Public Development URL (`https://pub-….r2.dev`). It is read-only, so the hard stop is unaffected, but it is rate limited and meant for testing only. Use that address as `PUBLIC_BASE`.
+- Later: add the custom domain `media.sajgal.cz`, change `PUBLIC_BASE` in the Worker, turn the r2.dev URL off, and press "Save and test" in the admin's Cloudflare login. The videos keep working: the site stores only paths (`/r2/video/…`) and the address lives in `data/media.json`.
+
 ## Setup (once, about 20 minutes)
 1. R2 > Create bucket `sajgal-media` (Standard storage).
 2. Bucket > Settings > Custom Domains > add `media.sajgal.cz`. Leave "Public Development URL" disabled.

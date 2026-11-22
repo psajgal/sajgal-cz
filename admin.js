@@ -369,7 +369,21 @@
       return next().catch(function (e) { mediaCall("/upload/abort", { method: "POST", body: JSON.stringify({ uploadId: s.uploadId }) }).catch(function () {}); throw e; });
     });
   }
-  function mediaKeyOf(u) { var m = /^https?:\/\/[^/]+\/(video\/[^?#]+)$/.exec(String(u || "")); return m ? m[1] : ""; }
+  function mediaKeyOf(u) { var m = /^\/?r2\/(video\/[^?#]+)$/.exec(String(u || "")); return m ? m[1] : ""; }
+  // The site needs to know the public address of the big-video storage: data/media.json {base}. Kept in step with the Worker.
+  var mediaBaseSeen = null;
+  function ensureMediaBase(base) {
+    base = String(base || "").replace(/\/+$/, "");
+    if (!base || mediaBaseSeen === base) return Promise.resolve();
+    return api("/contents/data/media.json?ref=" + encodeURIComponent(WB)).then(function (r) {
+      if (r.status === 404) return { sha: null, base: "" };
+      if (!r.ok) throw new Error("Could not read the storage address (" + r.status + ").");
+      return r.json().then(function (j) { var d = {}; try { d = JSON.parse(textFromB64(j.content)); } catch (e) {} return { sha: j.sha, base: String((d && d.base) || "") }; });
+    }).then(function (cur) {
+      if (cur.base === base) { mediaBaseSeen = base; return; }
+      return put("data/media.json", b64FromText(JSON.stringify({ base: base }, null, 2) + "\n"), "Set big-video storage address", cur.sha).then(function () { mediaBaseSeen = base; refreshDraft(); });
+    });
+  }
   function newVideo(f) {
     var base = slug(f.name) + "-" + stamp();
     return posterOf(f).then(function (pb) {
@@ -1639,6 +1653,7 @@
       mediaCall("/status").then(function (s) {
         var used = s.used + s.reserved, pct = Math.min(100, Math.round(used / s.cap * 100));
         meter.className = "msg" + (pct >= 85 ? " err" : "");
+        ensureMediaBase(s.base).catch(function () {});
         meter.textContent = "Connected. Big-video storage: " + mb(used) + " of " + mb(s.cap) + " used (" + pct + "%). Uploads are refused beyond the limit. Largest file: " + mb(s.maxFile) + ".";
       }).catch(function (e) { meter.className = "msg err"; meter.textContent = e.message || String(e); });
     }
@@ -1679,7 +1694,7 @@
         if (!big) { list.unshift(nv); markDirty(); renderReels(); return; }
         msg.textContent = "Uploading 0%…";
         bigUpload(f, function (p) { msg.textContent = "Uploading " + p + "%…"; }).then(function (r) {
-          nv.video = r.url; delete nv.videoBlob; list.unshift(nv); markDirty(); renderReels();
+          nv.video = "/r2/" + r.key; delete nv.videoBlob; return ensureMediaBase(r.url.slice(0, r.url.length - r.key.length - 1)).then(function () { list.unshift(nv); markDirty(); renderReels(); });
         }).catch(function (er) { msg.className = "msg err"; msg.textContent = er.message || String(er); });
       });
     };
@@ -1732,7 +1747,7 @@
         if (!big) { v.video = "/videos/video/" + base + (f.type === "video/webm" ? ".webm" : ".mp4"); v.videoBlob = f; markDirty(); done(); return; }
         setStatus("Uploading 0%…");
         bigUpload(f, function (p) { setStatus("Uploading " + p + "%…"); }).then(function (r) {
-          if (old) pendingVidDel.push(old); v.video = r.url; delete v.videoBlob; markDirty(); setStatus("Uploaded. Save to publish it on the draft."); done();
+          if (old) pendingVidDel.push(old); v.video = "/r2/" + r.key; delete v.videoBlob; return ensureMediaBase(r.url.slice(0, r.url.length - r.key.length - 1)).then(function () { markDirty(); setStatus("Uploaded. Save to publish it on the draft."); done(); });
         }).catch(function (er) { setStatus(er.message || String(er), true); });
       };
       var vinfo = h("span", { class: "msg", text: v.video ? "Plays on your site: " + v.video.split("/").pop() : "No file: the Instagram player is used." });
