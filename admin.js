@@ -114,8 +114,8 @@
   var MENU = [["fashion-shows", "Fashion shows", "/fashion-shows"], ["editorial", "Editorial", "/editorial"], ["commercial", "Commercial", "/commercial"], ["video", "Video", "/video"], ["personal", "Personal work", "/personal"]];
   function parseMenu(list) {
     var out = [], seen = {};
-    list.forEach(function (m) { var d = m && MENU.filter(function (x) { return x[0] === m.id; })[0]; if (d && !seen[d[0]]) { seen[d[0]] = 1; out.push({ key: d[0], label: d[1], url: d[2], hidden: m.hidden === true }); } });
-    MENU.forEach(function (d) { if (!seen[d[0]]) out.push({ key: d[0], label: d[1], url: d[2], hidden: false }); });
+    list.forEach(function (m) { var d = m && MENU.filter(function (x) { return x[0] === m.id; })[0]; if (d && !seen[d[0]]) { seen[d[0]] = 1; out.push({ key: d[0], label: d[1], url: d[2], hidden: m.hidden === true, unpub: m.unpublished === true }); } });
+    MENU.forEach(function (d) { if (!seen[d[0]]) out.push({ key: d[0], label: d[1], url: d[2], hidden: false, unpub: false }); });
     return out;
   }
   function parse(id, data) {
@@ -165,7 +165,7 @@
       });
     }
     if (k === "reels") return s.map(function (v) { var o = { title: v.title.trim(), date: v.date, thumb: v.thumb }; if (v.ig) o.ig = v.ig; if (v.video) o.video = v.video; ["client", "role", "text", "article", "articleLabel"].forEach(function (k) { var x = String(v[k] || "").trim(); if (x) o[k] = x; }); return o; });
-    if (k === "menu") return s.map(function (m) { var o = { id: m.key }; if (m.hidden) o.hidden = true; return o; });
+    if (k === "menu") return s.map(function (m) { var o = { id: m.key }; if (m.hidden || m.unpub) o.hidden = true; if (m.unpub) o.unpublished = true; return o; });
     if (k === "videos") return s.map(function (p) { var o = { video: p.src }; if (p.mobile) o.mobile = p.mobile; if (p.poster) o.poster = p.poster; return o; });
     return s.map(outPhoto);
   }
@@ -1623,14 +1623,16 @@
   function renderMenu() {
     var box = $("#p-menu"), id = "menu"; box.innerHTML = "";
     box.appendChild(h("h2", { class: "sec", text: "Menu" }));
-    box.appendChild(h("p", { class: "hint", text: "The words on the home page, from top to bottom. Drag to reorder. Hide takes a section off the home page only: its page stays online and reachable by its address." }));
+    box.appendChild(h("p", { class: "hint", text: "The words on the home page, from top to bottom. Drag to reorder. Hide link takes a section off the home page only: its page stays online and reachable by its address. Unpublish removes the whole section from the live site (pages, menu link and sitemap); its address then sends visitors to the home page. Your photos stay in the admin." }));
     var ul = h("ul", { class: "showrows menurows" });
     state[id].forEach(function (m) {
-      var off = m.hidden;
+      var off = m.hidden || m.unpub;
+      var stText = m.unpub ? "Unpublished: not on the live site" : m.hidden ? "Link hidden on the home page (page still online)" : "Shown on the home page" + (m.key === "video" ? " (when there are videos)" : "");
       ul.appendChild(h("li", { class: "showrow" + (off ? " off" : ""), "data-key": m.key }, [
         h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }),
-        h("div", { class: "tx" }, [h("strong", { text: m.label }), h("span", { class: "sub", text: m.url }), h("span", { class: "st" + (off ? "" : " live"), text: off ? "Hidden on the home page" : "Shown on the home page" + (m.key === "video" ? " (when the Video page has videos)" : "") })]),
-        h("button", { type: "button", class: "btn", text: off ? "Show" : "Hide", onclick: function () { m.hidden = !m.hidden; dirty.menu = true; markDirty(); renderMenu(); } })
+        h("div", { class: "tx" }, [h("strong", { text: m.label }), h("span", { class: "sub", text: m.url }), h("span", { class: "st" + (off ? "" : " live"), text: stText })]),
+        h("button", { type: "button", class: "btn", text: m.hidden && !m.unpub ? "Show link" : "Hide link", disabled: m.unpub ? "" : null, onclick: function () { m.hidden = !m.hidden; dirty.menu = true; markDirty(); renderMenu(); } }),
+        h("button", { type: "button", class: "btn", text: m.unpub ? "Publish again" : "Unpublish", onclick: function () { m.unpub = !m.unpub; if (!m.unpub) m.hidden = false; dirty.menu = true; markDirty(); renderMenu(); } })
       ]));
     });
     box.appendChild(ul);
