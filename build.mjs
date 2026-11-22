@@ -117,6 +117,10 @@ const videos = (Array.isArray(readJSON("data/videos.json", [])) ? readJSON("data
   .map((v) => ({ ...v, id: igId(v.ig) }))
   .filter((v) => v.id)
   .map((v) => ({ ...v, permalink: `https://www.instagram.com/${/instagram\.com\/(?:[^/?#]+\/)?(?:p)\//.test(v.ig) ? "p" : "reel"}/${v.id}/` }));
+// Unpublished sections (data/menu.json, "unpublished": true): no pages, no sitemap entries, no menu link, and a temporary redirect to the home page.
+const SECTION_ROUTES = { "fashion-shows": ["/fashion-shows", "/fashion"], editorial: ["/editorial"], commercial: ["/commercial"], video: ["/video"], personal: ["/personal"] };
+const UNPUB = new Set((Array.isArray(readJSON("data/menu.json", [])) ? readJSON("data/menu.json", []) : []).filter((m) => m && m.unpublished === true && SECTION_ROUTES[m.id]).map((m) => m.id));
+const unpubRoute = (route) => [...UNPUB].some((id) => SECTION_ROUTES[id].some((r) => route === r || route.startsWith(r + "/")));
 const landing = (Array.isArray(readJSON("data/landing.json", [])) ? readJSON("data/landing.json", []) : []).filter((v) => v && v.video);
 
 /* ---------- helpers ---------- */
@@ -284,9 +288,9 @@ function gallery(items, ctx, extraClass = "", cfg = null) {
 }
 
 /* ---------- pages ---------- */
-const pages = [];     // { file, html }
+const pages = [];     // { file, html, route }
 const sitemap = [];   // { route, images: [{loc, title}] }
-function emit(route, html) { pages.push({ file: fileOf(route), html }); }
+function emit(route, html) { pages.push({ file: fileOf(route), html, route }); }
 
 function render() {
   /* Home */
@@ -304,7 +308,7 @@ function render() {
     const menuOrder = [], menuOff = {};
     menuData.forEach((m) => { if (m && MENU_ALL.some((d) => d[0] === m.id) && !menuOrder.includes(m.id)) { menuOrder.push(m.id); if (m.hidden === true) menuOff[m.id] = true; } });
     MENU_ALL.forEach((d) => { if (!menuOrder.includes(d[0])) menuOrder.push(d[0]); });
-    const menuItems = menuOrder.filter((k) => !menuOff[k] && (k !== "video" || videos.length)).map((k) => MENU_ALL.find((d) => d[0] === k));
+    const menuItems = menuOrder.filter((k) => !menuOff[k] && !UNPUB.has(k) && (k !== "video" || videos.length)).map((k) => MENU_ALL.find((d) => d[0] === k));
     const body = `<main class="home">
   <div class="bg" id="bg" aria-hidden="true" data-clips="${clipsJson}">${vids}</div>
   <header class="top gut">
@@ -580,6 +584,10 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
 render();
+if (UNPUB.size) {
+  for (let i = pages.length - 1; i >= 0; i--) if (unpubRoute(pages[i].route || "")) pages.splice(i, 1);
+  for (let i = sitemap.length - 1; i >= 0; i--) if (unpubRoute(sitemap[i].route)) sitemap.splice(i, 1);
+}
 for (const p of pages) {
   const f = path.join(OUT, p.file);
   fs.mkdirSync(path.dirname(f), { recursive: true });
@@ -593,7 +601,12 @@ if (!PREVIEW) {
   fs.writeFileSync(path.join(OUT, "_build.json"), JSON.stringify({ sha: process.env.CF_PAGES_COMMIT_SHA || "", branch: BRANCH }));
   fs.writeFileSync(path.join(OUT, "robots.txt"), robotsTxt());
   fs.writeFileSync(path.join(OUT, "_headers"), headersTxt());
-  if (fs.existsSync(path.join(ROOT, "redirects.txt"))) fs.copyFileSync(path.join(ROOT, "redirects.txt"), path.join(OUT, "_redirects"));
+  // Redirects: your own rules (redirects.txt) first, then temporary (302) ones for unpublished sections and hidden shows/brands.
+  const extra = [];
+  UNPUB.forEach((id) => SECTION_ROUTES[id].forEach((r) => extra.push(`${r} / 302`)));
+  [[shows, "/fashion"], [brands, "/commercial"]].forEach(([list, base]) => list.forEach((s) => { if (s.hidden === true && !unpubRoute(base + "/" + s.slug)) extra.push(`${base}/${s.slug} ${base === "/fashion" ? "/fashion" : "/commercial"} 302`); }));
+  const own = fs.existsSync(path.join(ROOT, "redirects.txt")) ? fs.readFileSync(path.join(ROOT, "redirects.txt"), "utf8").replace(/\s*$/, "\n") : "";
+  if (own || extra.length) fs.writeFileSync(path.join(OUT, "_redirects"), own + (extra.length ? "# Generated: unpublished sections and hidden shows (temporary redirects)\n" + extra.join("\n") + "\n" : ""));
 }
 
 const drafts = shows.concat(brands).filter((s) => !s.photos.length && s.hidden !== true).map((s) => s.slug);
