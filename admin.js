@@ -1626,30 +1626,33 @@
       state[id] = order.map(function (k) { return state[id].filter(function (m) { return m.key === k; })[0]; }); dirty.menu = true; markDirty(); renderMenu();
     } });
   }
-  function mediaPanel() {
-    var c = mediaCfg() || {}, d = h("details", { class: "mediacfg" }), meter = h("div", { class: "msg", role: "status" });
+  function openCloudflare() {
+    var c = mediaCfg() || {}, meter = h("p", { class: "msg", role: "status" });
     var url = h("input", { type: "url", value: c.url || "", placeholder: "https://sajgal-uploads.<your-name>.workers.dev" });
     var sec = h("input", { type: "password", value: c.secret || "", placeholder: "Upload password", autocomplete: "off" });
-    var test = h("button", { type: "button", class: "btn", text: "Save and test" });
+    var test = h("button", { type: "button", class: "btn primary", text: "Save and test" });
+    var off = h("button", { type: "button", class: "link danger", text: "Remove from this device" });
     function show() {
+      meter.className = "msg";
       if (!mediaCfg()) { meter.textContent = "Not set up: videos up to " + MAX_VIDEO_MB + " MB are stored with the site."; return; }
       meter.textContent = "Checking storage…";
       mediaCall("/status").then(function (s) {
         var used = s.used + s.reserved, pct = Math.min(100, Math.round(used / s.cap * 100));
         meter.className = "msg" + (pct >= 85 ? " err" : "");
-        meter.textContent = "Big-video storage: " + mb(used) + " of " + mb(s.cap) + " used (" + pct + "%). Uploads are refused beyond the limit. Largest file: " + mb(s.maxFile) + ".";
+        meter.textContent = "Connected. Big-video storage: " + mb(used) + " of " + mb(s.cap) + " used (" + pct + "%). Uploads are refused beyond the limit. Largest file: " + mb(s.maxFile) + ".";
       }).catch(function (e) { meter.className = "msg err"; meter.textContent = e.message || String(e); });
     }
     test.onclick = function () {
       try { localStorage.setItem(MKEY, JSON.stringify({ url: url.value.trim(), secret: sec.value })); } catch (e) {}
       show();
     };
-    d.appendChild(h("summary", { text: "Big videos (50 to 150 MB, stored on Cloudflare R2)" }));
-    d.appendChild(h("div", { class: "mediabody" }, [
-      h("p", { class: "hint", text: "Once set up, uploaded videos go to your own storage with a hard limit, not to GitHub. Paste the Worker address and the upload password once." }),
-      h("label", { class: "fld wide" }, [h("span", { text: "Worker address" }), url]),
-      h("label", { class: "fld wide" }, [h("span", { text: "Upload password" }), sec]), test]));
-    var wrap = h("div", { class: "mediawrap" }, [d, meter]); show(); return wrap;
+    off.onclick = function () { try { localStorage.removeItem(MKEY); } catch (e) {} url.value = ""; sec.value = ""; show(); };
+    var body = h("div", { class: "pk-body mediabody" }, [
+      h("p", { class: "hint", text: "For big videos (50 to 150 MB). They are stored on your own Cloudflare storage, which has a hard size limit, instead of on GitHub. Paste the upload address and password once. They stay in this browser only." }),
+      h("label", { class: "fld wide" }, [h("span", { text: "Upload address" }), url]),
+      h("label", { class: "fld wide" }, [h("span", { text: "Upload password" }), sec]),
+      h("div", {}, [test, off]), meter]);
+    modal("Cloudflare login", body, function (close) { return [h("button", { type: "button", class: "btn", text: "Done", onclick: close })]; }); show();
   }
   function renderReels() {
     var box = $("#p-reels"), list = state[tab]; box.innerHTML = "";
@@ -1681,7 +1684,6 @@
       });
     };
     box.appendChild(h("div", { class: "reeladd" }, [h("label", { class: "fld wide" }, [h("span", { text: "New video: paste an Instagram link, or upload the original file" }), paste]), h("div", { class: "reelbtn" }, [add, upl, upf, msg])]));
-    box.appendChild(mediaPanel());
     var ul = h("ul", { class: "reelrows", id: "reelrows" });
     list.forEach(function (v) {
       var row = {}, thumb = h("div", { class: "rthumb", tabindex: "0", title: "Click to choose an image or video. Or drop a file here, or paste a screenshot while this row is selected." });
@@ -1895,7 +1897,7 @@
     tab = "seo"; editing = null; view = "text"; lay = null; setStatus(""); tabs(); layout();
   };
   function start() {
-    $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false;
+    $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false; $("#cflink").hidden = false;
     setStatus("Loading…");
     ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile(), loadPresets()])); }).then(function () {
       setStatus("");
@@ -1926,6 +1928,7 @@
       start();
     }).catch(function (err) { cfg = null; msg.className = "msg err"; msg.textContent = err.message; });
   };
+  $("#cflink").onclick = function (e) { e.preventDefault(); openCloudflare(); };
   $("#disconnect").onclick = function (e) {
     e.preventDefault();
     try { localStorage.removeItem(KEY); } catch (x) {}
