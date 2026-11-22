@@ -148,6 +148,7 @@ function L(route) {
   return path.posix.relative(path.posix.dirname(fileOf(CUR)), fileOf(route)) || fileOf(route);
 }
 function A(p) {
+  if (/^https?:\/\//i.test(p)) return p;
   p = p.replace(/^\//, "");
   if (MEDIA && isMedia(p)) return MEDIA + "/" + p;
   if (!PREVIEW) return "/" + p;

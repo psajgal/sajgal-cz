@@ -257,6 +257,11 @@
         if (meta(id).kind === "entries") { state[id].forEach(function (s) { s.origSlug = s.slug; }); deletedSlugs[id] = []; }
       });
     }).then(function () {
+      var dels = pendingVidDel.splice(0);
+      if (id !== "videos" || !dels.length || !mediaCfg()) return;
+      var still = {}; (state.videos || []).forEach(function (v) { if (v.video) still[mediaKeyOf(v.video)] = 1; });
+      return Promise.all(dels.filter(function (k) { return !still[k]; }).map(function (k) { return mediaCall("/file?key=" + encodeURIComponent(k), { method: "DELETE" }).catch(function () {}); }));
+    }).then(function () {
       saving = false; noteMsg = ""; setStatus("Saved to the draft.");
       layout(); refreshSave(); refreshDraft(); [2500, 7000].forEach(function (ms) { setTimeout(refreshDraft, ms); });
     }).catch(function (e) {
@@ -331,11 +336,40 @@
       if (t === tab) renderGrid(); refreshSave();
     }).catch(function () { setStatus("One of the files could not be read.", true); });
   }
-  function checkVideo(f) {
+  function checkVideo(f, big) {
     if (!/^video\/(mp4|webm)$/.test(f.type)) return "Use MP4 or WebM files.";
-    if (f.size > MAX_VIDEO_MB * 1048576) return f.name + " is " + Math.round(f.size / 1048576) + " MB. Export it under " + MAX_VIDEO_MB + " MB first (see the export settings above).";
+    if (!big && f.size > MAX_VIDEO_MB * 1048576) return f.name + " is " + Math.round(f.size / 1048576) + " MB. Export it under " + MAX_VIDEO_MB + " MB first (see the export settings above).";
     return "";
   }
+  /* ---------- Large videos: Cloudflare R2 through the upload Worker (hard storage limit lives in the Worker) ---------- */
+  var MKEY = "sajgal-admin-media", pendingVidDel = [];
+  function mediaCfg() { try { var c = JSON.parse(localStorage.getItem(MKEY) || "null"); return c && c.url && c.secret ? c : null; } catch (e) { return null; } }
+  function mediaCall(path, opts) {
+    var c = mediaCfg(); if (!c) return Promise.reject(new Error("Large-video uploads are not set up."));
+    opts = opts || {}; opts.headers = Object.assign({ Authorization: "Bearer " + c.secret }, opts.headers || {});
+    return fetch(c.url.replace(/\/+$/, "") + path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || ("Upload service answered " + r.status)); return j; });
+    });
+  }
+  function mb(n) { return n >= 1073741824 ? (n / 1073741824).toFixed(2) + " GB" : Math.round(n / 1048576) + " MB"; }
+  function bigUpload(file, progress) {
+    return mediaCall("/upload/start", { method: "POST", body: JSON.stringify({ name: file.name, size: file.size, type: file.type || (/\.webm$/i.test(file.name) ? "video/webm" : "video/mp4") }) }).then(function (s) {
+      var parts = [], n = 0, off = 0, ps = s.partSize || 10485760;
+      function next() {
+        if (off >= file.size) return mediaCall("/upload/complete", { method: "POST", body: JSON.stringify({ uploadId: s.uploadId, parts: parts }) });
+        var chunk = file.slice(off, off + ps); n++;
+        function send(tries) {
+          return mediaCall("/upload/part?uploadId=" + encodeURIComponent(s.uploadId) + "&n=" + n, { method: "PUT", body: chunk }).catch(function (e) {
+            if (tries < 2) return new Promise(function (r) { setTimeout(r, 1500); }).then(function () { return send(tries + 1); });
+            throw e;
+          });
+        }
+        return send(0).then(function (p) { parts.push(p); off += chunk.size; progress(Math.min(100, Math.round(off / file.size * 100))); return next(); });
+      }
+      return next().catch(function (e) { mediaCall("/upload/abort", { method: "POST", body: JSON.stringify({ uploadId: s.uploadId }) }).catch(function () {}); throw e; });
+    });
+  }
+  function mediaKeyOf(u) { var m = /^https?:\/\/[^/]+\/(video\/[^?#]+)$/.exec(String(u || "")); return m ? m[1] : ""; }
   function newVideo(f) {
     var base = slug(f.name) + "-" + stamp();
     return posterOf(f).then(function (pb) {
@@ -1592,6 +1626,31 @@
       state[id] = order.map(function (k) { return state[id].filter(function (m) { return m.key === k; })[0]; }); dirty.menu = true; markDirty(); renderMenu();
     } });
   }
+  function mediaPanel() {
+    var c = mediaCfg() || {}, d = h("details", { class: "mediacfg" }), meter = h("div", { class: "msg", role: "status" });
+    var url = h("input", { type: "url", value: c.url || "", placeholder: "https://sajgal-uploads.<your-name>.workers.dev" });
+    var sec = h("input", { type: "password", value: c.secret || "", placeholder: "Upload password", autocomplete: "off" });
+    var test = h("button", { type: "button", class: "btn", text: "Save and test" });
+    function show() {
+      if (!mediaCfg()) { meter.textContent = "Not set up: videos up to " + MAX_VIDEO_MB + " MB are stored with the site."; return; }
+      meter.textContent = "Checking storage…";
+      mediaCall("/status").then(function (s) {
+        var used = s.used + s.reserved, pct = Math.min(100, Math.round(used / s.cap * 100));
+        meter.className = "msg" + (pct >= 85 ? " err" : "");
+        meter.textContent = "Big-video storage: " + mb(used) + " of " + mb(s.cap) + " used (" + pct + "%). Uploads are refused beyond the limit. Largest file: " + mb(s.maxFile) + ".";
+      }).catch(function (e) { meter.className = "msg err"; meter.textContent = e.message || String(e); });
+    }
+    test.onclick = function () {
+      try { localStorage.setItem(MKEY, JSON.stringify({ url: url.value.trim(), secret: sec.value })); } catch (e) {}
+      show();
+    };
+    d.appendChild(h("summary", { text: "Big videos (50 to 150 MB, stored on Cloudflare R2)" }));
+    d.appendChild(h("div", { class: "mediabody" }, [
+      h("p", { class: "hint", text: "Once set up, uploaded videos go to your own storage with a hard limit, not to GitHub. Paste the Worker address and the upload password once." }),
+      h("label", { class: "fld wide" }, [h("span", { text: "Worker address" }), url]),
+      h("label", { class: "fld wide" }, [h("span", { text: "Upload password" }), sec]), test]));
+    var wrap = h("div", { class: "mediawrap" }, [d, meter]); show(); return wrap;
+  }
   function renderReels() {
     var box = $("#p-reels"), list = state[tab]; box.innerHTML = "";
     var paste = h("textarea", { rows: "2", placeholder: "Paste an Instagram link, or the whole embed code from Instagram", "aria-label": "Instagram link or embed code" });
@@ -1608,16 +1667,21 @@
     upl.onclick = function () { upf.click(); };
     upf.onchange = function () {
       var f = upf.files[0]; upf.value = ""; if (!f) return;
-      var e = checkVideo(f); if (e) { msg.className = "msg err"; msg.textContent = e; return; }
+      var big = !!mediaCfg(), e = checkVideo(f, big); if (e) { msg.className = "msg err"; msg.textContent = e; return; }
       msg.className = "msg"; msg.textContent = "Preparing video…";
       var base = slug(f.name) + "-" + stamp();
       posterOf(f).then(function (pb) {
         var nv = { id: ++uid, ig: "", title: f.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " "), date: "", thumb: "", client: "", role: "", text: "", article: "", articleLabel: "", video: "/videos/video/" + base + (f.type === "video/webm" ? ".webm" : ".mp4"), videoBlob: f };
         if (pb) { nv.thumb = "/images/video/" + base + ".jpg"; nv.thumbBlob = pb; nv.preview = URL.createObjectURL(pb); }
-        list.unshift(nv); markDirty(); renderReels();
+        if (!big) { list.unshift(nv); markDirty(); renderReels(); return; }
+        msg.textContent = "Uploading 0%…";
+        bigUpload(f, function (p) { msg.textContent = "Uploading " + p + "%…"; }).then(function (r) {
+          nv.video = r.url; delete nv.videoBlob; list.unshift(nv); markDirty(); renderReels();
+        }).catch(function (er) { msg.className = "msg err"; msg.textContent = er.message || String(er); });
       });
     };
     box.appendChild(h("div", { class: "reeladd" }, [h("label", { class: "fld wide" }, [h("span", { text: "New video: paste an Instagram link, or upload the original file" }), paste]), h("div", { class: "reelbtn" }, [add, upl, upf, msg])]));
+    box.appendChild(mediaPanel());
     var ul = h("ul", { class: "reelrows", id: "reelrows" });
     list.forEach(function (v) {
       var row = {}, thumb = h("div", { class: "rthumb", tabindex: "0", title: "Click to choose an image or video. Or drop a file here, or paste a screenshot while this row is selected." });
@@ -1660,10 +1724,14 @@
       vbtn.onclick = function () { vfile.click(); };
       vfile.onchange = function () {
         var f = vfile.files[0]; vfile.value = ""; if (!f) return;
-        var e = checkVideo(f); if (e) { setStatus(e, true); return; }
-        var base = slug(f.name) + "-" + stamp();
-        v.video = "/videos/video/" + base + (f.type === "video/webm" ? ".webm" : ".mp4"); v.videoBlob = f; markDirty();
-        if (!v.thumb) { posterOf(f).then(function (pb) { if (pb) setThumb(pb); renderReels(); }); } else renderReels();
+        var big = !!mediaCfg(), e = checkVideo(f, big); if (e) { setStatus(e, true); return; }
+        var base = slug(f.name) + "-" + stamp(), old = mediaKeyOf(v.video);
+        function done() { if (!v.thumb) { posterOf(f).then(function (pb) { if (pb) setThumb(pb); renderReels(); }); } else renderReels(); }
+        if (!big) { v.video = "/videos/video/" + base + (f.type === "video/webm" ? ".webm" : ".mp4"); v.videoBlob = f; markDirty(); done(); return; }
+        setStatus("Uploading 0%…");
+        bigUpload(f, function (p) { setStatus("Uploading " + p + "%…"); }).then(function (r) {
+          if (old) pendingVidDel.push(old); v.video = r.url; delete v.videoBlob; markDirty(); setStatus("Uploaded. Save to publish it on the draft."); done();
+        }).catch(function (er) { setStatus(er.message || String(er), true); });
       };
       var vinfo = h("span", { class: "msg", text: v.video ? "Plays on your site: " + v.video.split("/").pop() : "No file: the Instagram player is used." });
       var link = h("span");
@@ -1671,7 +1739,7 @@
       var armed = false, t = null;
       del.onclick = function () {
         if (!armed) { armed = true; del.textContent = "Click again to remove"; t = setTimeout(function () { armed = false; del.textContent = "Remove"; }, 4000); return; }
-        clearTimeout(t); var i = list.indexOf(v); if (i > -1) list.splice(i, 1); markDirty(); renderReels();
+        clearTimeout(t); var i = list.indexOf(v); if (i > -1) list.splice(i, 1); if (mediaKeyOf(v.video)) pendingVidDel.push(mediaKeyOf(v.video)); markDirty(); renderReels();
       };
       var li = h("li", { class: "reelrow", "data-id": v.id, tabindex: "-1" }, [h("span", { class: "grab", "aria-hidden": "true", text: "⋮⋮" }), thumb, h("div", { class: "rfields" }, [title, date, h("div", { class: "rvid" }, [vbtn, vfile, vinfo]), igIn, client, role, text, art, artl, h("div", { class: "rlinks" }, [link, del])])]);
       li.ondragover = function (e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, "Files") > -1) { e.preventDefault(); li.classList.add("dropping"); } };

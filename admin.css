@@ -278,3 +278,5 @@ body.dnd{cursor:grabbing;user-select:none}
 .vis.off{border-color:#b86e00;background:rgba(184,110,0,.12)}.vis.off .hint{color:inherit}
 .menurows .showrow.off{opacity:.6}.menurows .showrow{grid-template-columns:auto minmax(0,1fr) auto}
 .sec{font-size:1.15rem;margin:1.4rem 0 .4rem}
+
+.mediawrap{margin:0 0 1rem}.mediacfg{border:1px solid var(--line,#e8e8e8);padding:.5rem .8rem;margin-bottom:.4rem}.mediacfg summary{cursor:pointer}.mediabody{display:grid;gap:.6rem;padding-top:.6rem}.rvid{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
