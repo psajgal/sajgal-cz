@@ -1,5 +1,20 @@
 // Photo pages: the photos are already in the page (good for search engines).
 // This only adds the full-screen viewer when a photo is clicked.
+/* Coming from the selected fashion page ("Go to show"): the back arrow returns there, to the same spot, not to all shows. */
+(function () {
+  var a = document.querySelector("a.back"), ref;
+  if (!a || !document.referrer) return;
+  try { ref = new URL(document.referrer); } catch (e) { return; }
+  if (ref.origin !== location.origin) return;
+  var p = ref.pathname.replace(/\.html$/, "").replace(/\/$/, "");
+  if (!/\/fashion-shows$/.test(p) || /^\/fashion\/?/.test(location.pathname.replace(/\.html$/, "")) === false) return;
+  a.href = ref.pathname + ref.search;
+  a.setAttribute("aria-label", "Back to selected fashion shows work");
+  a.addEventListener("click", function (e) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1 || history.length < 2) return;
+    e.preventDefault(); history.back();
+  });
+})();
 (function () {
   var root = document.getElementById("gallery");
   if (!root) return;
