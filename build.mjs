@@ -433,7 +433,8 @@ ${cards}
       const description = (s.seoDescription && s.seoDescription.trim()) || (text ? trim(text, 158) : cfg.auto(s, when));
       if (live) checkMeta(route, title, description);
       if (live && !text) warn(`${route}: no description text. Two or three sentences about the ${cfg.noun} help it rank.`);
-      const facts = cfg.facts(s, when).filter(([, v]) => v);
+      const artUrl = /^https?:\/\//i.test(String(s.article || "")) ? String(s.article).trim() : "";
+      const facts = [...cfg.facts(s, when), ["Article", artUrl ? { href: artUrl, text: (s.articleLabel || "").trim() || "Read the article" } : ""]].filter(([, v]) => v);
       const paras = (s.description || s.summary || "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
       const allLink = `<p class="more"><a class="disp" href="${L(cfg.base)}">${cfg.listLabel} <span aria-hidden="true">→</span></a></p>`;
       const body = `${back(cfg.base, cfg === BRAND_CFG ? "Back to commercial work" : "Back to all shows")}
@@ -451,7 +452,7 @@ ${live ? allLink : ""}
       emit(route, shell({
         route, title, description, noindex: !live, ogType: "article",
         ogImage: first ? { src: first.image, w: first.w, h: first.h } : null, ogAlt: first ? altFor(first, ctx, 0) : "",
-        jsonld: { "@context": "https://schema.org", "@graph": [crumbs(cfg.crumbs(s)), { "@type": "ImageGallery", "@id": SITE + route + "#gallery", url: SITE + route, name: s.title, description, inLanguage: "en", isPartOf: { "@id": SITE + "/#website" }, author: { "@type": "Person", name: NAME, url: SITE + "/" }, ...(dateIso ? { dateCreated: dateIso } : {}), ...(s.location ? { contentLocation: { "@type": "Place", name: s.location } } : {}), ...(s.designer ? { about: { "@type": "Person", name: s.designer } } : {}), ...(cfg === BRAND_CFG && siteLink(s.website) ? { about: { "@type": "Organization", name: s.title, url: siteLink(s.website).href } } : {}), image: imageObjects(s.photos, ctx) }] },
+        jsonld: { "@context": "https://schema.org", "@graph": [crumbs(cfg.crumbs(s)), { "@type": "ImageGallery", "@id": SITE + route + "#gallery", url: SITE + route, name: s.title, description, inLanguage: "en", isPartOf: { "@id": SITE + "/#website" }, author: { "@type": "Person", name: NAME, url: SITE + "/" }, ...(dateIso ? { dateCreated: dateIso } : {}), ...(s.location ? { contentLocation: { "@type": "Place", name: s.location } } : {}), ...(s.designer ? { about: { "@type": "Person", name: s.designer } } : {}), ...(artUrl ? { citation: { "@type": "Article", url: artUrl } } : {}), ...(cfg === BRAND_CFG && siteLink(s.website) ? { about: { "@type": "Organization", name: s.title, url: siteLink(s.website).href } } : {}), image: imageObjects(s.photos, ctx) }] },
         body, scripts: ["masonry.js", "site.js"]
       }));
       if (live) sitemap.push({ route, images: s.photos.filter((p) => isRaster(p.image)).slice(0, 1000).map((p, i) => ({ loc: p.image, title: altFor(p, ctx, i), caption: p.caption })) });

@@ -106,7 +106,7 @@
   function videoItem(p) { return { id: ++uid, src: p.video || "", mobile: p.mobile || "", poster: p.poster || "" }; }
   function showModel(s) {
     return {
-      key: ++uid, slug: s.slug || "", origSlug: s.slug || "", title: s.title || "", summary: s.summary || "", website: s.website || "", event: s.event || "", designer: s.designer || "",
+      key: ++uid, slug: s.slug || "", origSlug: s.slug || "", title: s.title || "", summary: s.summary || "", website: s.website || "", article: s.article || "", articleLabel: s.articleLabel || "", event: s.event || "", designer: s.designer || "",
       date: s.date || "", location: s.location || "", description: s.description || "", seoTitle: s.seoTitle || "",
       seoDescription: s.seoDescription || "", hidden: s.hidden === true, layout: s.layout || null, cover: s.cover || "", photos: (s.photos || []).filter(function (p) { return p.image; }).map(photoItem)
     };
@@ -157,6 +157,7 @@
         else { base.event = x.event.trim(); base.designer = x.designer.trim(); }
         base.date = x.date.trim();
         if (id === "shows") base.location = x.location.trim();
+        if ((x.article || "").trim()) { base.article = x.article.trim(); if ((x.articleLabel || "").trim()) base.articleLabel = x.articleLabel.trim(); }
         base.description = x.description.trim(); base.seoTitle = x.seoTitle.trim(); base.seoDescription = x.seoDescription.trim();
         base.cover = x.cover; base.photos = x.photos.map(outPhoto);
         if (x.layout && Object.keys(x.layout).length) base.layout = x.layout;
@@ -1569,6 +1570,8 @@
       isShow ? textField("Designer or brand", s.designer, function (v) { s.designer = v; markDirty(); upd.forEach(function (f) { f(); }); }) : null,
       isShow ? textField("Location", s.location, function (v) { s.location = v; markDirty(); upd.forEach(function (f) { f(); }); }, { placeholder: "e.g. Berlin" }) : null,
       dateInp,
+      textField("Article link (optional)", s.article, function (v) { s.article = v; markDirty(); }, { wide: true, placeholder: "https://www.elle.cz/…", note: "Where your photos were published. Shown as a link under the title." }),
+      textField("Article link text", s.articleLabel, function (v) { s.articleLabel = v; markDirty(); }, { wide: true, placeholder: "Read the article" }),
       textField("Description", s.description, function (v) { s.description = v; markDirty(); upd.forEach(function (f) { f(); }); }, { area: true, rows: 5, wide: true, note: E.descNote })
     ]);
     lockState();
