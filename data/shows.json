@@ -1070,10 +1070,10 @@
     "slug": "jan-societe-show-13",
     "title": "Jan Société Show 13",
     "event": "",
-    "designer": "",
-    "date": "",
-    "location": "",
-    "description": "",
+    "designer": "Jan Černý",
+    "date": "2025-11",
+    "location": "Barrandov Studios, Prague",
+    "description": "Photos from Jan Société's 13th show at Barrandov Studios in Prague, a dark fairytale collection by designer Jan Černý. One of the photos was published in ELLE Czech.",
     "seoTitle": "",
     "seoDescription": "",
     "cover": "",
@@ -1253,7 +1253,9 @@
         "w": 1280,
         "h": 1024
       }
-    ]
+    ],
+    "article": "https://www.elle.cz/moda/navrhari/na-barrandove-ozila-temna-pohadka-cerneho-nechybel-ani-proklety-princ",
+    "articleLabel": "Photo published in ELLE.cz"
   },
   {
     "slug": "were-next-25",
