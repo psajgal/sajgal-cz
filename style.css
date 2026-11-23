@@ -89,7 +89,7 @@ a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offs
 .contact .ct{max-width:36rem}
 .cph{margin:0;max-width:28rem}
 .cph img{display:block;width:100%;height:auto;background:var(--line)}
-@media (min-width:900px){.contact{grid-template-columns:minmax(0,36rem) minmax(0,26rem);justify-content:start;column-gap:clamp(2rem,6vw,6rem)}.cph{max-width:none}}
+@media (min-width:900px){.contact{grid-template-columns:minmax(0,clamp(36rem,26vw,52rem)) auto;justify-content:start;column-gap:clamp(2rem,6vw,8rem)}.contact .ct{max-width:none}.cph{max-width:none;width:min(clamp(26rem,30vw,52rem),calc((100vh - 9rem)*.8))}}
 .contact h1{font-size:2rem;margin:0 0 1rem;line-height:1.1}
 .contact p{margin:0 0 .75rem}
 
