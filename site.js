@@ -17,10 +17,9 @@
   lb.innerHTML = '<button class="x" type="button" aria-label="Close">&times;</button>' +
     '<button class="prev" type="button" aria-label="Previous photo">&#8592;</button>' +
     '<button class="next" type="button" aria-label="Next photo">&#8594;</button>' +
-    '<a class="goto" href="#" hidden>Go to show <span aria-hidden="true">\u2192</span></a>' +
-    '<figure><img alt=""><figcaption></figcaption></figure>';
+    '<figure><img alt=""><figcaption><span class="ct"></span><a class="goto" href="#" hidden>Go to show <span aria-hidden="true">\u2192</span></a></figcaption></figure>';
   document.body.appendChild(lb);
-  var big = lb.querySelector("img"), cap = lb.querySelector("figcaption"), go = lb.querySelector(".goto");
+  var big = lb.querySelector("img"), cap = lb.querySelector(".ct"), go = lb.querySelector(".goto");
 
   function data(i) {
     var a = links[i], im = a.querySelector("img");

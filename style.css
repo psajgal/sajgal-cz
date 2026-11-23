@@ -104,13 +104,12 @@ a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offs
 .lb .prev,.lb .next{top:50%;transform:translateY(-50%)}
 .lb .prev{left:6px}.lb .next{right:6px}
 .lb button:hover{opacity:.55}
-.lb .goto{position:absolute;right:20px;top:22%;z-index:1;writing-mode:vertical-rl;color:var(--ink);text-decoration:none;font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;padding:10px 6px;border-right:1px solid currentColor}
+.lb .goto{margin-left:1.2em;color:var(--ink);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;font-size:.8rem;white-space:nowrap;border-bottom:1px solid currentColor;padding-bottom:1px}
 .lb .goto:hover{opacity:.55}
 .lb .goto[hidden]{display:none}
 @media (max-width:600px){
   .lb figure{padding:56px 8px 64px}
   .lb .prev,.lb .next{top:auto;bottom:8px;transform:none}
-  .lb .goto{right:6px;top:18%;font-size:.8rem}
 }
 @keyframes lbin{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.lb img{animation:none}.gallery img,.show img,.top nav a,.menu a,.back{transition:none}}
