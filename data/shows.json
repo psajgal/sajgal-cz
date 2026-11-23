@@ -172,7 +172,9 @@
         "w": 1760,
         "h": 2200
       }
-    ]
+    ],
+    "article": "https://www.elle.cz/moda/poetica-zuzana-kubickova-nechala-couture-procitnout-ze-snu-adb91",
+    "articleLabel": "Photos published in ELLE.cz"
   },
   {
     "slug": "designblok-diploma-selection-2026",
@@ -441,7 +443,9 @@
     ],
     "layout": {
       "cols": 4
-    }
+    },
+    "article": "https://www.elle.cz/moda/vitezka-diploma-selection-2026-jozefina-wojtkiewicz-promenila-ticho-v-odev-1fc70",
+    "articleLabel": "Photos published in ELLE.cz"
   },
   {
     "slug": "bfw-aw26",
@@ -1452,7 +1456,9 @@
         "w": 1280,
         "h": 1920
       }
-    ]
+    ],
+    "article": "https://harpersbazaar.cz/fashion/we-re-next-2025-avantgarda-upcyklace-a-globalni-mlada-moda-oslavila-desate-vyroci/",
+    "articleLabel": "Photos published in Harper's Bazaar"
   },
   {
     "slug": "bfw-ss26",
@@ -2246,7 +2252,9 @@
         "w": 1280,
         "h": 1600
       }
-    ]
+    ],
+    "article": "https://harpersbazaar.cz/fashion/exist-2025-silny-rocnik-zlinskeho-ado/",
+    "articleLabel": "Photos published in Harper's Bazaar"
   },
   {
     "slug": "mbpfw-fw25",
