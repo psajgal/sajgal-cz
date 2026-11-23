@@ -1816,11 +1816,11 @@
   {
     "slug": "exist-2025",
     "title": "EXIST 2025",
-    "event": "",
-    "designer": "",
-    "date": "",
-    "location": "",
-    "description": "",
+    "event": "EXIST 2025",
+    "designer": "ADO Zlín",
+    "date": "2025-06",
+    "location": "Prague",
+    "description": "Backstage photography from EXIST 2025, the showcase of graduate collections by the Fashion Design studio (ADO) of Tomas Bata University in Zlín, held in Prague for the first time. Nine bachelor's and three master's collections, led by Kristýna Petříčková, drew on art, pop culture and sustainable technology, from Ema Strnadová's elegant take on art-house horror to Pavel Mikliš's knitwear inspired by Studio 54 and Tereza Helánová's bacterial cellulose. The photos were published in Harper's Bazaar Czech.",
     "seoTitle": "",
     "seoDescription": "",
     "cover": "",
@@ -1957,7 +1957,9 @@
         "w": 1280,
         "h": 1600
       }
-    ]
+    ],
+    "article": "https://harpersbazaar.cz/fashion/exist-2025-silny-rocnik-zlinskeho-ado/",
+    "articleLabel": "Photos published in Harper's Bazaar"
   },
   {
     "slug": "mbpfw-fw25",
