@@ -8,13 +8,6 @@
     "col": 0
   },
   {
-    "image": "/images/shows/bfw-aw26/03.jpg",
-    "caption": "BFW AW26",
-    "w": 1280,
-    "h": 1919,
-    "col": 1
-  },
-  {
     "image": "/images/shows/bfw-aw26/08.jpg",
     "caption": "BFW AW26",
     "w": 1280,
@@ -52,13 +45,6 @@
     "col": 2
   },
   {
-    "image": "/images/shows/were-next-25/11.jpg",
-    "caption": "WE'RE NEXT 25",
-    "w": 1280,
-    "h": 1920,
-    "col": 3
-  },
-  {
     "image": "/images/shows/bfw-ss26/01.jpg",
     "caption": "BFW SS26",
     "w": 1280,
@@ -86,13 +72,6 @@
     "w": 1280,
     "h": 1601,
     "col": 3
-  },
-  {
-    "image": "/images/shows/bfw-ss26/29.jpg",
-    "caption": "BFW SS26",
-    "w": 1280,
-    "h": 853,
-    "col": 0
   },
   {
     "image": "/images/shows/were-next-25/04.jpg",
@@ -143,13 +122,6 @@
     "w": 1280,
     "h": 1922,
     "col": 3
-  },
-  {
-    "image": "/images/shows/mbpfw-fw25/23.jpg",
-    "caption": "MBPFW FW25",
-    "w": 1280,
-    "h": 760,
-    "col": 0
   },
   {
     "image": "/images/shows/bfw-ss26/27.jpg",
@@ -208,5 +180,75 @@
     "w": 1280,
     "h": 1600,
     "col": 0
+  },
+  {
+    "image": "/images/shows/zuzana-kubickova-poetica/07.jpg",
+    "thumb": "/images/shows/zuzana-kubickova-poetica/07-1000.jpg",
+    "caption": "Zuzana Kubíčková Poetica",
+    "w": 1467,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/zuzana-kubickova-poetica/15.jpg",
+    "thumb": "/images/shows/zuzana-kubickova-poetica/15-1000.jpg",
+    "caption": "Zuzana Kubíčková Poetica",
+    "w": 1760,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/designblok-diploma-selection-2026/04.jpg",
+    "thumb": "/images/shows/designblok-diploma-selection-2026/04-1000.jpg",
+    "caption": "Designblok Diploma Selection 2026",
+    "alt": "Model in a cream coat and culottes with draped yellow fabric and a yellow ruffled bag, Józefina Wojtkiewicz at Diploma Selection 2026, the Designblok fashion competition in Prague.",
+    "w": 1760,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/designblok-diploma-selection-2026/14.jpg",
+    "thumb": "/images/shows/designblok-diploma-selection-2026/14-1000.jpg",
+    "caption": "Designblok Diploma Selection 2026",
+    "alt": "Model in a white cage-like crinoline skirt and white boots beside a model in a navy denim dress with a ruffled collar and hooped hem, Jillian-Blair DeRose at Diploma Selection 2026, the Designblok fashion competition in Prague.",
+    "w": 1760,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/mbpfw-ss27/31.jpg",
+    "thumb": "/images/shows/mbpfw-ss27/31-1000.jpg",
+    "caption": "MBPFW SS27",
+    "alt": "Model in a headpiece of gold and red beaded fringe covering her eyes, in warm light, UMPRUM Graduates at MBPFW SS27.",
+    "w": 1760,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/mbpfw-ss27/23.jpg",
+    "thumb": "/images/shows/mbpfw-ss27/23-1000.jpg",
+    "caption": "MBPFW SS27",
+    "alt": "Model in a sheer white lace backless dress against dark plastic sheeting, Hana Valtová at MBPFW SS27.",
+    "w": 1760,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/mbpfw-fw26/17.jpg",
+    "thumb": "/images/shows/mbpfw-fw26/17-1000.jpg",
+    "caption": "MBPFW FW26",
+    "alt": "Three models among ivy, one in a navy hooded jacket, one in a white coat and one in a navy suit with cut-out trousers, Petra Ptáčková at MBPFW FW26.",
+    "w": 1760,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/mbpfw-fw26/04.jpg",
+    "thumb": "/images/shows/mbpfw-fw26/04-1000.jpg",
+    "caption": "MBPFW FW26",
+    "alt": "Model in a yellow draped gown over lilac tulle, posing outside against a corrugated wall, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
+    "w": 1760,
+    "h": 2200
+  },
+  {
+    "image": "/images/shows/mbpfw-fw26/34.jpg",
+    "thumb": "/images/shows/mbpfw-fw26/34-1000.jpg",
+    "caption": "MBPFW FW26",
+    "alt": "Model in a tulle skirt and ruched sheer top with arms out, on a red carpet, Tomáš Němec at MBPFW FW26.",
+    "w": 1760,
+    "h": 2200
   }
 ]
