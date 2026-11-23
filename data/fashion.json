@@ -8,17 +8,28 @@
     "col": 0
   },
   {
-    "image": "/images/shows/bfw-aw26/08.jpg",
-    "caption": "BFW AW26",
+    "image": "/images/shows/jan-societe-show-13/19.jpg",
+    "caption": "Jan Société Show 13",
+    "alt": "Fotky ze zákulisí Jan Société 13 od Petra Šajgala. Fotka z focení lookbooku.",
     "w": 1280,
-    "h": 1919,
+    "h": 1600,
+    "col": 1
+  },
+  {
+    "image": "/images/shows/designblok-diploma-selection-2026/04.jpg",
+    "thumb": "/images/shows/designblok-diploma-selection-2026/04-1000.jpg",
+    "caption": "Designblok Diploma Selection 2026",
+    "alt": "Model in a cream coat and culottes with draped yellow fabric and a yellow ruffled bag, Józefina Wojtkiewicz at Diploma Selection 2026, the Designblok fashion competition in Prague.",
+    "w": 1760,
+    "h": 2200,
     "col": 2
   },
   {
-    "image": "/images/shows/bfw-ss26/05.jpg",
-    "caption": "BFW SS26",
-    "w": 1280,
-    "h": 1920,
+    "image": "/images/shows/zuzana-kubickova-poetica/07.jpg",
+    "thumb": "/images/shows/zuzana-kubickova-poetica/07-1000.jpg",
+    "caption": "Zuzana Kubíčková Poetica",
+    "w": 1467,
+    "h": 2200,
     "col": 3
   },
   {
@@ -30,40 +41,19 @@
     "col": 0
   },
   {
-    "image": "/images/shows/jan-societe-show-13/19.jpg",
-    "caption": "Jan Société Show 13",
-    "alt": "Fotky ze zákulisí Jan Société 13 od Petra Šajgala. Fotka z focení lookbooku.",
-    "w": 1280,
-    "h": 1600,
-    "col": 1
-  },
-  {
-    "image": "/images/shows/jan-societe-show-13/08.jpg",
-    "caption": "Jan Société Show 13",
+    "image": "/images/shows/mbpfw-ss25/06.jpg",
+    "caption": "MBPFW SS25",
     "w": 1280,
     "h": 1922,
-    "col": 2
-  },
-  {
-    "image": "/images/shows/bfw-ss26/01.jpg",
-    "caption": "BFW SS26",
-    "w": 1280,
-    "h": 1600,
-    "col": 0
-  },
-  {
-    "image": "/images/shows/were-next-25/02.jpg",
-    "caption": "WE'RE NEXT 25",
-    "alt": "Portrét modelky v zákulisí WE’RE NEXT 25 – Oděv od Miss Boss",
-    "w": 1280,
-    "h": 1920,
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-ss26/26.jpg",
-    "caption": "BFW SS26",
-    "w": 1280,
-    "h": 1920,
+    "image": "/images/shows/mbpfw-fw26/17.jpg",
+    "thumb": "/images/shows/mbpfw-fw26/17-1000.jpg",
+    "caption": "MBPFW FW26",
+    "alt": "Three models among ivy, one in a navy hooded jacket, one in a white coat and one in a navy suit with cut-out trousers, Petra Ptáčková at MBPFW FW26.",
+    "w": 1760,
+    "h": 2200,
     "col": 2
   },
   {
@@ -74,6 +64,13 @@
     "col": 3
   },
   {
+    "image": "/images/shows/bfw-ss26/01.jpg",
+    "caption": "BFW SS26",
+    "w": 1280,
+    "h": 1600,
+    "col": 0
+  },
+  {
     "image": "/images/shows/were-next-25/04.jpg",
     "caption": "WE'RE NEXT 25",
     "alt": "Portrét modelky v zákulisí WE’RE NEXT 25 – Oděv od Vojtěcha Smrže",
@@ -82,10 +79,10 @@
     "col": 1
   },
   {
-    "image": "/images/shows/mbpfw-ss26/17.jpg",
-    "caption": "MBPFW SS26",
+    "image": "/images/shows/bfw-ss26/05.jpg",
+    "caption": "BFW SS26",
     "w": 1280,
-    "h": 1600,
+    "h": 1920,
     "col": 2
   },
   {
@@ -110,10 +107,10 @@
     "col": 1
   },
   {
-    "image": "/images/shows/mbpfw-fw25/20.jpg",
-    "caption": "MBPFW FW25",
+    "image": "/images/shows/bfw-aw26/08.jpg",
+    "caption": "BFW AW26",
     "w": 1280,
-    "h": 1920,
+    "h": 1919,
     "col": 2
   },
   {
@@ -124,6 +121,13 @@
     "col": 3
   },
   {
+    "image": "/images/shows/mbpfw-fw25/09.jpg",
+    "caption": "MBPFW FW25",
+    "w": 1280,
+    "h": 1920,
+    "col": 0
+  },
+  {
     "image": "/images/shows/bfw-ss26/27.jpg",
     "caption": "BFW SS26",
     "w": 1280,
@@ -131,21 +135,54 @@
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-aw25-x-maria-chany/07.jpg",
-    "caption": "BFW AW25 x Maria Chany",
+    "image": "/images/shows/bfw-ss26/26.jpg",
+    "caption": "BFW SS26",
     "w": 1280,
-    "h": 1600,
+    "h": 1920,
     "col": 2
   },
   {
-    "image": "/images/shows/mbpfw-ss25/06.jpg",
-    "caption": "MBPFW SS25",
+    "image": "/images/shows/jan-societe-show-13/08.jpg",
+    "caption": "Jan Société Show 13",
     "w": 1280,
     "h": 1922,
     "col": 3
   },
   {
-    "image": "/images/shows/mbpfw-fw25/09.jpg",
+    "image": "/images/shows/mbpfw-ss25/01.jpg",
+    "caption": "MBPFW SS25",
+    "alt": "Modelka s šaty od Tomáše Němce na MBPFW SS25 v backstage, MBPFW",
+    "w": 1280,
+    "h": 1600,
+    "col": 0
+  },
+  {
+    "image": "/images/shows/were-next-25/02.jpg",
+    "caption": "WE'RE NEXT 25",
+    "alt": "Portrét modelky v zákulisí WE’RE NEXT 25 – Oděv od Miss Boss",
+    "w": 1280,
+    "h": 1920,
+    "col": 1
+  },
+  {
+    "image": "/images/shows/mbpfw-fw26/34.jpg",
+    "thumb": "/images/shows/mbpfw-fw26/34-1000.jpg",
+    "caption": "MBPFW FW26",
+    "alt": "Model in a tulle skirt and ruched sheer top with arms out, on a red carpet, Tomáš Němec at MBPFW FW26.",
+    "w": 1760,
+    "h": 2200,
+    "col": 2
+  },
+  {
+    "image": "/images/shows/mbpfw-ss25/03.jpg",
+    "caption": "MBPFW SS25",
+    "alt": "Příprava modelu Valerie Jurčíkové na MBPFW SS25",
+    "w": 1280,
+    "h": 1600,
+    "col": 3
+  },
+  {
+    "image": "/images/shows/mbpfw-fw25/20.jpg",
     "caption": "MBPFW FW25",
     "w": 1280,
     "h": 1920,
@@ -159,65 +196,11 @@
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-aw25-x-maria-chany/03.jpg",
+    "image": "/images/shows/bfw-aw25-x-maria-chany/07.jpg",
     "caption": "BFW AW25 x Maria Chany",
     "w": 1280,
     "h": 1600,
     "col": 2
-  },
-  {
-    "image": "/images/shows/mbpfw-ss25/03.jpg",
-    "caption": "MBPFW SS25",
-    "alt": "Příprava modelu Valerie Jurčíkové na MBPFW SS25",
-    "w": 1280,
-    "h": 1600,
-    "col": 3
-  },
-  {
-    "image": "/images/shows/mbpfw-ss25/01.jpg",
-    "caption": "MBPFW SS25",
-    "alt": "Modelka s šaty od Tomáše Němce na MBPFW SS25 v backstage, MBPFW",
-    "w": 1280,
-    "h": 1600,
-    "col": 0
-  },
-  {
-    "image": "/images/shows/zuzana-kubickova-poetica/07.jpg",
-    "thumb": "/images/shows/zuzana-kubickova-poetica/07-1000.jpg",
-    "caption": "Zuzana Kubíčková Poetica",
-    "w": 1467,
-    "h": 2200
-  },
-  {
-    "image": "/images/shows/zuzana-kubickova-poetica/15.jpg",
-    "thumb": "/images/shows/zuzana-kubickova-poetica/15-1000.jpg",
-    "caption": "Zuzana Kubíčková Poetica",
-    "w": 1760,
-    "h": 2200
-  },
-  {
-    "image": "/images/shows/designblok-diploma-selection-2026/04.jpg",
-    "thumb": "/images/shows/designblok-diploma-selection-2026/04-1000.jpg",
-    "caption": "Designblok Diploma Selection 2026",
-    "alt": "Model in a cream coat and culottes with draped yellow fabric and a yellow ruffled bag, Józefina Wojtkiewicz at Diploma Selection 2026, the Designblok fashion competition in Prague.",
-    "w": 1760,
-    "h": 2200
-  },
-  {
-    "image": "/images/shows/designblok-diploma-selection-2026/14.jpg",
-    "thumb": "/images/shows/designblok-diploma-selection-2026/14-1000.jpg",
-    "caption": "Designblok Diploma Selection 2026",
-    "alt": "Model in a white cage-like crinoline skirt and white boots beside a model in a navy denim dress with a ruffled collar and hooped hem, Jillian-Blair DeRose at Diploma Selection 2026, the Designblok fashion competition in Prague.",
-    "w": 1760,
-    "h": 2200
-  },
-  {
-    "image": "/images/shows/mbpfw-ss27/31.jpg",
-    "thumb": "/images/shows/mbpfw-ss27/31-1000.jpg",
-    "caption": "MBPFW SS27",
-    "alt": "Model in a headpiece of gold and red beaded fringe covering her eyes, in warm light, UMPRUM Graduates at MBPFW SS27.",
-    "w": 1760,
-    "h": 2200
   },
   {
     "image": "/images/shows/mbpfw-ss27/23.jpg",
@@ -225,15 +208,41 @@
     "caption": "MBPFW SS27",
     "alt": "Model in a sheer white lace backless dress against dark plastic sheeting, Hana Valtová at MBPFW SS27.",
     "w": 1760,
-    "h": 2200
+    "h": 2200,
+    "col": 3
   },
   {
-    "image": "/images/shows/mbpfw-fw26/17.jpg",
-    "thumb": "/images/shows/mbpfw-fw26/17-1000.jpg",
-    "caption": "MBPFW FW26",
-    "alt": "Three models among ivy, one in a navy hooded jacket, one in a white coat and one in a navy suit with cut-out trousers, Petra Ptáčková at MBPFW FW26.",
+    "image": "/images/shows/designblok-diploma-selection-2026/14.jpg",
+    "thumb": "/images/shows/designblok-diploma-selection-2026/14-1000.jpg",
+    "caption": "Designblok Diploma Selection 2026",
+    "alt": "Model in a white cage-like crinoline skirt and white boots beside a model in a navy denim dress with a ruffled collar and hooped hem, Jillian-Blair DeRose at Diploma Selection 2026, the Designblok fashion competition in Prague.",
     "w": 1760,
-    "h": 2200
+    "h": 2200,
+    "col": 0
+  },
+  {
+    "image": "/images/shows/zuzana-kubickova-poetica/15.jpg",
+    "thumb": "/images/shows/zuzana-kubickova-poetica/15-1000.jpg",
+    "caption": "Zuzana Kubíčková Poetica",
+    "w": 1760,
+    "h": 2200,
+    "col": 1
+  },
+  {
+    "image": "/images/shows/bfw-aw25-x-maria-chany/03.jpg",
+    "caption": "BFW AW25 x Maria Chany",
+    "w": 1280,
+    "h": 1600,
+    "col": 2
+  },
+  {
+    "image": "/images/shows/mbpfw-ss27/31.jpg",
+    "thumb": "/images/shows/mbpfw-ss27/31-1000.jpg",
+    "caption": "MBPFW SS27",
+    "alt": "Model in a headpiece of gold and red beaded fringe covering her eyes, in warm light, UMPRUM Graduates at MBPFW SS27.",
+    "w": 1760,
+    "h": 2200,
+    "col": 3
   },
   {
     "image": "/images/shows/mbpfw-fw26/04.jpg",
@@ -241,14 +250,14 @@
     "caption": "MBPFW FW26",
     "alt": "Model in a yellow draped gown over lilac tulle, posing outside against a corrugated wall, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
     "w": 1760,
-    "h": 2200
+    "h": 2200,
+    "col": 0
   },
   {
-    "image": "/images/shows/mbpfw-fw26/34.jpg",
-    "thumb": "/images/shows/mbpfw-fw26/34-1000.jpg",
-    "caption": "MBPFW FW26",
-    "alt": "Model in a tulle skirt and ruched sheer top with arms out, on a red carpet, Tomáš Němec at MBPFW FW26.",
-    "w": 1760,
-    "h": 2200
+    "image": "/images/shows/mbpfw-ss26/17.jpg",
+    "caption": "MBPFW SS26",
+    "w": 1280,
+    "h": 1600,
+    "col": 1
   }
 ]
