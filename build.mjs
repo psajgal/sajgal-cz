@@ -374,7 +374,6 @@ ${gallery(items, c.ctx, "", LAYOUTS[c.data])}
     const cards = published.map((s, i) => {
       const cover = coverOf(s), href = L("/fashion/" + s.slug);
       const sub = [s.event, niceDate(s.date)].filter(Boolean).join(" · ");
-      const line = ((s.summary && s.summary.trim()) || ((s.description || "").split(/(?<=[.!?])\s/)[0] || "")).trim();
       const shown = [cover, ...s.photos.filter((p) => p !== cover)].slice(0, 4);
       const imgs = shown.map((p, k) => {
         const t = thumbOf(p), attrs = `src="${esc(A(t ? t.src : p.image))}" alt="${k === 0 ? esc(altFor(p, s.title + " fashion show", 0)) : ""}"${p.w && p.h ? ` width="${p.w}" height="${p.h}"` : ""}${i < 2 && k < 4 ? "" : ' loading="lazy"'} decoding="async"`;
@@ -383,7 +382,7 @@ ${gallery(items, c.ctx, "", LAYOUTS[c.data])}
       return `<section class="brand fshow">
 <div class="cluster">${imgs}</div>
 <h2 class="disp"><a href="${href}">${esc(s.title)}</a></h2>
-${sub ? `<p class="meta">${esc(sub)}</p>` : ""}${line ? `\n<p class="line">${esc(line)}</p>` : ""}
+${sub ? `<p class="meta">${esc(sub)}</p>` : ""}
 <a class="all" href="${href}">View all ${s.photos.length} photos <span aria-hidden="true">→</span></a>
 </section>`;
     }).join("\n");
