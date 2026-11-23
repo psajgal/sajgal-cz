@@ -410,7 +410,7 @@ ${cards}
     auto: (s, when) => `Photos from ${s.title}${s.designer ? ` by ${s.designer}` : ""}${s.location ? `, ${s.location}` : ""}${when ? ` (${when})` : ""}: runway and backstage photography by ${NAME}.`
   };
   const BRAND_CFG = {
-    base: "/commercial", listLabel: "All commercial work", crumbs: (s) => [["Home", "/"], ["Commercial", "/commercial"], [s.title, "/commercial/" + s.slug]],
+    base: "/commercial", listLabel: "All brands", crumbs: (s) => [["Home", "/"], ["Commercial", "/commercial"], [s.title, "/commercial/" + s.slug]],
     ctx: (s) => `${s.title} commercial photography`, titleTail: "commercial photography", more: "More brands", noun: "brand", live: liveBrands,
     facts: (s, when) => [["Year", when]],
     auto: (s, when) => `Commercial and campaign photography for ${s.title}${when ? ` (${when})` : ""} by ${NAME}, fashion photographer from ${S.site.country}.`
@@ -432,26 +432,15 @@ ${cards}
       if (live && !text) warn(`${route}: no description text. Two or three sentences about the ${cfg.noun} help it rank.`);
       const facts = cfg.facts(s, when).filter(([, v]) => v);
       const paras = (s.description || s.summary || "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
-      const idx = cfg.live.findIndex((x) => x.slug === s.slug);
-      const others = [];
-      for (let k = 1; k < cfg.live.length && others.length < 3; k++) others.push(cfg.live[(Math.max(idx, 0) + k) % cfg.live.length]);
-      const allLink = `<p class="more"><a class="disp" href="${L(cfg.base)}">${cfg.listLabel} <span aria-hidden="true">→</span></a></p>`;
-      const othersHtml = others.length ? `<nav class="more-shows" aria-label="${cfg.more}">
-<h2 class="disp">${cfg.more}</h2>
-<ul class="shows">
-${others.map((o) => { const cv = coverOf(o), t = thumbOf(cv); return `<li><a class="show" href="${L(cfg.base + "/" + o.slug)}"><img src="${esc(A(t ? t.src : cv.image))}" alt="${esc(altFor(cv, cfg.ctx(o), 0))}"${cv.w && cv.h ? ` width="${cv.w}" height="${cv.h}"` : ""} loading="lazy" decoding="async"><span class="t disp">${esc(o.title)}</span></a></li>`; }).join("\n")}
-</ul>
-${allLink}
-</nav>` : allLink;
+      const topLink = `<a class="toplink" href="${L(cfg.base)}">${cfg.listLabel} <span aria-hidden="true">→</span></a>\n`;
       const body = `${back(cfg.base, cfg === BRAND_CFG ? "Back to commercial work" : "Back to all shows")}
-<main class="gut">
+${topLink}<main class="gut">
 <header class="show-head">
 <h1 class="disp">${esc(s.title)}</h1>
 ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
 ${paras.map((x) => `<p>${esc(x).replace(/\n/g, "<br>")}</p>`).join("\n")}
 </header>
 ${gallery(s.photos, ctx, "after-head", s.layout)}
-${live ? othersHtml : ""}
 </main>`;
       const first = s.photos.find((p) => isRaster(p.image));
       const dateIso = /^\d{4}-\d{2}(-\d{2})?$/.test(s.date || "") ? s.date : undefined;
