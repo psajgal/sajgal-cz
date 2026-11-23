@@ -1,0 +1,21 @@
+[
+  {
+    "id": "fashion-shows"
+  },
+  {
+    "id": "editorial",
+    "hidden": true,
+    "unpublished": true
+  },
+  {
+    "id": "commercial"
+  },
+  {
+    "id": "video",
+    "hidden": true,
+    "unpublished": true
+  },
+  {
+    "id": "personal"
+  }
+]
