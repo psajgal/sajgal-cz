@@ -87,6 +87,7 @@ const SITE = S.site.url.replace(/\/$/, "");
 const NAME = S.site.name;
 const YEAR = new Date().getFullYear();
 const INSTAGRAM = S.site.instagram ? `https://www.instagram.com/${S.site.instagram}/` : "";
+const PORTRAIT = { w: 1600, h: 2000 };
 const REDDIT = S.site.reddit ? `https://www.reddit.com/user/${S.site.reddit}/` : "";
 
 const CATS = [
@@ -223,6 +224,7 @@ const person = () => ({
   nationality: { "@type": "Country", name: S.site.country },
   knowsAbout: ["Fashion photography", "Runway photography", "Backstage photography", "Editorial photography"],
   ...(S.site.email ? { email: S.site.email } : {}),
+  image: abs("/images/contact/petr-sajgal-portrait.jpg"),
   ...(INSTAGRAM || REDDIT ? { sameAs: [INSTAGRAM, REDDIT].filter(Boolean) } : {})
 });
 const crumbs = (items) => ({
@@ -548,14 +550,16 @@ ${tiles}
     const links = [
       S.site.email ? `Email: <a href="mailto:${esc(S.site.email)}">${esc(S.site.email)}</a>` : "",
       INSTAGRAM ? `Instagram: <a href="${esc(INSTAGRAM)}" target="_blank" rel="noopener">${esc(S.site.instagram)}</a>` : "",
-      REDDIT ? `Reddit: <a href="${esc(REDDIT)}" target="_blank" rel="noopener">u/${esc(S.site.reddit)}</a>` : ""
     ].filter(Boolean).join("<br>\n");
     const body = `${back("/", "Back to home")}
 <main class="gut contact">
+<div class="ct">
 <h1 class="disp">Contact</h1>
 ${bio.map((p) => `<p>${esc(p)}</p>`).join("\n")}
 <p>Get in touch:<br>
 ${links}</p>
+</div>
+<figure class="cph"><img src="${esc(A("/images/contact/petr-sajgal-portrait.jpg"))}" alt="Portrait of Petr Šajgal, fashion photographer" width="${PORTRAIT.w}" height="${PORTRAIT.h}" fetchpriority="high" decoding="async"></figure>
 </main>`;
     emit("/contact", shell({
       route: "/contact", title: pg.title, description: pg.description,
