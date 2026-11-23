@@ -432,15 +432,16 @@ ${cards}
       if (live && !text) warn(`${route}: no description text. Two or three sentences about the ${cfg.noun} help it rank.`);
       const facts = cfg.facts(s, when).filter(([, v]) => v);
       const paras = (s.description || s.summary || "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
-      const topLink = `<a class="toplink" href="${L(cfg.base)}">${cfg.listLabel} <span aria-hidden="true">→</span></a>\n`;
+      const allLink = `<p class="more"><a class="disp" href="${L(cfg.base)}">${cfg.listLabel} <span aria-hidden="true">→</span></a></p>`;
       const body = `${back(cfg.base, cfg === BRAND_CFG ? "Back to commercial work" : "Back to all shows")}
-${topLink}<main class="gut">
+<main class="gut">
 <header class="show-head">
 <h1 class="disp">${esc(s.title)}</h1>
 ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
 ${paras.map((x) => `<p>${esc(x).replace(/\n/g, "<br>")}</p>`).join("\n")}
 </header>
 ${gallery(s.photos, ctx, "after-head", s.layout)}
+${live ? allLink : ""}
 </main>`;
       const first = s.photos.find((p) => isRaster(p.image));
       const dateIso = /^\d{4}-\d{2}(-\d{2})?$/.test(s.date || "") ? s.date : undefined;
