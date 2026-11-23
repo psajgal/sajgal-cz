@@ -260,8 +260,16 @@ function cropOf(p) {
   const fx = cl(p.fx, 0, 100, 50), fy = cl(p.fy, 0, 100, 50), z = cl(p.z, 1, 4, 1), r = (n) => +n.toFixed(2);
   return { ar: `${m[1]} / ${m[2]}`, img: `position:absolute;width:${r(z * 100)}%;height:${r(z * 100)}%;max-width:none;left:-${r((z - 1) * fx)}%;top:-${r((z - 1) * fy)}%;object-fit:cover;object-position:${r(fx)}% ${r(fy)}%` };
 }
+// On the selected fashion page, each photo knows which show page it comes from, so the viewer can offer "Go to show".
+let SHOW_LINKS = false;
+const PUB_SLUGS = new Set(published.map((s) => s.slug));
+function showHref(p) {
+  if (!SHOW_LINKS) return "";
+  const m = /^\/images\/shows\/([^/]+)\//.exec(String(p.image || ""));
+  return m && PUB_SLUGS.has(m[1]) ? L("/fashion/" + m[1]) : "";
+}
 function photoLink(p, i, ctx, sizes, pin = false) {
-  const t = thumbOf(p), eager = i < 4, crop = cropOf(p);
+  const t = thumbOf(p), eager = i < 4, crop = cropOf(p), sh = showHref(p);
   const attrs = [
     `src="${esc(A(t ? t.src : p.image))}"`,
     t ? `srcset="${esc(A(t.src))} ${t.w}w, ${esc(A(p.image))} ${p.w}w" sizes="${sizes}"` : "",
@@ -271,7 +279,7 @@ function photoLink(p, i, ctx, sizes, pin = false) {
     'decoding="async"',
     crop ? `style="${crop.img}"` : ""
   ].filter(Boolean).join(" ");
-  return `<a href="${esc(A(p.image))}"${pin && Number.isInteger(p.col) && p.col >= 0 && p.col < 6 ? ` data-col="${p.col}"` : ""}${crop ? ` class="crop" style="aspect-ratio:${crop.ar}"` : ""} data-cap="${esc(p.caption || "")}"><img ${attrs}></a>`;
+  return `<a href="${esc(A(p.image))}"${pin && Number.isInteger(p.col) && p.col >= 0 && p.col < 6 ? ` data-col="${p.col}"` : ""}${crop ? ` class="crop" style="aspect-ratio:${crop.ar}"` : ""} data-cap="${esc(p.caption || "")}"${sh ? ` data-show="${esc(sh)}"` : ""}><img ${attrs}></a>`;
 }
 // A page's photos can carry a hand-made layout: `row` groups photos side by side, `cols` is the column width
 // out of 12 (set on the first photo of a column) and `stack` puts a photo under the one before it.
@@ -340,6 +348,7 @@ ${menuItems.map((m) => `    <a class="disp" href="${L(m[2])}">${m[1]}</a>`).join
   for (const c of CATS) {
     CUR = c.route;
     const items = photos(readJSON(`data/${c.data}.json`, []));
+    SHOW_LINKS = c.key === "fashion-shows";
     const pg = S.pages[c.key];
     const live = items.some((p) => isRaster(p.image));
     checkMeta(c.route, pg.title, pg.description);

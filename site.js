@@ -17,13 +17,14 @@
   lb.innerHTML = '<button class="x" type="button" aria-label="Close">&times;</button>' +
     '<button class="prev" type="button" aria-label="Previous photo">&#8592;</button>' +
     '<button class="next" type="button" aria-label="Next photo">&#8594;</button>' +
+    '<a class="goto" href="#" hidden>Go to show <span aria-hidden="true">\u2192</span></a>' +
     '<figure><img alt=""><figcaption></figcaption></figure>';
   document.body.appendChild(lb);
-  var big = lb.querySelector("img"), cap = lb.querySelector("figcaption");
+  var big = lb.querySelector("img"), cap = lb.querySelector("figcaption"), go = lb.querySelector(".goto");
 
   function data(i) {
     var a = links[i], im = a.querySelector("img");
-    return { src: a.getAttribute("href"), caption: a.dataset.cap || "", alt: im ? im.alt : "" };
+    return { src: a.getAttribute("href"), caption: a.dataset.cap || "", alt: im ? im.alt : "", show: a.dataset.show || "" };
   }
   links.forEach(function (a, i) {
     a.addEventListener("click", function (e) {
@@ -37,6 +38,7 @@
     var p = data(current);
     big.src = p.src; big.alt = p.alt;
     cap.textContent = p.caption;
+    if (p.show) { go.href = p.show; go.hidden = false; } else { go.hidden = true; }
     [1, -1].forEach(function (d) { new Image().src = data((current + d + links.length) % links.length).src; });
   }
   function open(i, from) {
