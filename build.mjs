@@ -319,7 +319,7 @@ function render() {
   <div class="bg" id="bg" aria-hidden="true" data-clips="${clipsJson}">${vids}</div>
   <header class="top gut">
     <h1 class="name disp"><a href="${L("/")}">${esc(NAME)}</a><span class="sr"> – ${esc(S.site.tagline)}</span></h1>
-    <nav aria-label="Contact"><a href="${L("/contact")}">Contact</a></nav>
+    <nav aria-label="Contact"><a href="${L("/contact")}">Contact<span class="arr" aria-hidden="true"> →</span></a></nav>
   </header>
   <nav class="menu gut" aria-label="Sections">
 ${menuItems.map((m) => `    <a class="disp" href="${L(m[2])}">${m[1]}</a>`).join("\n")}

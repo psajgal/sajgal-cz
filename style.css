@@ -29,6 +29,14 @@ a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offs
 .name a{text-decoration:none}
 .top nav a{text-decoration:none;opacity:.85;padding:.25rem 0;transition:opacity .15s}
 .top nav a:hover{opacity:1}
+.top nav .arr{display:none}
+@media (min-width:701px){
+  .top nav{position:absolute;right:var(--pad);top:calc(var(--pad) + 3.5rem)}
+  .top nav a{writing-mode:vertical-rl;font-size:1.2rem;font-stretch:125%;letter-spacing:.06em;opacity:1;padding:0}
+  .top nav .arr{display:inline-block;margin-top:.5rem;transition:transform .3s}
+  .top nav a:hover{opacity:.65}
+  .top nav a:hover .arr{transform:translateY(5px)}
+}
 .menu{position:absolute;left:0;bottom:0;z-index:3;display:flex;flex-direction:column;align-items:flex-start;gap:.1em;padding-bottom:clamp(28px,6vh,64px)}
 .menu a{text-decoration:none;font-size:clamp(1.6rem,3.4vw,3.4rem);line-height:1.1;transition:opacity .2s}
 .menu a:hover,.menu a:focus-visible{opacity:.65}
