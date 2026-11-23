@@ -106,7 +106,7 @@
   function videoItem(p) { return { id: ++uid, src: p.video || "", mobile: p.mobile || "", poster: p.poster || "" }; }
   function showModel(s) {
     return {
-      key: ++uid, slug: s.slug || "", origSlug: s.slug || "", title: s.title || "", summary: s.summary || "", event: s.event || "", designer: s.designer || "",
+      key: ++uid, slug: s.slug || "", origSlug: s.slug || "", title: s.title || "", summary: s.summary || "", website: s.website || "", event: s.event || "", designer: s.designer || "",
       date: s.date || "", location: s.location || "", description: s.description || "", seoTitle: s.seoTitle || "",
       seoDescription: s.seoDescription || "", hidden: s.hidden === true, layout: s.layout || null, cover: s.cover || "", photos: (s.photos || []).filter(function (p) { return p.image; }).map(photoItem)
     };
@@ -153,7 +153,7 @@
     if (k === "entries") {
       return s.map(function (x) {
         var base = { slug: x.slug, title: x.title.trim() };
-        if (id === "brands") base.summary = x.summary.trim();
+        if (id === "brands") { base.summary = x.summary.trim(); if ((x.website || "").trim()) base.website = x.website.trim(); }
         else { base.event = x.event.trim(); base.designer = x.designer.trim(); }
         base.date = x.date.trim();
         if (id === "shows") base.location = x.location.trim();
@@ -1565,6 +1565,7 @@
       title,
       h("div", { class: "fld wide" }, [h("span", { text: "Web address" }), h("div", { class: "urlrow" }, [h("span", { class: "pre", text: "sajgal.cz" + E.base + "/" }), urlInput, changeBtn]), urlNote]),
       isShow ? textField("Event or fashion week", s.event, function (v) { s.event = v; markDirty(); }, { placeholder: "e.g. Berlin Fashion Week" }) : textField("One-line summary", s.summary, function (v) { s.summary = v; markDirty(); }, { wide: true, placeholder: "e.g. Autumn campaign, Prague", note: "Shown under the brand's photos on the Commercial page." }),
+      isShow ? null : textField("Brand website", s.website, function (v) { s.website = v; markDirty(); }, { wide: true, placeholder: "e.g. un-titled.org", note: "Shown as a link on the brand page. Links to the client's site help both of you in search." }),
       isShow ? textField("Designer or brand", s.designer, function (v) { s.designer = v; markDirty(); upd.forEach(function (f) { f(); }); }) : null,
       isShow ? textField("Location", s.location, function (v) { s.location = v; markDirty(); upd.forEach(function (f) { f(); }); }, { placeholder: "e.g. Berlin" }) : null,
       dateInp,

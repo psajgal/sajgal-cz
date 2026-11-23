@@ -409,10 +409,11 @@ ${cards}
     facts: (s, when) => [["Event", s.event], ["Designer", s.designer], ["Location", s.location], ["Date", when]],
     auto: (s, when) => `Photos from ${s.title}${s.designer ? ` by ${s.designer}` : ""}${s.location ? `, ${s.location}` : ""}${when ? ` (${when})` : ""}: runway and backstage photography by ${NAME}.`
   };
+  const siteLink = (u) => { u = (u || "").trim(); if (!u) return ""; if (!/^https?:\/\//i.test(u)) u = "https://" + u; try { const x = new URL(u); return { href: x.href, text: x.hostname.replace(/^www\./, "") }; } catch { return ""; } };
   const BRAND_CFG = {
     base: "/commercial", listLabel: "All brands", crumbs: (s) => [["Home", "/"], ["Commercial", "/commercial"], [s.title, "/commercial/" + s.slug]],
     ctx: (s) => `${s.title} commercial photography`, titleTail: "commercial photography", more: "More brands", noun: "brand", live: liveBrands,
-    facts: (s, when) => [["Year", when]],
+    facts: (s, when) => [["Year", when], ["Website", siteLink(s.website)]],
     auto: (s, when) => `Commercial and campaign photography for ${s.title}${when ? ` (${when})` : ""} by ${NAME}, fashion photographer from ${S.site.country}.`
   };
   function entryPages(cfg, list) {
@@ -437,7 +438,7 @@ ${cards}
 <main class="gut">
 <header class="show-head">
 <h1 class="disp">${esc(s.title)}</h1>
-${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
+${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${typeof v === "object" ? `<a href="${esc(v.href)}" target="_blank" rel="noopener">${esc(v.text)} <span aria-hidden="true">↗</span></a>` : esc(v)}</dd></div>`).join("")}</dl>` : ""}
 ${paras.map((x) => `<p>${esc(x).replace(/\n/g, "<br>")}</p>`).join("\n")}
 </header>
 ${gallery(s.photos, ctx, "after-head", s.layout)}
@@ -448,7 +449,7 @@ ${live ? allLink : ""}
       emit(route, shell({
         route, title, description, noindex: !live, ogType: "article",
         ogImage: first ? { src: first.image, w: first.w, h: first.h } : null, ogAlt: first ? altFor(first, ctx, 0) : "",
-        jsonld: { "@context": "https://schema.org", "@graph": [crumbs(cfg.crumbs(s)), { "@type": "ImageGallery", "@id": SITE + route + "#gallery", url: SITE + route, name: s.title, description, inLanguage: "en", isPartOf: { "@id": SITE + "/#website" }, author: { "@type": "Person", name: NAME, url: SITE + "/" }, ...(dateIso ? { dateCreated: dateIso } : {}), ...(s.location ? { contentLocation: { "@type": "Place", name: s.location } } : {}), ...(s.designer ? { about: { "@type": "Person", name: s.designer } } : {}), image: imageObjects(s.photos, ctx) }] },
+        jsonld: { "@context": "https://schema.org", "@graph": [crumbs(cfg.crumbs(s)), { "@type": "ImageGallery", "@id": SITE + route + "#gallery", url: SITE + route, name: s.title, description, inLanguage: "en", isPartOf: { "@id": SITE + "/#website" }, author: { "@type": "Person", name: NAME, url: SITE + "/" }, ...(dateIso ? { dateCreated: dateIso } : {}), ...(s.location ? { contentLocation: { "@type": "Place", name: s.location } } : {}), ...(s.designer ? { about: { "@type": "Person", name: s.designer } } : {}), ...(cfg === BRAND_CFG && siteLink(s.website) ? { about: { "@type": "Organization", name: s.title, url: siteLink(s.website).href } } : {}), image: imageObjects(s.photos, ctx) }] },
         body, scripts: ["masonry.js", "site.js"]
       }));
       if (live) sitemap.push({ route, images: s.photos.filter((p) => isRaster(p.image)).slice(0, 1000).map((p, i) => ({ loc: p.image, title: altFor(p, ctx, i), caption: p.caption })) });
