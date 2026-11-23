@@ -15,7 +15,10 @@
   bar.appendChild(back); bar.appendChild(msg);
   function say(text, kind) { msg.textContent = text; bar.style.background = kind === "busy" ? "#1565c0" : "#b86e00"; }
   say("DRAFT PREVIEW  ·  not public yet", "draft");
-  document.addEventListener("DOMContentLoaded", function () { document.body.appendChild(bar); });
+  /* The bar is fixed to the bottom: tell the page how tall it is so the photo viewer and other fixed parts stop above it. */
+  function size() { document.documentElement.style.setProperty("--draftbar", bar.offsetHeight + "px"); }
+  document.addEventListener("DOMContentLoaded", function () { document.body.appendChild(bar); size(); });
+  window.addEventListener("resize", size);
   function build() { return fetch("/_build.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.json(); }).catch(function () { return null; }); }
   function head() { return fetch("https://api.github.com/repos/" + REPO + "/git/ref/heads/" + BRANCH, { headers: { Accept: "application/vnd.github+json" } }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { return j && j.object && j.object.sha; }).catch(function () { return null; }); }
   build().then(function (j) { mine = (j && j.sha) || ""; if (!mine) return; check(); });
