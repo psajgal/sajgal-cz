@@ -1,1219 +1,5 @@
 [
   {
-    "slug": "exist-2026",
-    "title": "EXIST 2026",
-    "event": "EXIST 2026",
-    "designer": "ADO Zlín",
-    "date": "2026-06",
-    "location": "",
-    "article": "https://www.instagram.com/p/DZ2ZELEiFY6/",
-    "articleLabel": "Photos published on ELLE Czech Instagram",
-    "description": "Backstage photos from EXIST 2026, the graduate showcase of the Fashion Design studio (ADO) of Tomas Bata University in Zlín.",
-    "seoTitle": "",
-    "seoDescription": "",
-    "cover": "",
-    "photos": [
-      {
-        "image": "/images/shows/exist-2026/01.jpg",
-        "thumb": "/images/shows/exist-2026/01-1000.jpg",
-        "caption": "",
-        "alt": "Model in a shaggy blue and yellow plaid cardigan and a brown cap, holding grey knitted toy mice, against a white wall, Sofia Blahútová at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/exist-2026/07.jpg",
-        "thumb": "/images/shows/exist-2026/07-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a model in a metal leaf-shaped headpiece and embossed silver collar, with red embroidered lips, Nina Peschlová at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/exist-2026/12.jpg",
-        "thumb": "/images/shows/exist-2026/12-1000.jpg",
-        "caption": "",
-        "alt": "Model in a face mask with blue lace appliqué, a grey oversized trench jacket and a long skirt, in a concrete passage, Sofia Blahútová at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/exist-2026/13.jpg",
-        "thumb": "/images/shows/exist-2026/13-1000.jpg",
-        "caption": "",
-        "alt": "Model in a blue plaid mohair cardigan, a brown cap and a long check skirt with blue shoes, holding grey toys, in a white corner, Sofia Blahútová at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/exist-2026/05.jpg",
-        "thumb": "/images/shows/exist-2026/05-1000.jpg",
-        "caption": "",
-        "alt": "Three models, one in a blue knit with a pink zip top and a headband, one in a sage velvet backless coat over burgundy satin, and one in a glossy dark green jacket with striped pleated trousers, Dorota Kostelná at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/exist-2026/08.jpg",
-        "thumb": "/images/shows/exist-2026/08-1000.jpg",
-        "caption": "",
-        "alt": "Two models against a white wall, one in a cream puffball dress with a cross cut-out and white socks, the other in a purple wool jacket with a belt over a lace skirt, Denisa Šopíková at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/exist-2026/06.jpg",
-        "thumb": "/images/shows/exist-2026/06-1000.jpg",
-        "caption": "",
-        "alt": "Model on the runway in a silver slip dress with a metal-scale headpiece and shoulder piece, holding a silver bag, with the audience beside her, Nina Peschlová at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/exist-2026/10.jpg",
-        "thumb": "/images/shows/exist-2026/10-1000.jpg",
-        "caption": "",
-        "alt": "Model in a striped top with padded shoulders, floral scarves, a cream fringed skirt and a rope headpiece, holding a striped plush toy, Sofia Blahútová at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/exist-2026/09.jpg",
-        "thumb": "/images/shows/exist-2026/09-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a purple wool jacket with laser-cut floral patterns, white feathers and a silver buckle belt, Denisa Šopíková at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/exist-2026/02.jpg",
-        "thumb": "/images/shows/exist-2026/02-1000.jpg",
-        "caption": "",
-        "alt": "Model with a dark bob seen from behind, arms raised, in a backless burgundy corduroy top with white feathers and a white corset waistband, Dorota Kostelná at EXIST 2026.",
-        "w": 1466,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/exist-2026/03.jpg",
-        "thumb": "/images/shows/exist-2026/03-1000.jpg",
-        "caption": "",
-        "alt": "Two models in a courtyard, one in a pale blue draped silk dress and headscarf holding a bouquet, the other in a sheer ivory top with a blue-and-white check wrap skirt, Štefan Štajer at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/exist-2026/11.jpg",
-        "thumb": "/images/shows/exist-2026/11-1000.jpg",
-        "caption": "",
-        "alt": "Model in a long red dress with a high collar and a side opening over lilac lace underwear, with a red hairband, Denisa Šopíková at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/exist-2026/04.jpg",
-        "thumb": "/images/shows/exist-2026/04-1000.jpg",
-        "caption": "",
-        "alt": "Model in an oversized white jacket and a long white skirt with a train, standing by road signs on a white wall, Viktorie Polánová at EXIST 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      }
-    ],
-    "layout": {
-      "cols": 4
-    }
-  },
-  {
-    "slug": "mbpfw-ss27",
-    "title": "MBPFW SS27",
-    "event": "Mercedes-Benz Prague Fashion Week",
-    "designer": "",
-    "date": "2026-09",
-    "location": "Prague",
-    "article": "https://www.elle.cz/moda/modni-prehlidky/mbpfw-2026-ceska-moda-pohledem-nove-generace-y2k-denim-i-chanel",
-    "articleLabel": "Photos published in ELLE.cz",
-    "description": "Backstage and runway photos from Mercedes-Benz Prague Fashion Week SS27, 5 to 7 September 2026.",
-    "seoTitle": "",
-    "seoDescription": "",
-    "cover": "",
-    "photos": [
-      {
-        "image": "/images/shows/mbpfw-ss27/01.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/01-1000.jpg",
-        "caption": "",
-        "alt": "Blonde model with smoky eyes in a mustard top with black fringe, backstage, On The Boat at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/02.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/02-1000.jpg",
-        "caption": "",
-        "alt": "Models backstage in a mustard fringed top, a white top with a brown detail and a black beaded top, On The Boat at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/03.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/03-1000.jpg",
-        "caption": "",
-        "alt": "Model in a grey satin gown with a flounced hem on a staircase, backstage, On The Boat at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/04.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/04-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a model with smoky eyes in a white shirt with a cord bow at the collar, On The Boat at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/05.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/05-1000.jpg",
-        "caption": "",
-        "alt": "Model with smoky eyes in a black satin top with a pale blue cord choker, backstage, On The Boat at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/06.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/06-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a brown sequined sleeveless dress with a folded panel at the neckline, Petra Balvin at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/07.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/07-1000.jpg",
-        "caption": "",
-        "alt": "Two models backstage in grey knitwear, one in a dress with a high collar and one in a cropped cardigan, Petra Balvin at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/08.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/08-1000.jpg",
-        "caption": "",
-        "alt": "Model in an olive crinkled leather trench coat and layered olive hats, backstage, Barbora Kotěšovcová at MBPFW SS27.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/09.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/09-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a model with a bleached bun and black headband in a black fringed scarf and a pink wrap, Barbora Kotěšovcová at MBPFW SS27.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/10.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/10-1000.jpg",
-        "caption": "",
-        "alt": "Three models in white and black headbands and black layers, with a camera in the foreground, backstage, Barbora Kotěšovcová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/11.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/11-1000.jpg",
-        "caption": "",
-        "alt": "Line-up backstage of models in black and olive coats with bleached buns and headbands, Barbora Kotěšovcová at MBPFW SS27.",
-        "w": 2200,
-        "h": 1760
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/12.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/12-1000.jpg",
-        "caption": "",
-        "alt": "Model in a khaki draped dress with a photographer in front, backstage, Barbora Kotěšovcová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/13.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/13-1000.jpg",
-        "caption": "",
-        "alt": "Models in black headbands, one in round glasses, wearing sheer beige and black layers, backstage, Barbora Kotěšovcová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/14.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/14-1000.jpg",
-        "caption": "",
-        "alt": "Model in a red and white striped jacket carrying a bag while a dresser holds up sandals, backstage, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/15.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/15-1000.jpg",
-        "caption": "",
-        "alt": "Model in a red and white oversized coat with a small red hat, backstage, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/16.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/16-1000.jpg",
-        "caption": "",
-        "alt": "Model with short curly hair in a yellow faux-fur coat, backstage, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/17.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/17-1000.jpg",
-        "caption": "",
-        "alt": "Backstage view of models in a pink shirt and a pink organza dress, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/18.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/18-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a black satin corset dress against a blue wall, Hana Valtová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/19.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/19-1000.jpg",
-        "caption": "",
-        "alt": "Layered white lace skirts hanging backstage, Hana Valtová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/20.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/20-1000.jpg",
-        "caption": "",
-        "alt": "Blurred motion of a white dress and layered skirts backstage, Hana Valtová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/21.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/21-1000.jpg",
-        "caption": "",
-        "alt": "Model with a flower in her hair holding a rail above her head in a white halter gown, Hana Valtová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/22.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/22-1000.jpg",
-        "caption": "",
-        "alt": "Detail of a white dress with corset lacing and a side slit, Hana Valtová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/23.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/23-1000.jpg",
-        "caption": "",
-        "alt": "Model in a sheer white lace backless dress against dark plastic sheeting, Hana Valtová at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/24.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/24-1000.jpg",
-        "caption": "",
-        "alt": "Two models in white cropped tops and wide white trousers with a black fluffy top, backstage, Valérie Jurčíková at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/25.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/25-1000.jpg",
-        "caption": "",
-        "alt": "Backstage group in a white bandeau with a long scarf and shorts, and models in sunglasses and white jackets, in front of a sponsor banner, Valérie Jurčíková at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/26.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/26-1000.jpg",
-        "caption": "",
-        "alt": "Model in sunglasses and a sheer blue long-sleeved top holding a black fluffy bag, Valérie Jurčíková at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/27.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/27-1000.jpg",
-        "caption": "",
-        "alt": "Dark coat with a fluffy collar, belt and metal buttons, backstage, Valérie Jurčíková at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/28.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/28-1000.jpg",
-        "caption": "",
-        "alt": "Two models, one in a white shirt and one in a black studded top and orange sunglasses, Valérie Jurčíková at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/29.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/29-1000.jpg",
-        "caption": "",
-        "alt": "Model in sunglasses and a dark denim jacket against dark plastic sheeting, Valérie Jurčíková at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/30.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/30-1000.jpg",
-        "caption": "",
-        "alt": "Model in a white tank top and brown trousers on the runway under a round light, with the audience around, Valérie Jurčíková at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/31.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/31-1000.jpg",
-        "caption": "",
-        "alt": "Model in a headpiece of gold and red beaded fringe covering her eyes, in warm light, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/32.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/32-1000.jpg",
-        "caption": "",
-        "alt": "Model with black eye make-up in an asymmetric silver and black textured top, backstage, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/33.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/33-1000.jpg",
-        "caption": "",
-        "alt": "Model in a denim-look strapless gown with a belt while dressers adjust it, backstage, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/34.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/34-1000.jpg",
-        "caption": "",
-        "alt": "Three models in a navy gown, a burgundy cape dress and a black knit dress with beaded headpieces, backstage, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/35.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/35-1000.jpg",
-        "caption": "",
-        "alt": "Model in a grey tailored jacket with a white collar, backstage, Tomáš Višňovský at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/36.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/36-1000.jpg",
-        "caption": "",
-        "alt": "Detail of a white lace jacket with a lace flounce hem, Tomáš Višňovský at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/37.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/37-1000.jpg",
-        "caption": "",
-        "alt": "Model in a grey tailored jacket and trousers with a white collar against dark plastic sheeting, Tomáš Višňovský at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/38.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/38-1000.jpg",
-        "caption": "",
-        "alt": "Model walking the runway in a white lace veil and a white skirt, Tomáš Višňovský at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/39.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/39-1000.jpg",
-        "caption": "",
-        "alt": "Hands pulling apart a white shredded lace garment backstage, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/40.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/40-1000.jpg",
-        "caption": "",
-        "alt": "Model in a peach organza dress with a caged hoop and a tall black beehive, seated against a red wall, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/41.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/41-1000.jpg",
-        "caption": "",
-        "alt": "Model looking over a ruffle of white shredded lace, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-ss27/42.jpg",
-        "thumb": "/images/shows/mbpfw-ss27/42-1000.jpg",
-        "caption": "",
-        "alt": "Model walking the runway in a pale yellow check asymmetric dress, UMPRUM Graduates at MBPFW SS27.",
-        "w": 1760,
-        "h": 2200
-      }
-    ]
-  },
-  {
-    "slug": "were-next-26",
-    "title": "WE'RE NEXT 26",
-    "event": "WE'RE NEXT 2026",
-    "designer": "",
-    "date": "2026-09",
-    "location": "",
-    "article": "https://www.instagram.com/p/DdQ4WL4iAQa/",
-    "articleLabel": "Photos published on ELLE Czech Instagram",
-    "description": "Backstage and runway photos from WE'RE NEXT 2026 in Prague, 11 and 12 September 2026, published in ELLE Czech's Through the Lens series.",
-    "seoTitle": "",
-    "seoDescription": "",
-    "cover": "",
-    "photos": [
-      {
-        "image": "/images/shows/were-next-26/03.jpg",
-        "thumb": "/images/shows/were-next-26/03-1000.jpg",
-        "caption": "",
-        "alt": "Model in a hooded quilted linen cloak with frayed details and a metal plate at the waist, in front of a silver tinsel curtain, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/were-next-26/21.jpg",
-        "thumb": "/images/shows/were-next-26/21-1000.jpg",
-        "caption": "",
-        "alt": "Model in a blue draped cape-like dress and a wide blue hat tied under her chin, with orange and blue eye makeup, STUDIO 3 at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/were-next-26/02.jpg",
-        "thumb": "/images/shows/were-next-26/02-1000.jpg",
-        "caption": "",
-        "alt": "Model with a straight auburn bob in a yellow-green lace dress and scarf, a white belt and a grey fringed bag, standing among clothing racks backstage, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/were-next-26/26.jpg",
-        "thumb": "/images/shows/were-next-26/26-1000.jpg",
-        "caption": "",
-        "alt": "Model in a sheer brown long-sleeve top with silver floral lace, one arm crossed over her body, with clothing rails behind her, Tangoli at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/were-next-26/19.jpg",
-        "thumb": "/images/shows/were-next-26/19-1000.jpg",
-        "caption": "",
-        "alt": "Portrait of a model with bangs and bright orange eye makeup in a black sleeveless asymmetric top and long sheer black gloves, STUDIO 3 at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/were-next-26/08.jpg",
-        "thumb": "/images/shows/were-next-26/08-1000.jpg",
-        "caption": "",
-        "alt": "Hands adjusting a model wearing a mask and cloak made of layered, collaged materials and feathers, @_jakubmikulasek at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/were-next-26/13.jpg",
-        "thumb": "/images/shows/were-next-26/13-1000.jpg",
-        "caption": "",
-        "alt": "Model in a red and white striped organza look with puffed sleeves and black boots, posing backstage, @vojtechsmrz_ at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/were-next-26/06.jpg",
-        "thumb": "/images/shows/were-next-26/06-1000.jpg",
-        "caption": "",
-        "alt": "Close-up portrait of a model framed by cream sculptural foam forms, @_jakubmikulasek at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/were-next-26/11.jpg",
-        "thumb": "/images/shows/were-next-26/11-1000.jpg",
-        "caption": "",
-        "alt": "Model in an off-the-shoulder pink sequin dress with a ruffled hem, a small tiara and pink mules, between silver tinsel curtains, @princ.z.moravy at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/were-next-26/12.jpg",
-        "thumb": "/images/shows/were-next-26/12-1000.jpg",
-        "caption": "",
-        "alt": "Two models side by side backstage in pink looks and tiaras, one in a sequin dress with a ruffled hem, the other in a crop top and skirt with flower appliqués, holding a green handbag, @princ.z.moravy at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/were-next-26/04.jpg",
-        "thumb": "/images/shows/were-next-26/04-1000.jpg",
-        "caption": "",
-        "alt": "Four models posing close together in suede aviator-style caps and jackets in cream, burgundy, teal, pink and brown, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/were-next-26/10.jpg",
-        "thumb": "/images/shows/were-next-26/10-1000.jpg",
-        "caption": "",
-        "alt": "Model with slicked-back hair and thin glasses in a grey sleeveless top and skirt embroidered with large red and blue flowers, in front of silver tinsel, @sylviia.sofiia at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/were-next-26/07.jpg",
-        "thumb": "/images/shows/were-next-26/07-1000.jpg",
-        "caption": "",
-        "alt": "Model in a beige trench coat with a high collar and porcupine quills attached to the lapel, in front of a clothing rail, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/were-next-26/16.jpg",
-        "thumb": "/images/shows/were-next-26/16-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a model in a sheer lace and tulle dress with feathery trim and tan lace gloves with ruffled cuffs, in front of a silver backdrop, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/were-next-26/05.jpg",
-        "thumb": "/images/shows/were-next-26/05-1000.jpg",
-        "caption": "",
-        "alt": "Model in a cream tunic with embroidered floral patterns, a matching cap and leggings, orange socks and lace-up winter boots, standing on a green tarp backstage, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/were-next-26/01.jpg",
-        "thumb": "/images/shows/were-next-26/01-1000.jpg",
-        "caption": "",
-        "alt": "Three male models in matching tiger-print velvet hats, vests and trousers over bright blue and green shirts with quilted chest panels, backstage, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/were-next-26/15.jpg",
-        "thumb": "/images/shows/were-next-26/15-1000.jpg",
-        "caption": "",
-        "alt": "Model on the runway in a black cropped top with sculptural shoulders, herringbone trousers and round silver glasses, @motlikjakuub at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/were-next-26/20.jpg",
-        "thumb": "/images/shows/were-next-26/20-1000.jpg",
-        "caption": "",
-        "alt": "Two models posing at clothing rails backstage, one in a black halter dress with an orange scarf, the other in an orange halter gown with a black diagonal stripe, STUDIO 3 at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/were-next-26/09.jpg",
-        "thumb": "/images/shows/were-next-26/09-1000.jpg",
-        "caption": "",
-        "alt": "Model on the runway in a burgundy crocodile-print top and long skirt with large sculptural sleeves and a train, with the audience seated alongside, @katerinakulkova at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/were-next-26/14.jpg",
-        "thumb": "/images/shows/were-next-26/14-1000.jpg",
-        "caption": "",
-        "alt": "Model in a cream and tan dress made of patchworked, hand-stitched fabrics, with two other models in beige looks on either side, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/were-next-26/23.jpg",
-        "thumb": "/images/shows/were-next-26/23-1000.jpg",
-        "caption": "",
-        "alt": "Model in a white tiered tulle skirt with a long train and a floral embroidered pink bow scarf, white sneakers, in front of silver tinsel, Jaden Li at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/were-next-26/24.jpg",
-        "thumb": "/images/shows/were-next-26/24-1000.jpg",
-        "caption": "",
-        "alt": "Model in an open dark jacket over a bikini top and bottoms made from upcycled sneaker parts and laces, against a silver backdrop, PLNGNS at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 1
-      },
-      {
-        "image": "/images/shows/were-next-26/17.jpg",
-        "thumb": "/images/shows/were-next-26/17-1000.jpg",
-        "caption": "",
-        "alt": "Model in a cream tailored jacket with frayed edges over tiered lace ruffles and fishnet tights, her face hidden by dark hair, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      },
-      {
-        "image": "/images/shows/were-next-26/18.jpg",
-        "thumb": "/images/shows/were-next-26/18-1000.jpg",
-        "caption": "",
-        "alt": "Model in a patchwork denim vest and long denim skirt with lace panels, holding onto a clothing rail backstage, WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 3
-      },
-      {
-        "image": "/images/shows/were-next-26/22.jpg",
-        "thumb": "/images/shows/were-next-26/22-1000.jpg",
-        "caption": "",
-        "alt": "Models getting ready backstage in blue, black and yellow looks, one in angular sunglasses holding a white and blue clutch while a makeup artist works behind her, STUDIO 3 at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 0
-      },
-      {
-        "image": "/images/shows/were-next-26/25.jpg",
-        "thumb": "/images/shows/were-next-26/25-1000.jpg",
-        "caption": "",
-        "alt": "Model in a grey rubberised zip jacket with slashed details and a patterned balaclava, in front of a silver curtain, PLNGNS at WE'RE NEXT 2026.",
-        "w": 1760,
-        "h": 2200,
-        "col": 2
-      }
-    ],
-    "layout": {
-      "cols": 4,
-      "even": false
-    }
-  },
-  {
-    "slug": "mbpfw-fw26",
-    "title": "MBPFW FW26",
-    "event": "Mercedes-Benz Prague Fashion Week",
-    "designer": "",
-    "date": "2026-04",
-    "location": "Prague",
-    "article": "https://www.elle.cz/moda/navrhari/prvni-prehlidka-mbpfw-na-mole-zazarily-vanda-janda-i-ester-geislerova",
-    "articleLabel": "Photos published in ELLE.cz",
-    "description": "Backstage and runway photos from Mercedes-Benz Prague Fashion Week FW26, 24 to 26 April 2026.",
-    "seoTitle": "",
-    "seoDescription": "",
-    "cover": "",
-    "photos": [
-      {
-        "image": "/images/shows/mbpfw-fw26/01.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/01-1000.jpg",
-        "caption": "",
-        "alt": "Model in a gold lamé dress posing on a clothing rail beside a hanging yellow coat, backstage, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/02.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/02-1000.jpg",
-        "caption": "",
-        "alt": "Model in a blue brocade coat over lilac tulle, holding a clothing rail, backstage, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/03.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/03-1000.jpg",
-        "caption": "",
-        "alt": "Blurred figure in dark clothes walking past orange lifts in a corridor, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/04.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/04-1000.jpg",
-        "caption": "",
-        "alt": "Model in a yellow draped gown over lilac tulle, posing outside against a corrugated wall, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/05.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/05-1000.jpg",
-        "caption": "",
-        "alt": "Make-up artist touching up a woman with silver hair in a grey satin off-the-shoulder dress, backstage, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/06.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/06-1000.jpg",
-        "caption": "",
-        "alt": "Model in a sheer white veil and ornate glasses over a ruffled gown, backstage, Zoltán Tóth at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/07.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/07-1000.jpg",
-        "caption": "",
-        "alt": "Two models in sheer veils and ruffled white gowns standing on a red carpet, backstage, Zoltán Tóth at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/08.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/08-1000.jpg",
-        "caption": "",
-        "alt": "Model in a white gown spreading a sheer veil like wings, backstage, Zoltán Tóth at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/09.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/09-1000.jpg",
-        "caption": "",
-        "alt": "Veiled model in white walking a dark runway under a spotlight, Zoltán Tóth at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/10.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/10-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a burgundy velvet jacket with coloured buttons and a black ruffled collar, Alexander Bel at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/11.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/11-1000.jpg",
-        "caption": "",
-        "alt": "Model in a ruffled lace bustier top with a long black ribbon scarf, backstage, Alexander Bel at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/12.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/12-1000.jpg",
-        "caption": "",
-        "alt": "Silhouette of a model in a hat with a braid behind a white screen, backstage, Alexander Bel at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/13.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/13-1000.jpg",
-        "caption": "",
-        "alt": "Model with hair over her face in a cream brocade cape with lace ruffles and a ribbon, backstage, Alexander Bel at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/14.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/14-1000.jpg",
-        "caption": "",
-        "alt": "Two models in a red satin shirt with wide trousers and a burgundy top with matching trousers, in front of a clothing rail, Alexander Bel at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/15.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/15-1000.jpg",
-        "caption": "",
-        "alt": "Model in a silver quilted wrap coat on the runway with the audience on both sides, Alexander Bel at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/16.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/16-1000.jpg",
-        "caption": "",
-        "alt": "Two models lying on a stone-block bed in beige layered looks, one in a cap, Petra Ptáčková at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/17.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/17-1000.jpg",
-        "caption": "",
-        "alt": "Three models among ivy, one in a navy hooded jacket, one in a white coat and one in a navy suit with cut-out trousers, Petra Ptáčková at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/18.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/18-1000.jpg",
-        "caption": "",
-        "alt": "Model in a navy hooded jacket and trousers sitting among ivy, with a large ring, Petra Ptáčková at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/19.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/19-1000.jpg",
-        "caption": "",
-        "alt": "Model in a white coat leaning towards a tall window with the sun behind, Petra Ptáčková at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/20.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/20-1000.jpg",
-        "caption": "",
-        "alt": "Model in a pale pink cropped set with white straps and sneakers in a gallery room, Petra Ptáčková at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/21.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/21-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a model in a dark brimmed hat and curly hair, wrapped in cream tulle, in warm light, Petra Ptáčková at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/22.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/22-1000.jpg",
-        "caption": "",
-        "alt": "Model in a pink hood and cropped set walking on a treadmill under a gilded painting, with blue ribbon in front, Petra Ptáčková at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/23.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/23-1000.jpg",
-        "caption": "",
-        "alt": "Model in an asymmetric black metallic top and dark trousers against a white backdrop, Aleš Hnátek at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/24.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/24-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a black metallic top draped over a grey skirt with ribbon ties, Aleš Hnátek at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/25.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/25-1000.jpg",
-        "caption": "",
-        "alt": "Runway view of models in a striped top and a black floral skirt with the audience around, Aleš Hnátek at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/26.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/26-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a grey jumper with a pattern of cut triangles, Technical University of Liberec at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/27.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/27-1000.jpg",
-        "caption": "",
-        "alt": "Model in an orange floral kimono-style jacket with a red ruffled belt and a large cream hat, beside a model in a grey coat with a monogram patch, Technical University of Liberec at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/28.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/28-1000.jpg",
-        "caption": "",
-        "alt": "Two models, one in a coral beaded strapless dress and one in a white lace gown with a ruffled belt, Guillermo Décimo at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/29.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/29-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a gold embroidered jacket with leaf patterns and a zip collar, Guillermo Décimo at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/30.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/30-1000.jpg",
-        "caption": "",
-        "alt": "Model in a silver-grey dress with hair ornament walking the runway past the audience, Guillermo Décimo at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/31.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/31-1000.jpg",
-        "caption": "",
-        "alt": "Model with red lips in a pale pink lace gown, backstage in front of a clothing rail, Tomáš Němec at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/32.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/32-1000.jpg",
-        "caption": "",
-        "alt": "Model in a pink lace dress lifting the skirt, standing on a red carpet, Tomáš Němec at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/33.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/33-1000.jpg",
-        "caption": "",
-        "alt": "Two models, one in a red lace top and the other in a red fitted dress, in front of plastic sheeting, Tomáš Němec at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/34.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/34-1000.jpg",
-        "caption": "",
-        "alt": "Model in a tulle skirt and ruched sheer top with arms out, on a red carpet, Tomáš Němec at MBPFW FW26.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/35.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/35-1000.jpg",
-        "caption": "",
-        "alt": "Model in a sheer blue-lace top and black leather leggings against a light backdrop, Tomáš Němec at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/36.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/36-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of a model with red lips in a sheer top covered in blue lace flowers, Tomáš Němec at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/37.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/37-1000.jpg",
-        "caption": "",
-        "alt": "Model in a black leather corset with an oval cut-out and a full black skirt, leaning on a doorframe, Tobias Schubert at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/38.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/38-1000.jpg",
-        "caption": "",
-        "alt": "Hands holding an ornate bone-like sword over a cream dress with puff sleeves, Tobias Schubert at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/39.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/39-1000.jpg",
-        "caption": "",
-        "alt": "Back of a model with a lace-up corset in warm light, Tobias Schubert at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/mbpfw-fw26/40.jpg",
-        "thumb": "/images/shows/mbpfw-fw26/40-1000.jpg",
-        "caption": "",
-        "alt": "Model in a black leather corset with a cut-out and dark trousers, holding giant scissors, backstage, Tobias Schubert at MBPFW FW26.",
-        "w": 1467,
-        "h": 2200
-      }
-    ]
-  },
-  {
-    "slug": "martin-kohout-punk",
-    "title": "Martin Kohout Punk",
-    "event": "",
-    "designer": "Martin Kohout",
-    "date": "2026-05",
-    "location": "Ateliér Strahov, Prague",
-    "article": "https://www.elle.cz/moda/modni-prehlidky/z-pohadky-punk-saty-martina-kohouta-nastavuji-zrcadlo-pokrivene-dobe",
-    "articleLabel": "Photos published in ELLE.cz",
-    "description": "Backstage photos from Punk, Martin Kohout's 2026 collection, shot for ELLE Czech.",
-    "seoTitle": "",
-    "seoDescription": "",
-    "cover": "",
-    "photos": [
-      {
-        "image": "/images/shows/martin-kohout-punk/01.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/01-1000.jpg",
-        "caption": "",
-        "alt": "Model in a purple sequin gown with black ties at the sides, one arm raised and a sweeping train, against a magenta backdrop with large shadows, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/02.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/02-1000.jpg",
-        "caption": "",
-        "alt": "Model in a strapless pale blue satin gown with a bow at the bust and a full skirt, glancing to the side against a red backdrop, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/03.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/03-1000.jpg",
-        "caption": "",
-        "alt": "Seated model with braided dark hair and red eye makeup looking into the camera, in a pale blue satin gown with tulle around her, Martin Kohout, Punk collection.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/04.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/04-1000.jpg",
-        "caption": "",
-        "alt": "Model with a blonde bob and a spiked crystal headpiece, in a pale blue dress with cut-out flower shapes, white fishnet tights and red pointed shoes, holding out her skirt, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/05.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/05-1000.jpg",
-        "caption": "",
-        "alt": "Profile close-up of a model in a spiked crystal headpiece and a pale blue frayed-edge dress, a hand raised to her chin, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/06.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/06-1000.jpg",
-        "caption": "",
-        "alt": "Two models standing side by side against a red backdrop: one in a black lace gown with puffed sleeves, the other in a pale blue dress with cut-out flowers and a spiked crystal headpiece, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/07.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/07-1000.jpg",
-        "caption": "",
-        "alt": "Two models posing close together at a tilt: one in a black lace gown with lace gloves leaning over the other, who wears a pale blue dress and a spiked crystal headpiece, Martin Kohout, Punk collection.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/08.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/08-1000.jpg",
-        "caption": "",
-        "alt": "Full-length portrait of a model with long silver hair in a black lace and tulle gown with puffed sleeves, hands on hips, against a red wall, Martin Kohout, Punk collection.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/09.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/09-1000.jpg",
-        "caption": "",
-        "alt": "Model in a black lace gown with puffed sleeves seen from above, head tilted, with long shadows across the pink floor, Martin Kohout, Punk collection.",
-        "w": 1760,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/10.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/10-1000.jpg",
-        "caption": "",
-        "alt": "Model in a red satin gown with ruffled shoulders, a large bow and black leather gloves, hands on her hips, in dark red light, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/11.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/11-1000.jpg",
-        "caption": "",
-        "alt": "Model in a silver sequin-embroidered ball gown with puffed sleeves, leaning against grey metal panels in warm light backstage, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/12.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/12-1000.jpg",
-        "caption": "",
-        "alt": "Model in a black gown with feathered shoulders, ribbons and voluminous sleeves, standing against a red wall, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/13.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/13-1000.jpg",
-        "caption": "",
-        "alt": "Close-up of hands with silver rings resting on a purple sequin dress, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/14.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/14-1000.jpg",
-        "caption": "",
-        "alt": "Two models posing diagonally against a magenta wall, one in a purple sequin gown and the other in a pale blue satin gown, their shadows behind them, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      },
-      {
-        "image": "/images/shows/martin-kohout-punk/15.jpg",
-        "thumb": "/images/shows/martin-kohout-punk/15-1000.jpg",
-        "caption": "",
-        "alt": "Back view of a model in a spiked crystal headpiece and a black sequin dress with a beaded necklace, in front of wooden panelling, Martin Kohout, Punk collection.",
-        "w": 1466,
-        "h": 2200
-      }
-    ]
-  },
-  {
     "slug": "zuzana-kubickova-poetica",
     "title": "Zuzana Kubíčková Poetica",
     "event": "",
@@ -1660,6 +446,1220 @@
     "layout": {
       "cols": 4
     }
+  },
+  {
+    "slug": "were-next-26",
+    "title": "WE'RE NEXT 26",
+    "event": "WE'RE NEXT 2026",
+    "designer": "",
+    "date": "2026-09",
+    "location": "",
+    "article": "https://www.instagram.com/p/DdQ4WL4iAQa/",
+    "articleLabel": "Photos published on ELLE Czech Instagram",
+    "description": "Backstage and runway photos from WE'RE NEXT 2026 in Prague, 11 and 12 September 2026, published in ELLE Czech's Through the Lens series.",
+    "seoTitle": "",
+    "seoDescription": "",
+    "cover": "",
+    "photos": [
+      {
+        "image": "/images/shows/were-next-26/03.jpg",
+        "thumb": "/images/shows/were-next-26/03-1000.jpg",
+        "caption": "",
+        "alt": "Model in a hooded quilted linen cloak with frayed details and a metal plate at the waist, in front of a silver tinsel curtain, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/were-next-26/21.jpg",
+        "thumb": "/images/shows/were-next-26/21-1000.jpg",
+        "caption": "",
+        "alt": "Model in a blue draped cape-like dress and a wide blue hat tied under her chin, with orange and blue eye makeup, STUDIO 3 at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/were-next-26/02.jpg",
+        "thumb": "/images/shows/were-next-26/02-1000.jpg",
+        "caption": "",
+        "alt": "Model with a straight auburn bob in a yellow-green lace dress and scarf, a white belt and a grey fringed bag, standing among clothing racks backstage, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/were-next-26/26.jpg",
+        "thumb": "/images/shows/were-next-26/26-1000.jpg",
+        "caption": "",
+        "alt": "Model in a sheer brown long-sleeve top with silver floral lace, one arm crossed over her body, with clothing rails behind her, Tangoli at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/were-next-26/19.jpg",
+        "thumb": "/images/shows/were-next-26/19-1000.jpg",
+        "caption": "",
+        "alt": "Portrait of a model with bangs and bright orange eye makeup in a black sleeveless asymmetric top and long sheer black gloves, STUDIO 3 at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/were-next-26/08.jpg",
+        "thumb": "/images/shows/were-next-26/08-1000.jpg",
+        "caption": "",
+        "alt": "Hands adjusting a model wearing a mask and cloak made of layered, collaged materials and feathers, @_jakubmikulasek at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/were-next-26/13.jpg",
+        "thumb": "/images/shows/were-next-26/13-1000.jpg",
+        "caption": "",
+        "alt": "Model in a red and white striped organza look with puffed sleeves and black boots, posing backstage, @vojtechsmrz_ at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/were-next-26/06.jpg",
+        "thumb": "/images/shows/were-next-26/06-1000.jpg",
+        "caption": "",
+        "alt": "Close-up portrait of a model framed by cream sculptural foam forms, @_jakubmikulasek at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/were-next-26/11.jpg",
+        "thumb": "/images/shows/were-next-26/11-1000.jpg",
+        "caption": "",
+        "alt": "Model in an off-the-shoulder pink sequin dress with a ruffled hem, a small tiara and pink mules, between silver tinsel curtains, @princ.z.moravy at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/were-next-26/12.jpg",
+        "thumb": "/images/shows/were-next-26/12-1000.jpg",
+        "caption": "",
+        "alt": "Two models side by side backstage in pink looks and tiaras, one in a sequin dress with a ruffled hem, the other in a crop top and skirt with flower appliqués, holding a green handbag, @princ.z.moravy at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/were-next-26/04.jpg",
+        "thumb": "/images/shows/were-next-26/04-1000.jpg",
+        "caption": "",
+        "alt": "Four models posing close together in suede aviator-style caps and jackets in cream, burgundy, teal, pink and brown, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/were-next-26/10.jpg",
+        "thumb": "/images/shows/were-next-26/10-1000.jpg",
+        "caption": "",
+        "alt": "Model with slicked-back hair and thin glasses in a grey sleeveless top and skirt embroidered with large red and blue flowers, in front of silver tinsel, @sylviia.sofiia at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/were-next-26/07.jpg",
+        "thumb": "/images/shows/were-next-26/07-1000.jpg",
+        "caption": "",
+        "alt": "Model in a beige trench coat with a high collar and porcupine quills attached to the lapel, in front of a clothing rail, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/were-next-26/16.jpg",
+        "thumb": "/images/shows/were-next-26/16-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a model in a sheer lace and tulle dress with feathery trim and tan lace gloves with ruffled cuffs, in front of a silver backdrop, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/were-next-26/05.jpg",
+        "thumb": "/images/shows/were-next-26/05-1000.jpg",
+        "caption": "",
+        "alt": "Model in a cream tunic with embroidered floral patterns, a matching cap and leggings, orange socks and lace-up winter boots, standing on a green tarp backstage, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/were-next-26/01.jpg",
+        "thumb": "/images/shows/were-next-26/01-1000.jpg",
+        "caption": "",
+        "alt": "Three male models in matching tiger-print velvet hats, vests and trousers over bright blue and green shirts with quilted chest panels, backstage, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/were-next-26/15.jpg",
+        "thumb": "/images/shows/were-next-26/15-1000.jpg",
+        "caption": "",
+        "alt": "Model on the runway in a black cropped top with sculptural shoulders, herringbone trousers and round silver glasses, @motlikjakuub at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/were-next-26/20.jpg",
+        "thumb": "/images/shows/were-next-26/20-1000.jpg",
+        "caption": "",
+        "alt": "Two models posing at clothing rails backstage, one in a black halter dress with an orange scarf, the other in an orange halter gown with a black diagonal stripe, STUDIO 3 at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/were-next-26/09.jpg",
+        "thumb": "/images/shows/were-next-26/09-1000.jpg",
+        "caption": "",
+        "alt": "Model on the runway in a burgundy crocodile-print top and long skirt with large sculptural sleeves and a train, with the audience seated alongside, @katerinakulkova at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/were-next-26/14.jpg",
+        "thumb": "/images/shows/were-next-26/14-1000.jpg",
+        "caption": "",
+        "alt": "Model in a cream and tan dress made of patchworked, hand-stitched fabrics, with two other models in beige looks on either side, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/were-next-26/23.jpg",
+        "thumb": "/images/shows/were-next-26/23-1000.jpg",
+        "caption": "",
+        "alt": "Model in a white tiered tulle skirt with a long train and a floral embroidered pink bow scarf, white sneakers, in front of silver tinsel, Jaden Li at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/were-next-26/24.jpg",
+        "thumb": "/images/shows/were-next-26/24-1000.jpg",
+        "caption": "",
+        "alt": "Model in an open dark jacket over a bikini top and bottoms made from upcycled sneaker parts and laces, against a silver backdrop, PLNGNS at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/were-next-26/17.jpg",
+        "thumb": "/images/shows/were-next-26/17-1000.jpg",
+        "caption": "",
+        "alt": "Model in a cream tailored jacket with frayed edges over tiered lace ruffles and fishnet tights, her face hidden by dark hair, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/were-next-26/18.jpg",
+        "thumb": "/images/shows/were-next-26/18-1000.jpg",
+        "caption": "",
+        "alt": "Model in a patchwork denim vest and long denim skirt with lace panels, holding onto a clothing rail backstage, WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/were-next-26/22.jpg",
+        "thumb": "/images/shows/were-next-26/22-1000.jpg",
+        "caption": "",
+        "alt": "Models getting ready backstage in blue, black and yellow looks, one in angular sunglasses holding a white and blue clutch while a makeup artist works behind her, STUDIO 3 at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/were-next-26/25.jpg",
+        "thumb": "/images/shows/were-next-26/25-1000.jpg",
+        "caption": "",
+        "alt": "Model in a grey rubberised zip jacket with slashed details and a patterned balaclava, in front of a silver curtain, PLNGNS at WE'RE NEXT 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      }
+    ],
+    "layout": {
+      "cols": 4,
+      "even": false
+    }
+  },
+  {
+    "slug": "mbpfw-ss27",
+    "title": "MBPFW SS27",
+    "event": "Mercedes-Benz Prague Fashion Week",
+    "designer": "",
+    "date": "2026-09",
+    "location": "Prague",
+    "article": "https://www.elle.cz/moda/modni-prehlidky/mbpfw-2026-ceska-moda-pohledem-nove-generace-y2k-denim-i-chanel",
+    "articleLabel": "Photos published in ELLE.cz",
+    "description": "Backstage and runway photos from Mercedes-Benz Prague Fashion Week SS27, 5 to 7 September 2026.",
+    "seoTitle": "",
+    "seoDescription": "",
+    "cover": "",
+    "photos": [
+      {
+        "image": "/images/shows/mbpfw-ss27/01.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/01-1000.jpg",
+        "caption": "",
+        "alt": "Blonde model with smoky eyes in a mustard top with black fringe, backstage, On The Boat at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/02.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/02-1000.jpg",
+        "caption": "",
+        "alt": "Models backstage in a mustard fringed top, a white top with a brown detail and a black beaded top, On The Boat at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/03.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/03-1000.jpg",
+        "caption": "",
+        "alt": "Model in a grey satin gown with a flounced hem on a staircase, backstage, On The Boat at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/04.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/04-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a model with smoky eyes in a white shirt with a cord bow at the collar, On The Boat at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/05.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/05-1000.jpg",
+        "caption": "",
+        "alt": "Model with smoky eyes in a black satin top with a pale blue cord choker, backstage, On The Boat at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/06.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/06-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a brown sequined sleeveless dress with a folded panel at the neckline, Petra Balvin at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/07.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/07-1000.jpg",
+        "caption": "",
+        "alt": "Two models backstage in grey knitwear, one in a dress with a high collar and one in a cropped cardigan, Petra Balvin at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/08.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/08-1000.jpg",
+        "caption": "",
+        "alt": "Model in an olive crinkled leather trench coat and layered olive hats, backstage, Barbora Kotěšovcová at MBPFW SS27.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/09.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/09-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a model with a bleached bun and black headband in a black fringed scarf and a pink wrap, Barbora Kotěšovcová at MBPFW SS27.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/10.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/10-1000.jpg",
+        "caption": "",
+        "alt": "Three models in white and black headbands and black layers, with a camera in the foreground, backstage, Barbora Kotěšovcová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/11.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/11-1000.jpg",
+        "caption": "",
+        "alt": "Line-up backstage of models in black and olive coats with bleached buns and headbands, Barbora Kotěšovcová at MBPFW SS27.",
+        "w": 2200,
+        "h": 1760
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/12.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/12-1000.jpg",
+        "caption": "",
+        "alt": "Model in a khaki draped dress with a photographer in front, backstage, Barbora Kotěšovcová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/13.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/13-1000.jpg",
+        "caption": "",
+        "alt": "Models in black headbands, one in round glasses, wearing sheer beige and black layers, backstage, Barbora Kotěšovcová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/14.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/14-1000.jpg",
+        "caption": "",
+        "alt": "Model in a red and white striped jacket carrying a bag while a dresser holds up sandals, backstage, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/15.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/15-1000.jpg",
+        "caption": "",
+        "alt": "Model in a red and white oversized coat with a small red hat, backstage, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/16.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/16-1000.jpg",
+        "caption": "",
+        "alt": "Model with short curly hair in a yellow faux-fur coat, backstage, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/17.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/17-1000.jpg",
+        "caption": "",
+        "alt": "Backstage view of models in a pink shirt and a pink organza dress, Univerzita Tomáše Bati ve Zlíně at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/18.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/18-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a black satin corset dress against a blue wall, Hana Valtová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/19.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/19-1000.jpg",
+        "caption": "",
+        "alt": "Layered white lace skirts hanging backstage, Hana Valtová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/20.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/20-1000.jpg",
+        "caption": "",
+        "alt": "Blurred motion of a white dress and layered skirts backstage, Hana Valtová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/21.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/21-1000.jpg",
+        "caption": "",
+        "alt": "Model with a flower in her hair holding a rail above her head in a white halter gown, Hana Valtová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/22.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/22-1000.jpg",
+        "caption": "",
+        "alt": "Detail of a white dress with corset lacing and a side slit, Hana Valtová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/23.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/23-1000.jpg",
+        "caption": "",
+        "alt": "Model in a sheer white lace backless dress against dark plastic sheeting, Hana Valtová at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/24.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/24-1000.jpg",
+        "caption": "",
+        "alt": "Two models in white cropped tops and wide white trousers with a black fluffy top, backstage, Valérie Jurčíková at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/25.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/25-1000.jpg",
+        "caption": "",
+        "alt": "Backstage group in a white bandeau with a long scarf and shorts, and models in sunglasses and white jackets, in front of a sponsor banner, Valérie Jurčíková at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/26.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/26-1000.jpg",
+        "caption": "",
+        "alt": "Model in sunglasses and a sheer blue long-sleeved top holding a black fluffy bag, Valérie Jurčíková at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/27.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/27-1000.jpg",
+        "caption": "",
+        "alt": "Dark coat with a fluffy collar, belt and metal buttons, backstage, Valérie Jurčíková at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/28.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/28-1000.jpg",
+        "caption": "",
+        "alt": "Two models, one in a white shirt and one in a black studded top and orange sunglasses, Valérie Jurčíková at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/29.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/29-1000.jpg",
+        "caption": "",
+        "alt": "Model in sunglasses and a dark denim jacket against dark plastic sheeting, Valérie Jurčíková at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/30.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/30-1000.jpg",
+        "caption": "",
+        "alt": "Model in a white tank top and brown trousers on the runway under a round light, with the audience around, Valérie Jurčíková at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/31.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/31-1000.jpg",
+        "caption": "",
+        "alt": "Model in a headpiece of gold and red beaded fringe covering her eyes, in warm light, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/32.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/32-1000.jpg",
+        "caption": "",
+        "alt": "Model with black eye make-up in an asymmetric silver and black textured top, backstage, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/33.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/33-1000.jpg",
+        "caption": "",
+        "alt": "Model in a denim-look strapless gown with a belt while dressers adjust it, backstage, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/34.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/34-1000.jpg",
+        "caption": "",
+        "alt": "Three models in a navy gown, a burgundy cape dress and a black knit dress with beaded headpieces, backstage, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/35.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/35-1000.jpg",
+        "caption": "",
+        "alt": "Model in a grey tailored jacket with a white collar, backstage, Tomáš Višňovský at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/36.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/36-1000.jpg",
+        "caption": "",
+        "alt": "Detail of a white lace jacket with a lace flounce hem, Tomáš Višňovský at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/37.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/37-1000.jpg",
+        "caption": "",
+        "alt": "Model in a grey tailored jacket and trousers with a white collar against dark plastic sheeting, Tomáš Višňovský at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/38.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/38-1000.jpg",
+        "caption": "",
+        "alt": "Model walking the runway in a white lace veil and a white skirt, Tomáš Višňovský at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/39.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/39-1000.jpg",
+        "caption": "",
+        "alt": "Hands pulling apart a white shredded lace garment backstage, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/40.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/40-1000.jpg",
+        "caption": "",
+        "alt": "Model in a peach organza dress with a caged hoop and a tall black beehive, seated against a red wall, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/41.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/41-1000.jpg",
+        "caption": "",
+        "alt": "Model looking over a ruffle of white shredded lace, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-ss27/42.jpg",
+        "thumb": "/images/shows/mbpfw-ss27/42-1000.jpg",
+        "caption": "",
+        "alt": "Model walking the runway in a pale yellow check asymmetric dress, UMPRUM Graduates at MBPFW SS27.",
+        "w": 1760,
+        "h": 2200
+      }
+    ]
+  },
+  {
+    "slug": "exist-2026",
+    "title": "EXIST 2026",
+    "event": "EXIST 2026",
+    "designer": "ADO Zlín",
+    "date": "2026-06",
+    "location": "",
+    "article": "https://www.instagram.com/p/DZ2ZELEiFY6/",
+    "articleLabel": "Photos published on ELLE Czech Instagram",
+    "description": "Backstage photos from EXIST 2026, the graduate showcase of the Fashion Design studio (ADO) of Tomas Bata University in Zlín.",
+    "seoTitle": "",
+    "seoDescription": "",
+    "cover": "",
+    "photos": [
+      {
+        "image": "/images/shows/exist-2026/01.jpg",
+        "thumb": "/images/shows/exist-2026/01-1000.jpg",
+        "caption": "",
+        "alt": "Model in a shaggy blue and yellow plaid cardigan and a brown cap, holding grey knitted toy mice, against a white wall, Sofia Blahútová at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/exist-2026/07.jpg",
+        "thumb": "/images/shows/exist-2026/07-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a model in a metal leaf-shaped headpiece and embossed silver collar, with red embroidered lips, Nina Peschlová at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/exist-2026/12.jpg",
+        "thumb": "/images/shows/exist-2026/12-1000.jpg",
+        "caption": "",
+        "alt": "Model in a face mask with blue lace appliqué, a grey oversized trench jacket and a long skirt, in a concrete passage, Sofia Blahútová at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/exist-2026/13.jpg",
+        "thumb": "/images/shows/exist-2026/13-1000.jpg",
+        "caption": "",
+        "alt": "Model in a blue plaid mohair cardigan, a brown cap and a long check skirt with blue shoes, holding grey toys, in a white corner, Sofia Blahútová at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/exist-2026/05.jpg",
+        "thumb": "/images/shows/exist-2026/05-1000.jpg",
+        "caption": "",
+        "alt": "Three models, one in a blue knit with a pink zip top and a headband, one in a sage velvet backless coat over burgundy satin, and one in a glossy dark green jacket with striped pleated trousers, Dorota Kostelná at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/exist-2026/08.jpg",
+        "thumb": "/images/shows/exist-2026/08-1000.jpg",
+        "caption": "",
+        "alt": "Two models against a white wall, one in a cream puffball dress with a cross cut-out and white socks, the other in a purple wool jacket with a belt over a lace skirt, Denisa Šopíková at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/exist-2026/06.jpg",
+        "thumb": "/images/shows/exist-2026/06-1000.jpg",
+        "caption": "",
+        "alt": "Model on the runway in a silver slip dress with a metal-scale headpiece and shoulder piece, holding a silver bag, with the audience beside her, Nina Peschlová at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/exist-2026/10.jpg",
+        "thumb": "/images/shows/exist-2026/10-1000.jpg",
+        "caption": "",
+        "alt": "Model in a striped top with padded shoulders, floral scarves, a cream fringed skirt and a rope headpiece, holding a striped plush toy, Sofia Blahútová at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/exist-2026/09.jpg",
+        "thumb": "/images/shows/exist-2026/09-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a purple wool jacket with laser-cut floral patterns, white feathers and a silver buckle belt, Denisa Šopíková at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      },
+      {
+        "image": "/images/shows/exist-2026/02.jpg",
+        "thumb": "/images/shows/exist-2026/02-1000.jpg",
+        "caption": "",
+        "alt": "Model with a dark bob seen from behind, arms raised, in a backless burgundy corduroy top with white feathers and a white corset waistband, Dorota Kostelná at EXIST 2026.",
+        "w": 1466,
+        "h": 2200,
+        "col": 1
+      },
+      {
+        "image": "/images/shows/exist-2026/03.jpg",
+        "thumb": "/images/shows/exist-2026/03-1000.jpg",
+        "caption": "",
+        "alt": "Two models in a courtyard, one in a pale blue draped silk dress and headscarf holding a bouquet, the other in a sheer ivory top with a blue-and-white check wrap skirt, Štefan Štajer at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 2
+      },
+      {
+        "image": "/images/shows/exist-2026/11.jpg",
+        "thumb": "/images/shows/exist-2026/11-1000.jpg",
+        "caption": "",
+        "alt": "Model in a long red dress with a high collar and a side opening over lilac lace underwear, with a red hairband, Denisa Šopíková at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 3
+      },
+      {
+        "image": "/images/shows/exist-2026/04.jpg",
+        "thumb": "/images/shows/exist-2026/04-1000.jpg",
+        "caption": "",
+        "alt": "Model in an oversized white jacket and a long white skirt with a train, standing by road signs on a white wall, Viktorie Polánová at EXIST 2026.",
+        "w": 1760,
+        "h": 2200,
+        "col": 0
+      }
+    ],
+    "layout": {
+      "cols": 4
+    }
+  },
+  {
+    "slug": "martin-kohout-punk",
+    "title": "Martin Kohout Punk",
+    "event": "",
+    "designer": "Martin Kohout",
+    "date": "2026-05",
+    "location": "Ateliér Strahov, Prague",
+    "article": "https://www.elle.cz/moda/modni-prehlidky/z-pohadky-punk-saty-martina-kohouta-nastavuji-zrcadlo-pokrivene-dobe",
+    "articleLabel": "Photos published in ELLE.cz",
+    "description": "Backstage photos from Punk, Martin Kohout's 2026 collection, shot for ELLE Czech.",
+    "seoTitle": "",
+    "seoDescription": "",
+    "cover": "",
+    "photos": [
+      {
+        "image": "/images/shows/martin-kohout-punk/01.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/01-1000.jpg",
+        "caption": "",
+        "alt": "Model in a purple sequin gown with black ties at the sides, one arm raised and a sweeping train, against a magenta backdrop with large shadows, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/02.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/02-1000.jpg",
+        "caption": "",
+        "alt": "Model in a strapless pale blue satin gown with a bow at the bust and a full skirt, glancing to the side against a red backdrop, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/03.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/03-1000.jpg",
+        "caption": "",
+        "alt": "Seated model with braided dark hair and red eye makeup looking into the camera, in a pale blue satin gown with tulle around her, Martin Kohout, Punk collection.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/04.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/04-1000.jpg",
+        "caption": "",
+        "alt": "Model with a blonde bob and a spiked crystal headpiece, in a pale blue dress with cut-out flower shapes, white fishnet tights and red pointed shoes, holding out her skirt, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/05.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/05-1000.jpg",
+        "caption": "",
+        "alt": "Profile close-up of a model in a spiked crystal headpiece and a pale blue frayed-edge dress, a hand raised to her chin, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/06.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/06-1000.jpg",
+        "caption": "",
+        "alt": "Two models standing side by side against a red backdrop: one in a black lace gown with puffed sleeves, the other in a pale blue dress with cut-out flowers and a spiked crystal headpiece, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/07.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/07-1000.jpg",
+        "caption": "",
+        "alt": "Two models posing close together at a tilt: one in a black lace gown with lace gloves leaning over the other, who wears a pale blue dress and a spiked crystal headpiece, Martin Kohout, Punk collection.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/08.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/08-1000.jpg",
+        "caption": "",
+        "alt": "Full-length portrait of a model with long silver hair in a black lace and tulle gown with puffed sleeves, hands on hips, against a red wall, Martin Kohout, Punk collection.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/09.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/09-1000.jpg",
+        "caption": "",
+        "alt": "Model in a black lace gown with puffed sleeves seen from above, head tilted, with long shadows across the pink floor, Martin Kohout, Punk collection.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/10.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/10-1000.jpg",
+        "caption": "",
+        "alt": "Model in a red satin gown with ruffled shoulders, a large bow and black leather gloves, hands on her hips, in dark red light, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/11.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/11-1000.jpg",
+        "caption": "",
+        "alt": "Model in a silver sequin-embroidered ball gown with puffed sleeves, leaning against grey metal panels in warm light backstage, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/12.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/12-1000.jpg",
+        "caption": "",
+        "alt": "Model in a black gown with feathered shoulders, ribbons and voluminous sleeves, standing against a red wall, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/13.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/13-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of hands with silver rings resting on a purple sequin dress, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/14.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/14-1000.jpg",
+        "caption": "",
+        "alt": "Two models posing diagonally against a magenta wall, one in a purple sequin gown and the other in a pale blue satin gown, their shadows behind them, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/15.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/15-1000.jpg",
+        "caption": "",
+        "alt": "Back view of a model in a spiked crystal headpiece and a black sequin dress with a beaded necklace, in front of wooden panelling, Martin Kohout, Punk collection.",
+        "w": 1466,
+        "h": 2200
+      }
+    ]
+  },
+  {
+    "slug": "mbpfw-fw26",
+    "title": "MBPFW FW26",
+    "event": "Mercedes-Benz Prague Fashion Week",
+    "designer": "",
+    "date": "2026-04",
+    "location": "Prague",
+    "article": "https://www.elle.cz/moda/navrhari/prvni-prehlidka-mbpfw-na-mole-zazarily-vanda-janda-i-ester-geislerova",
+    "articleLabel": "Photos published in ELLE.cz",
+    "description": "Backstage and runway photos from Mercedes-Benz Prague Fashion Week FW26, 24 to 26 April 2026.",
+    "seoTitle": "",
+    "seoDescription": "",
+    "cover": "",
+    "photos": [
+      {
+        "image": "/images/shows/mbpfw-fw26/01.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/01-1000.jpg",
+        "caption": "",
+        "alt": "Model in a gold lamé dress posing on a clothing rail beside a hanging yellow coat, backstage, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/02.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/02-1000.jpg",
+        "caption": "",
+        "alt": "Model in a blue brocade coat over lilac tulle, holding a clothing rail, backstage, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/03.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/03-1000.jpg",
+        "caption": "",
+        "alt": "Blurred figure in dark clothes walking past orange lifts in a corridor, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/04.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/04-1000.jpg",
+        "caption": "",
+        "alt": "Model in a yellow draped gown over lilac tulle, posing outside against a corrugated wall, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/05.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/05-1000.jpg",
+        "caption": "",
+        "alt": "Make-up artist touching up a woman with silver hair in a grey satin off-the-shoulder dress, backstage, Miro Sabo & Martina Rozenberg Smira at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/06.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/06-1000.jpg",
+        "caption": "",
+        "alt": "Model in a sheer white veil and ornate glasses over a ruffled gown, backstage, Zoltán Tóth at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/07.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/07-1000.jpg",
+        "caption": "",
+        "alt": "Two models in sheer veils and ruffled white gowns standing on a red carpet, backstage, Zoltán Tóth at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/08.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/08-1000.jpg",
+        "caption": "",
+        "alt": "Model in a white gown spreading a sheer veil like wings, backstage, Zoltán Tóth at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/09.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/09-1000.jpg",
+        "caption": "",
+        "alt": "Veiled model in white walking a dark runway under a spotlight, Zoltán Tóth at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/10.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/10-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a burgundy velvet jacket with coloured buttons and a black ruffled collar, Alexander Bel at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/11.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/11-1000.jpg",
+        "caption": "",
+        "alt": "Model in a ruffled lace bustier top with a long black ribbon scarf, backstage, Alexander Bel at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/12.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/12-1000.jpg",
+        "caption": "",
+        "alt": "Silhouette of a model in a hat with a braid behind a white screen, backstage, Alexander Bel at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/13.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/13-1000.jpg",
+        "caption": "",
+        "alt": "Model with hair over her face in a cream brocade cape with lace ruffles and a ribbon, backstage, Alexander Bel at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/14.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/14-1000.jpg",
+        "caption": "",
+        "alt": "Two models in a red satin shirt with wide trousers and a burgundy top with matching trousers, in front of a clothing rail, Alexander Bel at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/15.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/15-1000.jpg",
+        "caption": "",
+        "alt": "Model in a silver quilted wrap coat on the runway with the audience on both sides, Alexander Bel at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/16.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/16-1000.jpg",
+        "caption": "",
+        "alt": "Two models lying on a stone-block bed in beige layered looks, one in a cap, Petra Ptáčková at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/17.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/17-1000.jpg",
+        "caption": "",
+        "alt": "Three models among ivy, one in a navy hooded jacket, one in a white coat and one in a navy suit with cut-out trousers, Petra Ptáčková at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/18.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/18-1000.jpg",
+        "caption": "",
+        "alt": "Model in a navy hooded jacket and trousers sitting among ivy, with a large ring, Petra Ptáčková at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/19.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/19-1000.jpg",
+        "caption": "",
+        "alt": "Model in a white coat leaning towards a tall window with the sun behind, Petra Ptáčková at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/20.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/20-1000.jpg",
+        "caption": "",
+        "alt": "Model in a pale pink cropped set with white straps and sneakers in a gallery room, Petra Ptáčková at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/21.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/21-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a model in a dark brimmed hat and curly hair, wrapped in cream tulle, in warm light, Petra Ptáčková at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/22.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/22-1000.jpg",
+        "caption": "",
+        "alt": "Model in a pink hood and cropped set walking on a treadmill under a gilded painting, with blue ribbon in front, Petra Ptáčková at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/23.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/23-1000.jpg",
+        "caption": "",
+        "alt": "Model in an asymmetric black metallic top and dark trousers against a white backdrop, Aleš Hnátek at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/24.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/24-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a black metallic top draped over a grey skirt with ribbon ties, Aleš Hnátek at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/25.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/25-1000.jpg",
+        "caption": "",
+        "alt": "Runway view of models in a striped top and a black floral skirt with the audience around, Aleš Hnátek at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/26.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/26-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a grey jumper with a pattern of cut triangles, Technical University of Liberec at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/27.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/27-1000.jpg",
+        "caption": "",
+        "alt": "Model in an orange floral kimono-style jacket with a red ruffled belt and a large cream hat, beside a model in a grey coat with a monogram patch, Technical University of Liberec at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/28.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/28-1000.jpg",
+        "caption": "",
+        "alt": "Two models, one in a coral beaded strapless dress and one in a white lace gown with a ruffled belt, Guillermo Décimo at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/29.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/29-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a gold embroidered jacket with leaf patterns and a zip collar, Guillermo Décimo at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/30.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/30-1000.jpg",
+        "caption": "",
+        "alt": "Model in a silver-grey dress with hair ornament walking the runway past the audience, Guillermo Décimo at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/31.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/31-1000.jpg",
+        "caption": "",
+        "alt": "Model with red lips in a pale pink lace gown, backstage in front of a clothing rail, Tomáš Němec at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/32.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/32-1000.jpg",
+        "caption": "",
+        "alt": "Model in a pink lace dress lifting the skirt, standing on a red carpet, Tomáš Němec at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/33.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/33-1000.jpg",
+        "caption": "",
+        "alt": "Two models, one in a red lace top and the other in a red fitted dress, in front of plastic sheeting, Tomáš Němec at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/34.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/34-1000.jpg",
+        "caption": "",
+        "alt": "Model in a tulle skirt and ruched sheer top with arms out, on a red carpet, Tomáš Němec at MBPFW FW26.",
+        "w": 1760,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/35.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/35-1000.jpg",
+        "caption": "",
+        "alt": "Model in a sheer blue-lace top and black leather leggings against a light backdrop, Tomáš Němec at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/36.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/36-1000.jpg",
+        "caption": "",
+        "alt": "Close-up of a model with red lips in a sheer top covered in blue lace flowers, Tomáš Němec at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/37.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/37-1000.jpg",
+        "caption": "",
+        "alt": "Model in a black leather corset with an oval cut-out and a full black skirt, leaning on a doorframe, Tobias Schubert at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/38.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/38-1000.jpg",
+        "caption": "",
+        "alt": "Hands holding an ornate bone-like sword over a cream dress with puff sleeves, Tobias Schubert at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/39.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/39-1000.jpg",
+        "caption": "",
+        "alt": "Back of a model with a lace-up corset in warm light, Tobias Schubert at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      },
+      {
+        "image": "/images/shows/mbpfw-fw26/40.jpg",
+        "thumb": "/images/shows/mbpfw-fw26/40-1000.jpg",
+        "caption": "",
+        "alt": "Model in a black leather corset with a cut-out and dark trousers, holding giant scissors, backstage, Tobias Schubert at MBPFW FW26.",
+        "w": 1467,
+        "h": 2200
+      }
+    ]
   },
   {
     "slug": "bfw-aw26",
