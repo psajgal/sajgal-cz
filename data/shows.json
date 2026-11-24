@@ -1658,10 +1658,10 @@
     "slug": "anna-tran-buom-buom",
     "title": "Anna Tran Buom Buom",
     "event": "",
-    "designer": "",
-    "date": "",
-    "location": "",
-    "description": "",
+    "designer": "Anna Tran",
+    "date": "2025-11",
+    "location": "Husův sbor",
+    "description": "Photos from Anna Tran's debut collection Buồm Buồm, shown at Husův sbor and published in ELLE Czech.",
     "seoTitle": "",
     "seoDescription": "",
     "cover": "",
@@ -1876,7 +1876,9 @@
         "w": 1280,
         "h": 791
       }
-    ]
+    ],
+    "article": "https://www.elle.cz/moda/navrhari/barevne-cesko-anny-tran-nadpozemska-prehlidka-ktera-spojila-generace",
+    "articleLabel": "Photos published in ELLE.cz"
   },
   {
     "slug": "jan-societe-show-13",
