@@ -808,6 +808,142 @@
     "articleLabel": "Photos published in ELLE.cz"
   },
   {
+    "slug": "martin-kohout-punk",
+    "title": "Martin Kohout Punk",
+    "event": "Punk 2026",
+    "designer": "Martin Kohout",
+    "date": "2026-05",
+    "location": "Ateliér Strahov, Prague",
+    "description": "Backstage photos from Punk, Martin Kohout's 2026 collection, shot for ELLE Czech.",
+    "seoTitle": "",
+    "seoDescription": "",
+    "cover": "",
+    "article": "https://www.elle.cz/moda/modni-prehlidky/z-pohadky-punk-saty-martina-kohouta-nastavuji-zrcadlo-pokrivene-dobe",
+    "articleLabel": "Photos published in ELLE.cz",
+    "photos": [
+      {
+        "image": "/images/shows/martin-kohout-punk/01.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/01-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Model in a purple sequin gown with black ties at the sides, one arm raised and a sweeping train, against a magenta backdrop with large shadows, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/02.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/02-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Model in a strapless pale blue satin gown with a bow at the bust and a full skirt, glancing to the side against a red backdrop, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/03.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/03-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": "Seated model with braided dark hair and red eye makeup looking into the camera, in a pale blue satin gown with tulle around her, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/04.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/04-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Model with a blonde bob and a spiked crystal headpiece, in a pale blue dress with cut-out flower shapes, white fishnet tights and red pointed shoes, holding out her skirt, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/05.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/05-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Profile close-up of a model in a spiked crystal headpiece and a pale blue frayed-edge dress, a hand raised to her chin, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/06.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/06-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Two models standing side by side against a red backdrop: one in a black lace gown with puffed sleeves, the other in a pale blue dress with cut-out flowers and a spiked crystal headpiece, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/07.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/07-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": "Two models posing close together at a tilt: one in a black lace gown with lace gloves leaning over the other, who wears a pale blue dress and a spiked crystal headpiece, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/08.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/08-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": "Full-length portrait of a model with long silver hair in a black lace and tulle gown with puffed sleeves, hands on hips, against a red wall, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/09.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/09-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": "Model in a black lace gown with puffed sleeves seen from above, head tilted, with long shadows across the pink floor, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/10.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/10-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Model in a red satin gown with ruffled shoulders, a large bow and black leather gloves, hands on her hips, in dark red light, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/11.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/11-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Model in a silver sequin-embroidered ball gown with puffed sleeves, leaning against grey metal panels in warm light backstage, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/12.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/12-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Model in a black gown with feathered shoulders, ribbons and voluminous sleeves, standing against a red wall, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/13.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/13-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Close-up of hands with silver rings resting on a purple sequin dress, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/14.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/14-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Two models posing diagonally against a magenta wall, one in a purple sequin gown and the other in a pale blue satin gown, their shadows behind them, Martin Kohout at the Punk 2026 show."
+      },
+      {
+        "image": "/images/shows/martin-kohout-punk/15.jpg",
+        "thumb": "/images/shows/martin-kohout-punk/15-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": "Back view of a model in a spiked crystal headpiece and a black sequin dress with a beaded necklace, in front of wooden panelling, Martin Kohout at the Punk 2026 show."
+      }
+    ]
+  },
+  {
     "slug": "zuzana-kubickova-poetica",
     "title": "Zuzana Kubíčková Poetica",
     "event": "",
