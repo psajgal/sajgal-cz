@@ -43,3 +43,6 @@ Until you change DNS, sajgal.cz keeps showing the old site.
 
 ## Limits
 Cloudflare Pages free: 20,000 files, 25 MiB per file. Each photo is stored twice (full size and grid size). GitHub recommends repositories under 1 GB, and keeps history, so removed photos still use space.
+
+## Where photos live
+Photos and short clips are stored in Cloudflare R2 (`media.sajgal.cz`), not in this repository. `data/media.json` has `"photos": true`; the build then serves every `/images/…` and `/videos/…` path from there, and the admin uploads new files straight to R2 through the `sajgal-uploads` Worker. The old files remain in git history (before the commit "Move photos out of the repository") if they are ever needed.
