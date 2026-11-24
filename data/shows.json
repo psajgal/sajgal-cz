@@ -1,5 +1,123 @@
 [
   {
+    "slug": "exist-2026",
+    "title": "EXIST 2026",
+    "event": "EXIST 2026",
+    "designer": "ADO Zlín",
+    "date": "2026-06",
+    "location": "",
+    "description": "Backstage photos from EXIST 2026, the graduate showcase of the Fashion Design studio (ADO) of Tomas Bata University in Zlín.",
+    "seoTitle": "",
+    "seoDescription": "",
+    "cover": "",
+    "photos": [
+      {
+        "image": "/images/shows/exist-2026/01.jpg",
+        "thumb": "/images/shows/exist-2026/01-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/02.jpg",
+        "thumb": "/images/shows/exist-2026/02-1000.jpg",
+        "caption": "",
+        "w": 1466,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/03.jpg",
+        "thumb": "/images/shows/exist-2026/03-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/04.jpg",
+        "thumb": "/images/shows/exist-2026/04-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/05.jpg",
+        "thumb": "/images/shows/exist-2026/05-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/06.jpg",
+        "thumb": "/images/shows/exist-2026/06-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/07.jpg",
+        "thumb": "/images/shows/exist-2026/07-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/08.jpg",
+        "thumb": "/images/shows/exist-2026/08-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/09.jpg",
+        "thumb": "/images/shows/exist-2026/09-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/10.jpg",
+        "thumb": "/images/shows/exist-2026/10-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/11.jpg",
+        "thumb": "/images/shows/exist-2026/11-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/12.jpg",
+        "thumb": "/images/shows/exist-2026/12-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      },
+      {
+        "image": "/images/shows/exist-2026/13.jpg",
+        "thumb": "/images/shows/exist-2026/13-1000.jpg",
+        "caption": "",
+        "w": 1760,
+        "h": 2200,
+        "alt": ""
+      }
+    ]
+  },
+  {
     "slug": "mbpfw-ss27",
     "title": "MBPFW SS27",
     "event": "Mercedes-Benz Prague Fashion Week",
