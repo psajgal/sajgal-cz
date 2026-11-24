@@ -8,28 +8,28 @@
     "col": 0
   },
   {
-    "image": "/images/shows/jan-societe-show-13/02.jpg",
-    "caption": "Jan Société Show 13",
-    "alt": "Backstage fotografie z přehlídky Jan Société Show 13 pro Elle Czech od Petra Šajgala.",
-    "w": 1280,
-    "h": 1600,
+    "image": "/images/shows/jan-societe-show-14/06.jpg",
+    "thumb": "/images/shows/jan-societe-show-14/06-1000.jpg",
+    "caption": "Jan Société Show 14",
+    "alt": "Model in a long tan leather coat over a green shirt and navy velvet shorts with a round patch, Jan Société Show 14.",
+    "w": 1760,
+    "h": 2200,
     "col": 1
   },
   {
-    "image": "/images/shows/designblok-diploma-selection-2026/04.jpg",
-    "thumb": "/images/shows/designblok-diploma-selection-2026/04-1000.jpg",
-    "caption": "Designblok Diploma Selection 2026",
-    "alt": "Model in a cream coat and culottes with draped yellow fabric and a yellow ruffled bag, Józefina Wojtkiewicz at Diploma Selection 2026, the Designblok fashion competition in Prague.",
+    "image": "/images/shows/mbpfw-fw26/17.jpg",
+    "thumb": "/images/shows/mbpfw-fw26/17-1000.jpg",
+    "caption": "MBPFW FW26",
+    "alt": "Three models among ivy, one in a navy hooded jacket, one in a white coat and one in a navy suit with cut-out trousers, Petra Ptáčková at MBPFW FW26.",
     "w": 1760,
     "h": 2200,
     "col": 2
   },
   {
-    "image": "/images/shows/martin-kohout-punk/05.jpg",
-    "thumb": "/images/shows/martin-kohout-punk/05-1000.jpg",
-    "caption": "Martin Kohout Punk",
-    "alt": "Profile close-up of a model in a spiked crystal headpiece and a pale blue frayed-edge dress, a hand raised to her chin, Martin Kohout, Punk collection.",
-    "w": 1466,
+    "image": "/images/shows/zuzana-kubickova-poetica/07.jpg",
+    "thumb": "/images/shows/zuzana-kubickova-poetica/07-1000.jpg",
+    "caption": "Zuzana Kubíčková Poetica",
+    "w": 1467,
     "h": 2200,
     "col": 3
   },
@@ -42,19 +42,20 @@
     "col": 0
   },
   {
-    "image": "/images/shows/mbpfw-fw25/01.jpg",
-    "caption": "MBPFW FW25",
-    "w": 1280,
-    "h": 1601,
+    "image": "/images/shows/designblok-diploma-selection-2026/04.jpg",
+    "thumb": "/images/shows/designblok-diploma-selection-2026/04-1000.jpg",
+    "caption": "Designblok Diploma Selection 2026",
+    "alt": "Model in a cream coat and culottes with draped yellow fabric and a yellow ruffled bag, Józefina Wojtkiewicz at Diploma Selection 2026, the Designblok fashion competition in Prague.",
+    "w": 1760,
+    "h": 2200,
     "col": 1
   },
   {
-    "image": "/images/shows/mbpfw-fw26/17.jpg",
-    "thumb": "/images/shows/mbpfw-fw26/17-1000.jpg",
-    "caption": "MBPFW FW26",
-    "alt": "Three models among ivy, one in a navy hooded jacket, one in a white coat and one in a navy suit with cut-out trousers, Petra Ptáčková at MBPFW FW26.",
-    "w": 1760,
-    "h": 2200,
+    "image": "/images/shows/jan-societe-show-13/02.jpg",
+    "caption": "Jan Société Show 13",
+    "alt": "Backstage fotografie z přehlídky Jan Société Show 13 pro Elle Czech od Petra Šajgala.",
+    "w": 1280,
+    "h": 1600,
     "col": 2
   },
   {
@@ -72,19 +73,18 @@
     "col": 0
   },
   {
-    "image": "/images/shows/exist-2026/12.jpg",
-    "thumb": "/images/shows/exist-2026/12-1000.jpg",
-    "caption": "EXIST 2026",
-    "alt": "Model in a face mask with blue lace appliqué, a grey oversized trench jacket and a long skirt, in a concrete passage, Sofia Blahútová at EXIST 2026.",
-    "w": 1760,
-    "h": 2200,
+    "image": "/images/shows/mbpfw-fw25/01.jpg",
+    "caption": "MBPFW FW25",
+    "w": 1280,
+    "h": 1601,
     "col": 1
   },
   {
-    "image": "/images/shows/zuzana-kubickova-poetica/07.jpg",
-    "thumb": "/images/shows/zuzana-kubickova-poetica/07-1000.jpg",
-    "caption": "Zuzana Kubíčková Poetica",
-    "w": 1467,
+    "image": "/images/shows/martin-kohout-punk/05.jpg",
+    "thumb": "/images/shows/martin-kohout-punk/05-1000.jpg",
+    "caption": "Martin Kohout Punk",
+    "alt": "Profile close-up of a model in a spiked crystal headpiece and a pale blue frayed-edge dress, a hand raised to her chin, Martin Kohout, Punk collection.",
+    "w": 1466,
     "h": 2200,
     "col": 2
   },
@@ -103,10 +103,12 @@
     "col": 0
   },
   {
-    "image": "/images/shows/bfw-ss26/02.jpg",
-    "caption": "BFW SS26",
-    "w": 1280,
-    "h": 1600,
+    "image": "/images/shows/exist-2026/12.jpg",
+    "thumb": "/images/shows/exist-2026/12-1000.jpg",
+    "caption": "EXIST 2026",
+    "alt": "Model in a face mask with blue lace appliqué, a grey oversized trench jacket and a long skirt, in a concrete passage, Sofia Blahútová at EXIST 2026.",
+    "w": 1760,
+    "h": 2200,
     "col": 1
   },
   {
@@ -170,12 +172,10 @@
     "col": 1
   },
   {
-    "image": "/images/shows/mbpfw-fw26/34.jpg",
-    "thumb": "/images/shows/mbpfw-fw26/34-1000.jpg",
-    "caption": "MBPFW FW26",
-    "alt": "Model in a tulle skirt and ruched sheer top with arms out, on a red carpet, Tomáš Němec at MBPFW FW26.",
-    "w": 1760,
-    "h": 2200,
+    "image": "/images/shows/bfw-ss26/02.jpg",
+    "caption": "BFW SS26",
+    "w": 1280,
+    "h": 1600,
     "col": 2
   },
   {
@@ -203,11 +203,12 @@
     "col": 1
   },
   {
-    "image": "/images/shows/were-next-25/04.jpg",
-    "caption": "WE'RE NEXT 25",
-    "alt": "Portrét modelky v zákulisí WE’RE NEXT 25 – Oděv od Vojtěcha Smrže",
-    "w": 1280,
-    "h": 1920,
+    "image": "/images/shows/mbpfw-fw26/34.jpg",
+    "thumb": "/images/shows/mbpfw-fw26/34-1000.jpg",
+    "caption": "MBPFW FW26",
+    "alt": "Model in a tulle skirt and ruched sheer top with arms out, on a red carpet, Tomáš Němec at MBPFW FW26.",
+    "w": 1760,
+    "h": 2200,
     "col": 2
   },
   {
@@ -237,10 +238,11 @@
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-aw25-x-maria-chany/07.jpg",
-    "caption": "BFW AW25 x Maria Chany",
+    "image": "/images/shows/were-next-25/04.jpg",
+    "caption": "WE'RE NEXT 25",
+    "alt": "Portrét modelky v zákulisí WE’RE NEXT 25 – Oděv od Vojtěcha Smrže",
     "w": 1280,
-    "h": 1600,
+    "h": 1920,
     "col": 2
   },
   {
@@ -271,7 +273,7 @@
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-aw25-x-maria-chany/03.jpg",
+    "image": "/images/shows/bfw-aw25-x-maria-chany/07.jpg",
     "caption": "BFW AW25 x Maria Chany",
     "w": 1280,
     "h": 1600,
@@ -301,6 +303,22 @@
     "w": 1466,
     "h": 2200,
     "col": 1
+  },
+  {
+    "image": "/images/shows/bfw-aw25-x-maria-chany/03.jpg",
+    "caption": "BFW AW25 x Maria Chany",
+    "w": 1280,
+    "h": 1600,
+    "col": 2
+  },
+  {
+    "image": "/images/shows/jan-societe-show-14/18.jpg",
+    "thumb": "/images/shows/jan-societe-show-14/18-1000.jpg",
+    "caption": "Jan Société Show 14",
+    "alt": "Pre-show view of a gold and silver safety-pin mesh top on a mannequin in Jan's studio, a hand holding the side, Jan Société Show 14.",
+    "w": 1760,
+    "h": 2200,
+    "col": 0
   },
   {
     "image": "/images/shows/bfw-aw25-x-maria-chany/16.jpg",
