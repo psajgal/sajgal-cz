@@ -21,3 +21,8 @@ Why: Cloudflare Pages allows 25 MB per file and GitHub's API 100 MB, so 50 to 15
 5. Worker > Settings > Variables and Secrets: text variables from `wrangler.toml` (`ALLOW_ORIGINS`, `PUBLIC_BASE`, `HARD_CAP_GB`, `MAX_FILE_MB`) and a SECRET named `UPLOAD_SECRET` (a long random password).
 6. Notifications > add a billing/usage alert as a second safety net.
 7. In the admin, Video page > "Big videos": paste the Worker address and the password, Save and test.
+
+## Photos and small clips (added later)
+- `PUT /asset?key=images/…|videos/…` stores one photo or clip (up to 26 MB) with the same hard storage limit. The admin uses it for every upload once `data/media.json` has `"photos": true`.
+- `POST /import` copies files from the site's own GitHub repository (`GITHUB_REPO` variable) into the bucket. The admin's "Move photos to Cloudflare storage" button (Cloudflare login window) uses it once, then sets `photos: true`.
+- When `photos` is true the build serves every `/images/…` and `/videos/…` path from the media address, so the files no longer need to live in the repository.

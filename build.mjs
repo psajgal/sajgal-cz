@@ -127,8 +127,9 @@ const landing = (Array.isArray(readJSON("data/landing.json", [])) ? readJSON("da
 /* ---------- helpers ---------- */
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 // Optional separate address for photos and videos (for example https://media.sajgal.cz). Empty = same site.
-const MEDIA = String(S.site.mediaUrl || "").trim().replace(/\/+$/, "");
-const BIG = String((readJSON("data/media.json", {}) || {}).base || "").trim().replace(/\/+$/, ""); // big videos stored in R2 ("/r2/video/…")
+const MEDIA_JSON = readJSON("data/media.json", {}) || {};
+const BIG = String(MEDIA_JSON.base || "").trim().replace(/\/+$/, ""); // R2 public address: big videos ("/r2/video/…") and, when photos is true, all photos and clips
+const MEDIA = String(S.site.mediaUrl || "").trim().replace(/\/+$/, "") || (MEDIA_JSON.photos === true ? BIG : "");
 const isBig = (p) => /^\/?r2\//.test(p);
 const bigUrl = (p) => (BIG ? BIG + "/" + p.replace(/^\/?r2\//, "") : "");
 const isMedia = (p) => /^\/?(images|videos)\//.test(p);

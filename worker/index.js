@@ -15,6 +15,14 @@ const PART_MAX = 16 * 1024 * 1024;       // never accept a bigger piece
 const PREFIX = "video/";
 const STATE = "_uploads/";               // bookkeeping for uploads in progress
 const OK_TYPES = { "video/mp4": ".mp4", "video/webm": ".webm" };
+// Site photos and short clips ("assets"): small single-request uploads under these prefixes.
+const ASSET_PREFIXES = ["images/", "videos/"];
+const ASSET_TYPES = { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", svg: "image/svg+xml", avif: "image/avif", mp4: "video/mp4", webm: "video/webm" };
+const ASSET_MAX = 26 * 1024 * 1024;      // one request; bigger videos use the multipart route
+const IMPORT_MAX = 40 * 1024 * 1024;     // a file pulled from GitHub must fit in memory
+const assetKeyOk = (k) => /^[a-z0-9][a-z0-9._\/-]*$/i.test(k) && !k.includes("..") && !k.includes("//") && ASSET_PREFIXES.some((p) => k.startsWith(p)) && !!ASSET_TYPES[(k.split(".").pop() || "").toLowerCase()];
+const assetType = (k) => ASSET_TYPES[(k.split(".").pop() || "").toLowerCase()];
+const ASSET_CACHE = "public, max-age=2592000";
 
 const num = (v, d) => (Number.isFinite(+v) && +v > 0 ? +v : d);
 const cap = (env) => Math.floor(num(env.HARD_CAP_GB, 9) * 1024 * 1024 * 1024);
@@ -79,7 +87,7 @@ export default {
         return json({ ...u, free: Math.max(0, u.cap - u.used - u.reserved), maxFile: maxFile(env), base: env.PUBLIC_BASE || "" }, 200, h);
       }
       if (path === "/files" && req.method === "GET") {
-        const all = (await listAll(env.BUCKET, PREFIX)).map((o) => ({ key: o.key, size: o.size, uploaded: o.uploaded }));
+        const all = (await listAll(env.BUCKET, url.searchParams.get("prefix") === "all" ? "" : PREFIX)).filter((o) => !o.key.startsWith(STATE)).map((o) => ({ key: o.key, size: o.size, uploaded: o.uploaded }));
         return json({ files: all }, 200, h);
       }
       if (path === "/upload/start" && req.method === "POST") {
@@ -126,9 +134,41 @@ export default {
         if (s) { const st = await s.json(); try { await env.BUCKET.resumeMultipartUpload(st.key, id).abort(); } catch {} await env.BUCKET.delete(STATE + id + ".json"); }
         return json({ ok: true }, 200, h);
       }
+      if (path === "/asset" && req.method === "PUT") {
+        const key = url.searchParams.get("key") || "";
+        if (!assetKeyOk(key)) return json({ error: "That file name or type is not accepted." }, 400, h);
+        const len = +req.headers.get("Content-Length");
+        if (!(len > 0) || len > ASSET_MAX) return json({ error: "File too large for this route (limit 26 MB)." }, 413, h);
+        const u = await usage(env);
+        if (u.used + u.reserved + len > u.cap) return json({ error: "Upload refused: the storage limit would be passed." }, 507, h);
+        const obj = await env.BUCKET.put(key, req.body, { httpMetadata: { contentType: assetType(key), cacheControl: ASSET_CACHE } });
+        return json({ key, size: obj.size, url: (env.PUBLIC_BASE || "") + "/" + key }, 200, h);
+      }
+      if (path === "/import" && req.method === "POST") {
+        // Copies files from the site's own GitHub repository into the bucket (one-off move of the photos).
+        const b = await req.json(), repo = String(env.GITHUB_REPO || ""), ref = String(b.ref || "main");
+        if (!repo || !/^[\w.-]+$/.test(ref)) return json({ error: "Import is not set up." }, 400, h);
+        const paths = (Array.isArray(b.paths) ? b.paths : []).slice(0, 8);
+        const u = await usage(env); let used = u.used + u.reserved;
+        const done = [], failed = [];
+        for (const p of paths) {
+          const key = String(p || "").replace(/^\//, "");
+          if (!assetKeyOk(key)) { failed.push({ key, why: "not accepted" }); continue; }
+          try {
+            const r = await fetch("https://raw.githubusercontent.com/" + repo + "/" + ref + "/" + key.split("/").map(encodeURIComponent).join("/"));
+            if (!r.ok) { failed.push({ key, why: "GitHub " + r.status }); continue; }
+            const buf = await r.arrayBuffer();
+            if (buf.byteLength > IMPORT_MAX) { failed.push({ key, why: "too large to import (" + Math.round(buf.byteLength / 1048576) + " MB)" }); continue; }
+            if (used + buf.byteLength > u.cap) { failed.push({ key, why: "storage limit" }); continue; }
+            await env.BUCKET.put(key, buf, { httpMetadata: { contentType: assetType(key), cacheControl: ASSET_CACHE } });
+            used += buf.byteLength; done.push(key);
+          } catch (e) { failed.push({ key, why: String(e && e.message || e) }); }
+        }
+        return json({ done, failed }, 200, h);
+      }
       if (path === "/file" && req.method === "DELETE") {
         const key = url.searchParams.get("key") || "";
-        if (!key.startsWith(PREFIX) || key.includes("..")) return json({ error: "Not a video file." }, 400, h);
+        if (!(key.startsWith(PREFIX) || assetKeyOk(key)) || key.includes("..")) return json({ error: "Not a media file." }, 400, h);
         await env.BUCKET.delete(key);
         return json({ ok: true }, 200, h);
       }

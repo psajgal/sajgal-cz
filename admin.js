@@ -242,6 +242,10 @@
     files.forEach(function (f, n) {
       chain = chain.then(function () {
         setStatus("Uploading file " + (n + 1) + " of " + files.length + "…");
+        if (mediaPhotos) {
+          if (!mediaCfg()) throw new Error("Photos are stored on Cloudflare. Open Cloudflare login (top right) and enter the upload address and password first.");
+          return mediaCall("/asset?key=" + encodeURIComponent(f.path.replace(/^\//, "")), { method: "PUT", body: f.blob }).then(function () { delete f.item[f.key]; });
+        }
         return blobToB64(f.blob).then(function (b) { return put(f.path.replace(/^\//, ""), b, "Add " + f.path.split("/").pop()); })
           .then(function () { delete f.item[f.key]; });
       });
@@ -344,6 +348,16 @@
   }
   /* ---------- Large videos: Cloudflare R2 through the upload Worker (hard storage limit lives in the Worker) ---------- */
   var MKEY = "sajgal-admin-media", pendingVidDel = [];
+  // Photos live in R2 once data/media.json says {photos:true}; mediaBase is the public address of the bucket.
+  var mediaPhotos = false, mediaBase = "";
+  function loadMediaJson() {
+    return api("/contents/data/media.json?ref=" + encodeURIComponent(WB)).then(function (r) {
+      if (!r.ok) return;
+      return r.json().then(function (j) { var d = {}; try { d = JSON.parse(textFromB64(j.content)); } catch (e) {} mediaBase = String((d && d.base) || "").replace(/\/+$/, ""); mediaPhotos = !!(d && d.photos === true && mediaBase); });
+    }).catch(function () {});
+  }
+  // Where the admin can show a file that is stored with the site (a path like /images/shows/x/01.jpg).
+  function rawUrl(p) { return mediaPhotos ? mediaBase + p : "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + p; }
   function mediaCfg() { try { var c = JSON.parse(localStorage.getItem(MKEY) || "null"); return c && c.url && c.secret ? c : null; } catch (e) { return null; } }
   function mediaCall(path, opts) {
     var c = mediaCfg(); if (!c) return Promise.reject(new Error("Large-video uploads are not set up."));
@@ -377,12 +391,12 @@
     base = String(base || "").replace(/\/+$/, "");
     if (!base || mediaBaseSeen === base) return Promise.resolve();
     return api("/contents/data/media.json?ref=" + encodeURIComponent(WB)).then(function (r) {
-      if (r.status === 404) return { sha: null, base: "" };
+      if (r.status === 404) return { sha: null, base: "", data: {} };
       if (!r.ok) throw new Error("Could not read the storage address (" + r.status + ").");
-      return r.json().then(function (j) { var d = {}; try { d = JSON.parse(textFromB64(j.content)); } catch (e) {} return { sha: j.sha, base: String((d && d.base) || "") }; });
+      return r.json().then(function (j) { var d = {}; try { d = JSON.parse(textFromB64(j.content)); } catch (e) {} return { sha: j.sha, base: String((d && d.base) || ""), data: d || {} }; });
     }).then(function (cur) {
       if (cur.base === base) { mediaBaseSeen = base; return; }
-      return put("data/media.json", b64FromText(JSON.stringify({ base: base }, null, 2) + "\n"), "Set big-video storage address", cur.sha).then(function () { mediaBaseSeen = base; refreshDraft(); });
+      return put("data/media.json", b64FromText(JSON.stringify(Object.assign({}, cur.data, { base: base }), null, 2) + "\n"), "Set storage address", cur.sha).then(function () { mediaBaseSeen = base; if (mediaPhotos) mediaBase = base; refreshDraft(); });
     });
   }
   function newVideo(f) {
@@ -469,7 +483,7 @@
         h("button", { type: "button", class: "link", text: "Select all", onclick: function () { var all = btns.every(function (b) { return b.on; }); btns.forEach(function (b) { if (b.on === all) b.toggle(); }); } })]), grid]);
       photos.forEach(function (p) {
         var item = { p: p, s: s }, b = h("button", { type: "button", class: "pk-ph", "aria-pressed": "false", title: have[p.src] ? "Already in Selected fashion" : "" });
-        var im = h("img", { alt: "", loading: "lazy", decoding: "async" }); var u = p.thumb || p.src; im.src = /^(data|blob):/.test(u) ? u : "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + u;
+        var im = h("img", { alt: "", loading: "lazy", decoding: "async" }); var u = p.thumb || p.src; im.src = /^(data|blob):/.test(u) ? u : rawUrl(u);
         b.appendChild(im); if (have[p.src]) b.classList.add("had");
         b.on = false;
         b.toggle = function () { b.on = !b.on; b.setAttribute("aria-pressed", String(b.on)); if (b.on) sel.push(item); else sel.splice(sel.indexOf(item), 1); upd(); };
@@ -553,7 +567,7 @@
       if (!presets.length) listEl.appendChild(h("p", { class: "hint", text: "No saved galleries yet." }));
       presets.slice().reverse().forEach(function (pr) {
         var thumbs = h("div", { class: "pre-th" });
-        pr.photos.slice(0, 6).forEach(function (p) { var im = h("img", { alt: "", loading: "lazy" }); var u = p.thumb || p.image; im.src = /^(data|blob):/.test(u) ? u : "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + u; thumbs.appendChild(im); });
+        pr.photos.slice(0, 6).forEach(function (p) { var im = h("img", { alt: "", loading: "lazy" }); var u = p.thumb || p.image; im.src = /^(data|blob):/.test(u) ? u : rawUrl(u); thumbs.appendChild(im); });
         var use = h("button", { type: "button", class: "btn", text: "Use this gallery" }), del = h("button", { type: "button", class: "link", text: "Delete" }), ua = false, da = false;
         use.onclick = function () {
           if (state.fashion.length && !ua) { ua = true; use.textContent = "Click again: replaces the current photos"; setTimeout(function () { ua = false; use.textContent = "Use this gallery"; }, 4500); return; }
@@ -1170,7 +1184,7 @@
     stage.appendChild(frame); box.appendChild(stage);
     var W = apMode === "phone" ? 390 : 1440;
     function link(p) {
-      var q = cropOf(p), src = p.preview || p.src.replace(/^\//, ""), raw = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + p.src;
+      var q = cropOf(p), src = p.preview || p.src.replace(/^\//, ""), raw = rawUrl(p.src);
       return '<a href="#" data-id="' + p.id + '"' + (p.col != null ? ' data-col="' + p.col + '"' : "") + (q ? ' class="crop" style="aspect-ratio:' + q.ar + '"' : "") + '><img src="' + escA(src) + '" alt="" ' + (p.w && p.h ? 'width="' + p.w + '" height="' + p.h + '" ' : "") + "onerror=\"this.onerror=null;this.src='" + escA(raw) + "'\"" + (q ? ' style="' + q.css + '"' : "") + "></a>";
     }
     var opts = JSON.stringify({ cols: c.cols, phone: c.phone, even: c.even, offs: c.offs });
@@ -1415,7 +1429,7 @@
 
   /* ---------- Grid (photos and videos) ---------- */
   function mediaEl(p, isVid) {
-    var el, rawUrl = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + (isVid ? p.src : (p.thumb || p.src));
+    var el, fallback = rawUrl(isVid ? p.src : (p.thumb || p.src));
     if (isVid) {
       el = document.createElement("video");
       el.muted = true; el.loop = true; el.playsInline = true; el.preload = "metadata";
@@ -1425,7 +1439,7 @@
       el = new Image(); el.alt = ""; el.loading = "lazy";
       el.src = p.preview || (p.thumb || p.src).replace(/^\//, "");
     }
-    el.onerror = function () { el.onerror = null; if (!isVid || !el.poster) el.src = rawUrl; };
+    el.onerror = function () { el.onerror = null; if (!isVid || !el.poster) el.src = fallback; };
     return el;
   }
   function renderGrid() {
@@ -1646,6 +1660,42 @@
       state[id] = order.map(function (k) { return state[id].filter(function (m) { return m.key === k; })[0]; }); dirty.menu = true; markDirty(); renderMenu();
     } });
   }
+  // One-off: the Worker copies every photo and clip from the repository into R2, then data/media.json is switched to photos:true.
+  function moveToCloudflare(say) {
+    var c = mediaCfg(); if (!c) return Promise.reject(new Error("Save the upload address and password first."));
+    return ghJson("/git/trees/" + encodeURIComponent(WB) + "?recursive=1").then(function (t) {
+      if (t.truncated) throw new Error("The file list is too long to read in one go.");
+      var paths = t.tree.filter(function (e) { return e.type === "blob" && /^(images|videos)\//.test(e.path) && /\.(jpe?g|png|webp|gif|svg|avif|mp4|webm)$/i.test(e.path); }).map(function (e) { return e.path; });
+      if (!paths.length) throw new Error("No photos found to move.");
+      var done = 0, failed = [], i = 0;
+      function next() {
+        if (i >= paths.length) return Promise.resolve();
+        var batch = paths.slice(i, i + 8); i += 8;
+        function go(list, tries) {
+          return mediaCall("/import", { method: "POST", body: JSON.stringify({ ref: WB, paths: list }) }).then(function (r) {
+            done += r.done.length;
+            var bad = r.failed.map(function (f) { return f.key; });
+            if (bad.length && tries < 2) return new Promise(function (res) { setTimeout(res, 1500); }).then(function () { return go(bad, tries + 1); });
+            r.failed.forEach(function (f) { failed.push(f); });
+          }).catch(function (e) { if (tries < 2) return new Promise(function (res) { setTimeout(res, 1500); }).then(function () { return go(list, tries + 1); }); list.forEach(function (k) { failed.push({ key: k, why: e.message || String(e) }); }); });
+        }
+        return go(batch, 0).then(function () { say("Copying… " + Math.min(i, paths.length) + " of " + paths.length + " files"); return next(); });
+      }
+      return next().then(function () {
+        if (failed.length) return { failed: failed, text: "Copied " + done + " of " + paths.length + " files. " + failed.length + " failed, so nothing was switched. First problem: " + failed[0].key + " (" + failed[0].why + "). Press the button again to retry." };
+        say("Switching the draft to the new storage…");
+        return api("/contents/data/media.json?ref=" + encodeURIComponent(WB)).then(function (r) {
+          if (r.status === 404) return { sha: null, data: {} };
+          return r.json().then(function (j) { var d = {}; try { d = JSON.parse(textFromB64(j.content)); } catch (e) {} return { sha: j.sha, data: d || {} }; });
+        }).then(function (cur) {
+          var base = String(cur.data.base || mediaBase || "").replace(/\/+$/, "");
+          if (!base) throw new Error("The storage address is not known yet. Press Save and test first.");
+          var next = Object.assign({}, cur.data, { base: base, photos: true });
+          return put("data/media.json", b64FromText(JSON.stringify(next, null, 2) + "\n"), "Photos now served from Cloudflare storage", cur.sha).then(function () { mediaBase = base; mediaPhotos = true; refreshDraft(); layout(); return { failed: [], text: "All " + done + " files copied. The draft now serves photos from Cloudflare. Check the draft, then Publish." }; });
+        });
+      });
+    });
+  }
   function openCloudflare() {
     var c = mediaCfg() || {}, meter = h("p", { class: "msg", role: "status" });
     var url = h("input", { type: "url", value: c.url || "", placeholder: "https://sajgal-uploads.<your-name>.workers.dev" });
@@ -1665,15 +1715,29 @@
     }
     test.onclick = function () {
       try { localStorage.setItem(MKEY, JSON.stringify({ url: url.value.trim(), secret: sec.value })); } catch (e) {}
-      show();
+      show(); migShow();
     };
     off.onclick = function () { try { localStorage.removeItem(MKEY); } catch (e) {} url.value = ""; sec.value = ""; show(); };
+    var mig = h("button", { type: "button", class: "btn", text: "Move photos to Cloudflare storage" }), migMsg = h("p", { class: "msg", role: "status" });
+    function migShow() {
+      mig.hidden = mediaPhotos || !mediaCfg();
+      migMsg.className = "msg";
+      migMsg.textContent = mediaPhotos ? "Photos are stored on Cloudflare (" + mediaBase + "). New photos go there automatically." : (mediaCfg() ? "Photos are still stored with the site on GitHub." : "");
+    }
+    mig.onclick = function () {
+      mig.disabled = true; migMsg.className = "msg"; migMsg.textContent = "Listing files…";
+      moveToCloudflare(function (t) { migMsg.textContent = t; }).then(function (r) {
+        mig.disabled = false; migShow();
+        if (r) { migMsg.className = r.failed.length ? "msg err" : "msg"; migMsg.textContent = r.text; }
+      }).catch(function (e) { mig.disabled = false; migMsg.className = "msg err"; migMsg.textContent = e.message || String(e); });
+    };
     var body = h("div", { class: "pk-body mediabody" }, [
       h("p", { class: "hint", text: "For big videos (50 to 150 MB). They are stored on your own Cloudflare storage, which has a hard size limit, instead of on GitHub. Paste the upload address and password once. They stay in this browser only." }),
       h("label", { class: "fld wide" }, [h("span", { text: "Upload address" }), url]),
       h("label", { class: "fld wide" }, [h("span", { text: "Upload password" }), sec]),
-      h("div", {}, [test, off]), meter]);
-    modal("Cloudflare login", body, function (close) { return [h("button", { type: "button", class: "btn", text: "Done", onclick: close })]; }); show();
+      h("div", {}, [test, off]), meter,
+      h("h3", { class: "sec", text: "Photos" }), h("div", {}, [mig]), migMsg]);
+    modal("Cloudflare login", body, function (close) { return [h("button", { type: "button", class: "btn", text: "Done", onclick: close })]; }); show(); migShow();
   }
   function renderReels() {
     var box = $("#p-reels"), list = state[tab]; box.innerHTML = "";
@@ -1711,7 +1775,7 @@
       var file = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm,.mp4,.mov,.m4v", hidden: "" });
       function paint() {
         thumb.innerHTML = "";
-        if (v.thumb) { var im = new Image(); im.alt = ""; im.src = v.preview || v.thumb.replace(/^\//, ""); im.onerror = function () { im.onerror = null; im.src = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + v.thumb; }; thumb.appendChild(im); }
+        if (v.thumb) { var im = new Image(); im.alt = ""; im.src = v.preview || v.thumb.replace(/^\//, ""); im.onerror = function () { im.onerror = null; im.src = rawUrl(v.thumb); }; thumb.appendChild(im); }
         thumb.appendChild(h("span", { class: "rt-label", text: v.thumb ? "Change" : "Add thumbnail" }));
         thumb.appendChild(file);
       }
@@ -1816,7 +1880,7 @@
 
     var shareImg = h("img", { class: "ogprev", alt: "Share image preview" });
     shareImg.src = S.ogPreview || (site.ogImage || "/images/og.jpg").replace(/^\//, "");
-    shareImg.onerror = function () { shareImg.onerror = null; shareImg.src = "https://raw.githubusercontent.com/" + cfg.repo + "/" + WB + (site.ogImage || "/images/og.jpg"); };
+    shareImg.onerror = function () { shareImg.onerror = null; shareImg.src = rawUrl(site.ogImage || "/images/og.jpg"); };
     var ogFile = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp", hidden: "" });
     ogFile.onchange = function () {
       var f = ogFile.files[0]; ogFile.value = ""; if (!f) return;
@@ -1920,7 +1984,7 @@
   function start() {
     $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false; $("#cflink").hidden = false;
     setStatus("Loading…");
-    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile(), loadPresets()])); }).then(function () {
+    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile(), loadPresets(), loadMediaJson()])); }).then(function () {
       setStatus("");
       try {
         var pos = JSON.parse(localStorage.getItem("sajgal-admin-pos") || "null");

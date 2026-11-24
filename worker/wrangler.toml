@@ -9,5 +9,6 @@ bucket_name = "sajgal-media"
 [vars]
 ALLOW_ORIGINS = "https://sajgal.cz,https://www.sajgal.cz,https://sajgal-cz.pages.dev,https://draft.sajgal-cz.pages.dev"
 PUBLIC_BASE = "https://media.sajgal.cz"
+GITHUB_REPO = "psajgal/sajgal-cz"
 HARD_CAP_GB = "9"
 MAX_FILE_MB = "150"
