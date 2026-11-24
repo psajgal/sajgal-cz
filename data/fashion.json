@@ -8,9 +8,9 @@
     "col": 0
   },
   {
-    "image": "/images/shows/jan-societe-show-13/19.jpg",
+    "image": "/images/shows/jan-societe-show-13/02.jpg",
     "caption": "Jan Société Show 13",
-    "alt": "Fotky ze zákulisí Jan Société 13 od Petra Šajgala. Fotka z focení lookbooku.",
+    "alt": "Backstage fotografie z přehlídky Jan Société Show 13 pro Elle Czech od Petra Šajgala.",
     "w": 1280,
     "h": 1600,
     "col": 1
@@ -33,18 +33,18 @@
     "col": 3
   },
   {
-    "image": "/images/shows/jan-societe-show-13/02.jpg",
+    "image": "/images/shows/jan-societe-show-13/19.jpg",
     "caption": "Jan Société Show 13",
-    "alt": "Backstage fotografie z přehlídky Jan Société Show 13 pro Elle Czech od Petra Šajgala.",
+    "alt": "Fotky ze zákulisí Jan Société 13 od Petra Šajgala. Fotka z focení lookbooku.",
     "w": 1280,
     "h": 1600,
     "col": 0
   },
   {
-    "image": "/images/shows/mbpfw-ss25/06.jpg",
-    "caption": "MBPFW SS25",
+    "image": "/images/shows/mbpfw-fw25/01.jpg",
+    "caption": "MBPFW FW25",
     "w": 1280,
-    "h": 1922,
+    "h": 1601,
     "col": 1
   },
   {
@@ -57,10 +57,10 @@
     "col": 2
   },
   {
-    "image": "/images/shows/mbpfw-fw25/01.jpg",
-    "caption": "MBPFW FW25",
+    "image": "/images/shows/mbpfw-ss25/06.jpg",
+    "caption": "MBPFW SS25",
     "w": 1280,
-    "h": 1601,
+    "h": 1922,
     "col": 3
   },
   {
@@ -71,18 +71,21 @@
     "col": 0
   },
   {
-    "image": "/images/shows/were-next-25/04.jpg",
-    "caption": "WE'RE NEXT 25",
-    "alt": "Portrét modelky v zákulisí WE’RE NEXT 25 – Oděv od Vojtěcha Smrže",
-    "w": 1280,
-    "h": 1920,
+    "image": "/images/shows/exist-2026/12.jpg",
+    "thumb": "/images/shows/exist-2026/12-1000.jpg",
+    "caption": "EXIST 2026",
+    "alt": "Model in a face mask with blue lace appliqué, a grey oversized trench jacket and a long skirt, in a concrete passage, Sofia Blahútová at EXIST 2026.",
+    "w": 1760,
+    "h": 2200,
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-ss26/05.jpg",
-    "caption": "BFW SS26",
-    "w": 1280,
-    "h": 1920,
+    "image": "/images/shows/martin-kohout-punk/05.jpg",
+    "thumb": "/images/shows/martin-kohout-punk/05-1000.jpg",
+    "caption": "Martin Kohout Punk",
+    "alt": "Profile close-up of a model in a spiked crystal headpiece and a pale blue frayed-edge dress, a hand raised to her chin, Martin Kohout, Punk collection.",
+    "w": 1466,
+    "h": 2200,
     "col": 2
   },
   {
@@ -114,10 +117,10 @@
     "col": 2
   },
   {
-    "image": "/images/shows/bfw-aw25-x-maria-chany/16.jpg",
-    "caption": "BFW AW25 x Maria Chany",
+    "image": "/images/shows/bfw-ss26/05.jpg",
+    "caption": "BFW SS26",
     "w": 1280,
-    "h": 1922,
+    "h": 1920,
     "col": 3
   },
   {
@@ -135,10 +138,12 @@
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-ss26/26.jpg",
-    "caption": "BFW SS26",
-    "w": 1280,
-    "h": 1920,
+    "image": "/images/shows/were-next-26/21.jpg",
+    "thumb": "/images/shows/were-next-26/21-1000.jpg",
+    "caption": "WE'RE NEXT 26",
+    "alt": "Model in a blue draped cape-like dress and a wide blue hat tied under her chin, with orange and blue eye makeup, STUDIO 3 at WE'RE NEXT 2026.",
+    "w": 1760,
+    "h": 2200,
     "col": 2
   },
   {
@@ -182,10 +187,12 @@
     "col": 3
   },
   {
-    "image": "/images/shows/mbpfw-fw25/20.jpg",
-    "caption": "MBPFW FW25",
-    "w": 1280,
-    "h": 1920,
+    "image": "/images/shows/exist-2026/13.jpg",
+    "thumb": "/images/shows/exist-2026/13-1000.jpg",
+    "caption": "EXIST 2026",
+    "alt": "Model in a blue plaid mohair cardigan, a brown cap and a long check skirt with blue shoes, holding grey toys, in a white corner, Sofia Blahútová at EXIST 2026.",
+    "w": 1760,
+    "h": 2200,
     "col": 0
   },
   {
@@ -196,10 +203,11 @@
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-aw25-x-maria-chany/07.jpg",
-    "caption": "BFW AW25 x Maria Chany",
+    "image": "/images/shows/were-next-25/04.jpg",
+    "caption": "WE'RE NEXT 25",
+    "alt": "Portrét modelky v zákulisí WE’RE NEXT 25 – Oděv od Vojtěcha Smrže",
     "w": 1280,
-    "h": 1600,
+    "h": 1920,
     "col": 2
   },
   {
@@ -229,7 +237,7 @@
     "col": 1
   },
   {
-    "image": "/images/shows/bfw-aw25-x-maria-chany/03.jpg",
+    "image": "/images/shows/bfw-aw25-x-maria-chany/07.jpg",
     "caption": "BFW AW25 x Maria Chany",
     "w": 1280,
     "h": 1600,
@@ -254,10 +262,51 @@
     "col": 0
   },
   {
-    "image": "/images/shows/mbpfw-ss26/17.jpg",
-    "caption": "MBPFW SS26",
+    "image": "/images/shows/martin-kohout-punk/06.jpg",
+    "thumb": "/images/shows/martin-kohout-punk/06-1000.jpg",
+    "caption": "Martin Kohout Punk",
+    "alt": "Two models standing side by side against a red backdrop: one in a black lace gown with puffed sleeves, the other in a pale blue dress with cut-out flowers and a spiked crystal headpiece, Martin Kohout, Punk collection.",
+    "w": 1466,
+    "h": 2200,
+    "col": 1
+  },
+  {
+    "image": "/images/shows/bfw-aw25-x-maria-chany/03.jpg",
+    "caption": "BFW AW25 x Maria Chany",
     "w": 1280,
     "h": 1600,
+    "col": 2
+  },
+  {
+    "image": "/images/shows/mbpfw-fw25/20.jpg",
+    "caption": "MBPFW FW25",
+    "w": 1280,
+    "h": 1920,
+    "col": 3
+  },
+  {
+    "image": "/images/shows/were-next-26/03.jpg",
+    "thumb": "/images/shows/were-next-26/03-1000.jpg",
+    "caption": "WE'RE NEXT 26",
+    "alt": "Model in a hooded quilted linen cloak with frayed details and a metal plate at the waist, in front of a silver tinsel curtain, WE'RE NEXT 2026.",
+    "w": 1760,
+    "h": 2200,
+    "col": 0
+  },
+  {
+    "image": "/images/shows/martin-kohout-punk/11.jpg",
+    "thumb": "/images/shows/martin-kohout-punk/11-1000.jpg",
+    "caption": "Martin Kohout Punk",
+    "alt": "Model in a silver sequin-embroidered ball gown with puffed sleeves, leaning against grey metal panels in warm light backstage, Martin Kohout, Punk collection.",
+    "w": 1466,
+    "h": 2200,
     "col": 1
+  },
+  {
+    "image": "/images/shows/bfw-aw25-x-maria-chany/16.jpg",
+    "caption": "BFW AW25 x Maria Chany",
+    "w": 1280,
+    "h": 1922,
+    "col": 2
   }
 ]
