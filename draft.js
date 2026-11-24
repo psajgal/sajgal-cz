@@ -1,12 +1,12 @@
 // Only added to draft builds (never the public site): marks the page as a draft and refreshes it when a newer draft is built.
 (function () {
-  var REPO = "__REPO__", BRANCH = "__BRANCH__", mine = "";
+  var REPO = "__REPO__", BRANCH = "__BRANCH__", SITE = "__SITE__", mine = "";
   var bar = document.createElement("div");
   bar.setAttribute("role", "status");
   bar.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:99999;padding:.8rem 1rem calc(.8rem + env(safe-area-inset-bottom,0px));font:600 16px/1.3 system-ui,sans-serif;letter-spacing:.01em;text-align:center;color:#fff;background:#b86e00;box-shadow:0 -2px 12px rgba(0,0,0,.25);transition:background .3s";
   var msg = document.createElement("span"), back = document.createElement("a");
   msg.style.cssText = "flex:1;min-width:0";
-  back.textContent = "\u2190 Back to admin"; back.href = "https://" + location.hostname.replace(/^[^.]+\./, "") + "/admin";
+  back.textContent = "\u2190 Back to admin"; back.href = SITE + "/admin";
   back.style.cssText = "flex:none;padding:.5rem .9rem;border-radius:999px;background:rgba(255,255,255,.95);color:#111;text-decoration:none;font:600 14px/1 system-ui,sans-serif;white-space:nowrap";
   back.onclick = function (e) {
     try { if (window.opener && !window.opener.closed) { e.preventDefault(); window.opener.focus(); window.close(); setTimeout(function () { location.href = back.href; }, 400); } } catch (x) {}

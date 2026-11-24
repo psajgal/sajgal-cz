@@ -622,7 +622,7 @@ for (const p of pages) {
   fs.writeFileSync(f, p.html);
 }
 ["style.css", "site.js", "home.js", "video.js", "masonry.js", "favicon.svg", "fonts", "images", "videos"].forEach(copy);
-if (DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "draft.js"), fs.readFileSync(path.join(ROOT, "draft.js"), "utf8").replace("__REPO__", REPO).replace("__BRANCH__", BRANCH));
+if (DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "draft.js"), fs.readFileSync(path.join(ROOT, "draft.js"), "utf8").replace("__REPO__", REPO).replace("__BRANCH__", BRANCH).replace("__SITE__", SITE));
 if (!PREVIEW) {
   ["admin.html", "admin.css", "admin.js"].forEach(copy);
   if (!DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemapXml());
