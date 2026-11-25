@@ -45,8 +45,8 @@ export const VIEWER_CSS = [
   '.lb-top .grow{flex:1;min-width:0;font-size:.9rem;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
   '.lb-btn{background:rgba(255,255,255,.12);border:0;color:#fff;min-width:2.6rem;height:2.6rem;padding:0 .9rem;display:inline-grid;place-items:center;cursor:pointer;text-decoration:none;font-size:.9rem;border-radius:0}',
   '.lb-btn:hover{background:rgba(255,255,255,.22)}',
-  '.lb-stage{position:relative;flex:1;min-height:0;display:grid;place-items:center;padding:0 3.4rem 1rem}',
-  '.lb-stage img,.lb-stage video{max-width:100%;max-height:100%;object-fit:contain;display:block}',
+  '.lb-stage{position:relative;flex:1;min-height:0;display:grid;grid-template:minmax(0,1fr)/minmax(0,1fr);place-items:center;overflow:hidden;padding:0 3.4rem 1rem}',
+  '.lb-stage img,.lb-stage video{max-width:100%;max-height:100%;width:auto;height:auto;min-width:0;min-height:0;object-fit:contain;display:block}',
   '.lb-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2}.lb-prev{left:.5rem}.lb-next{right:.5rem}',
   '@media (max-width:640px){.lb-stage{padding:0 0 .5rem}.lb-nav{top:auto;bottom:.8rem;transform:none}.lb-prev{left:.8rem}.lb-next{right:.8rem}}',
   '.lb-spin{position:absolute;color:#aaa;font-size:.9rem}'
