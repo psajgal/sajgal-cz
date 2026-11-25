@@ -211,11 +211,17 @@ ${preloads.join("\n")}${preloads.length ? "\n" : ""}<link rel="stylesheet" href=
 ${jsonld ? `<script type="application/ld+json">${ld(jsonld)}</script>\n` : ""}</head>
 <body${bodyClass ? ` class="${bodyClass}"` : ""}>
 ${body}
+${route === "/contact" || route === "/404" ? "" : footer()}
 ${scripts.concat(DRAFT_BUILD ? ["draft.js"] : []).map((s) => `<script src="${A(s)}" defer></script>`).join("\n")}
 </body>
 </html>
 `;
 }
+
+const footer = () => `<footer class="foot gut">
+<span>© ${new Date().getFullYear()} ${esc(NAME)}</span>
+<nav aria-label="Footer"><a href="${L("/contact")}">Contact<span class="arr" aria-hidden="true"> →</span></a>${INSTAGRAM ? ` <a href="${esc(INSTAGRAM)}" target="_blank" rel="noopener">Instagram</a>` : ""}</nav>
+</footer>`;
 
 const back = (route, label) => `<a class="back" href="${L(route)}" aria-label="${esc(label)}">${ARROW}</a>`;
 

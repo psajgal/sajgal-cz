@@ -182,3 +182,6 @@ body.noscroll{overflow:hidden}
   .fshow .line,.fshow .all{display:none}
 }
 .vt .ph.playing .play{display:none}
+
+.foot{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem 2rem;padding-top:calc(var(--pad)*1.5);padding-bottom:calc(var(--pad)*1.5);border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+.foot nav{display:flex;gap:1.5rem}.foot a{color:var(--ink);text-decoration:none}.foot a:hover{text-decoration:underline}
