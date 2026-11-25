@@ -202,6 +202,10 @@ ${img.w ? `<meta property="og:image:width" content="${img.w}">\n<meta property="
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${esc(abs(img.src))}">
 <link rel="icon" href="${A("favicon.svg")}" type="image/svg+xml">
+<link rel="icon" href="${A("icon-48.png")}" type="image/png" sizes="48x48">
+<link rel="icon" href="${A("icon-192.png")}" type="image/png" sizes="192x192">
+<link rel="shortcut icon" href="${A("favicon.ico")}">
+<link rel="apple-touch-icon" href="${A("apple-touch-icon.png")}">
 <link rel="preload" href="${A("fonts/archivo-lat.woff2")}" as="font" type="font/woff2" crossorigin>
 ${preloads.join("\n")}${preloads.length ? "\n" : ""}<link rel="stylesheet" href="${A("style.css")}">
 ${jsonld ? `<script type="application/ld+json">${ld(jsonld)}</script>\n` : ""}</head>
@@ -638,7 +642,7 @@ for (const p of pages) {
   fs.mkdirSync(path.dirname(f), { recursive: true });
   fs.writeFileSync(f, p.html);
 }
-["style.css", "site.js", "home.js", "video.js", "masonry.js", "favicon.svg", "fonts", "images", "videos"].forEach(copy);
+["style.css", "site.js", "home.js", "video.js", "masonry.js", "favicon.svg", "favicon.ico", "icon-48.png", "icon-96.png", "icon-192.png", "icon-512.png", "apple-touch-icon.png", "fonts", "images", "videos"].forEach(copy);
 if (DRAFT_BUILD) fs.writeFileSync(path.join(OUT, "draft.js"), fs.readFileSync(path.join(ROOT, "draft.js"), "utf8").replace("__REPO__", REPO).replace("__BRANCH__", BRANCH).replace("__SITE__", SITE));
 if (!PREVIEW) {
   ["admin.html", "admin.css", "admin.js"].forEach(copy);
