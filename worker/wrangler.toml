@@ -6,9 +6,20 @@ compatibility_date = "2025-01-01"
 binding = "BUCKET"
 bucket_name = "sajgal-media"
 
+[[r2_buckets]]
+binding = "DELIVERIES"
+bucket_name = "sajgal-deliveries"
+
+[triggers]
+crons = ["23 * * * *"]
+
 [vars]
 ALLOW_ORIGINS = "https://sajgal.cz,https://www.sajgal.cz,https://sajgal-cz.pages.dev,https://draft.sajgal-cz.pages.dev"
 PUBLIC_BASE = "https://media.sajgal.cz"
 GITHUB_REPO = "psajgal/sajgal-cz"
-HARD_CAP_GB = "9"
+HARD_CAP_GB = "4"
+GALLERY_BASE = "https://gallery.sajgal.cz"
+DELIVERY_CAP_GB = "5"
+DELIVERY_GALLERY_MB = "1024"
+DELIVERY_MAX_FILES = "500"
 MAX_FILE_MB = "150"

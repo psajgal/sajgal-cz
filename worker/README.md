@@ -26,3 +26,11 @@ Why: Cloudflare Pages allows 25 MB per file and GitHub's API 100 MB, so 50 to 15
 - `PUT /asset?key=images/…|videos/…` stores one photo or clip (up to 26 MB) with the same hard storage limit. The admin uses it for every upload once `data/media.json` has `"photos": true`.
 - `POST /import` copies files from the site's own GitHub repository (`GITHUB_REPO` variable) into the bucket. The admin's "Move photos to Cloudflare storage" button (Cloudflare login window) uses it once, then sets `photos: true`.
 - When `photos` is true the build serves every `/images/…` and `/videos/…` path from the media address, so the files no longer need to live in the repository.
+
+## Deliveries (gallery.sajgal.cz)
+Private galleries for clients. Files live in a second, private bucket `sajgal-deliveries` (binding `DELIVERIES`, never public); everything is served through the Worker, which checks expiry and the optional password.
+- Admin → **Deliveries** tab creates, edits (title, expiry, password) and deletes galleries through the `/dl/…` routes (Bearer secret).
+- Clients open `https://gallery.sajgal.cz/<22-character code>`: a grid of previews, a full-screen viewer, per-file download and one streamed zip (stored, no compression; CRC32 values are computed in the admin at upload so the Worker needs almost no CPU).
+- Expiry: 1, 3, 7 or 30 days or never. An hourly cron (`[triggers]` in wrangler.toml) deletes expired galleries and abandoned uploads. Deleting a gallery removes its files at once.
+- Limits (variables): `DELIVERY_CAP_GB` 5 for all galleries, `DELIVERY_GALLERY_MB` 1024 per gallery, `DELIVERY_MAX_FILES` 500. The portfolio bucket cap `HARD_CAP_GB` is 4, so both together stay inside the free 10 GB.
+- One-time setup in Cloudflare: create the bucket `sajgal-deliveries`; Worker → Settings → Domains & Routes → add the custom domain `gallery.sajgal.cz`.

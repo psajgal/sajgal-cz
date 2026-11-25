@@ -10,6 +10,8 @@
 //   HARD_CAP_GB      optional, default 9 (the free tier is 10 GB; the rest is a safety margin)
 //   MAX_FILE_MB      optional, default 150
 
+import { deliveryFetch, deliveryScheduled } from "./delivery.js";
+
 const PART = 10 * 1024 * 1024;           // the admin sends 10 MB pieces
 const PART_MAX = 16 * 1024 * 1024;       // never accept a bigger piece
 const PREFIX = "video/";
@@ -76,11 +78,19 @@ async function usage(env) {
 const cleanName = (n) => String(n || "video").toLowerCase().replace(/\.[a-z0-9]+$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "video";
 
 export default {
-  async fetch(req, env) {
+  async scheduled(event, env, ctx) { ctx.waitUntil(deliveryScheduled(env)); },
+  async fetch(req, env, ctx) {
     const h = cors(req, env), url = new URL(req.url), path = url.pathname;
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: h });
     const auth = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
-    if (!env.UPLOAD_SECRET || !same(auth, env.UPLOAD_SECRET)) return json({ error: "Wrong or missing secret." }, 401, h);
+    const authBad = () => (!env.UPLOAD_SECRET || !same(auth, env.UPLOAD_SECRET) ? json({ error: "Wrong or missing secret." }, 401, h) : null);
+    try {
+      const d = await deliveryFetch(req, env, ctx, authBad, h);
+      if (d) return d;
+    } catch (e) {
+      return json({ error: "Server error: " + (e && e.message ? e.message : e) }, 500, h);
+    }
+    const bad = authBad(); if (bad) return bad;
     try {
       if (path === "/status" && req.method === "GET") {
         const u = await usage(env);

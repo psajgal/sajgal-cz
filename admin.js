@@ -8,6 +8,7 @@
     { id: "brands", label: "Commercial", kind: "entries" },
     { id: "videos", label: "Video page", kind: "reels" },
     { id: "landing", label: "Home", kind: "videos", max: 12 },
+    { id: "deliveries", label: "Deliveries", kind: "deliveries" },
     { id: "menu", label: "Home menu", kind: "menu", hide: true },
     { id: "seo", label: "SEO", kind: "seo" }
   ];
@@ -1933,6 +1934,228 @@
     ]));
   }
 
+
+  /* ---------- Deliveries: private client galleries on gallery.sajgal.cz ---------- */
+  var DL_DAYS = [[1, "1 day"], [3, "3 days"], [7, "7 days"], [30, "30 days"], [null, "Until I delete it"]];
+  var dlInfo = null, dlRunning = false;
+  var CRC_T = (function () { var t = new Uint32Array(256); for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crcUpdate(prev, u8) { var c = prev ^ 0xffffffff; for (var i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 0xff] ^ (c >>> 8); return (c ^ 0xffffffff) >>> 0; }
+  function dlDate(ms) { return new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }); }
+  function dlExpiry(g) {
+    if (g.expiresAt == null) return "no expiry";
+    var left = g.expiresAt - Date.now();
+    if (left <= 0) return "expired (removed within the hour)";
+    var d = Math.floor(left / 864e5), hr = Math.floor(left % 864e5 / 36e5);
+    return "expires in " + (d ? d + " d " : "") + hr + " h (" + dlDate(g.expiresAt) + ")";
+  }
+  function dlType(f) {
+    if (f.type) return f.type;
+    var e = (f.name.split(".").pop() || "").toLowerCase();
+    return { jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif", avif: "image/avif", mp4: "video/mp4", webm: "video/webm", mov: "video/quicktime" }[e] || "application/octet-stream";
+  }
+  function vmeta(file) {
+    return new Promise(function (res) {
+      var v = document.createElement("video"), url = URL.createObjectURL(file), done = false;
+      function fin(o) { if (done) return; done = true; URL.revokeObjectURL(url); res(o); }
+      v.preload = "metadata"; v.muted = true;
+      v.onloadedmetadata = function () { fin({ dur: Math.round(v.duration || 0), w: v.videoWidth, h: v.videoHeight }); };
+      v.onerror = function () { fin({}); };
+      setTimeout(function () { fin({}); }, 8000);
+      v.src = url;
+    });
+  }
+  // Small previews are made here, in the browser: grid (600 px) and, for big photos, a 2000 px version for full screen.
+  function dlPreviews(file) {
+    var type = dlType(file);
+    if (/^image\/(jpeg|png|webp|gif|avif)$/.test(type)) {
+      return createImageBitmap(file).then(function (bmp) {
+        return scaled(bmp, 600, 0.8).then(function (t) {
+          var big = file.size > 2.5e6 && Math.max(bmp.width, bmp.height) > 1400;
+          return (big ? scaled(bmp, 2000, 0.85) : Promise.resolve(null)).then(function (v) { return { w: bmp.width, h: bmp.height, t: t.blob, v: v && v.blob }; });
+        });
+      }).catch(function () { return {}; });
+    }
+    if (/^video\/(mp4|webm|quicktime)$/.test(type)) {
+      return Promise.all([vmeta(file), posterOf(file)]).then(function (r) {
+        var m = r[0], poster = r[1];
+        if (!poster) return m;
+        return createImageBitmap(poster).then(function (bmp) { return scaled(bmp, 900, 0.8); }).then(function (t) { m.t = t.blob; return m; }).catch(function () { return m; });
+      });
+    }
+    return Promise.resolve({});
+  }
+  function dlRetry(fn, tries) {
+    return fn().catch(function (e) {
+      if (tries <= 0) throw e;
+      return new Promise(function (r) { setTimeout(r, 1500); }).then(function () { return dlRetry(fn, tries - 1); });
+    });
+  }
+  // Uploads one original (single request, or 10 MB parts for big files) and returns its CRC32.
+  function dlUploadOriginal(id, n, file, type, onBytes) {
+    var base = "/dl/" + id + "/o/" + n, crc = 0, info = dlInfo;
+    if (file.size <= info.singleMax) {
+      return file.arrayBuffer().then(function (buf) {
+        crc = crcUpdate(0, new Uint8Array(buf));
+        return dlRetry(function () { return mediaCall(base + "?type=" + encodeURIComponent(type), { method: "PUT", body: buf }); }, 2).then(function () { onBytes(file.size); return crc; });
+      });
+    }
+    return mediaCall(base + "/start?type=" + encodeURIComponent(type), { method: "POST" }).then(function (s) {
+      var parts = [], pn = 0, off = 0, ps = s.part || info.part;
+      function next() {
+        if (off >= file.size) return mediaCall(base + "/complete", { method: "POST", body: JSON.stringify({ uploadId: s.uploadId, parts: parts }) }).then(function () { return crc; });
+        return file.slice(off, off + ps).arrayBuffer().then(function (buf) {
+          crc = crcUpdate(crc, new Uint8Array(buf)); pn++; var my = pn;
+          return dlRetry(function () { return mediaCall(base + "/part?uploadId=" + encodeURIComponent(s.uploadId) + "&part=" + my, { method: "PUT", body: buf }); }, 2).then(function (p) { parts.push(p); off += buf.byteLength; onBytes(buf.byteLength); return next(); });
+        });
+      }
+      return next().catch(function (e) { mediaCall(base + "/abort", { method: "POST", body: JSON.stringify({ uploadId: s.uploadId }) }).catch(function () {}); throw e; });
+    });
+  }
+  function dlCopy(text, btn) {
+    var done = function () { var o = btn.textContent; btn.textContent = "Copied"; setTimeout(function () { btn.textContent = o; }, 1500); };
+    try { navigator.clipboard.writeText(text).then(done, function () { window.prompt("Copy the link:", text); }); } catch (e) { window.prompt("Copy the link:", text); }
+  }
+  function expirySelect(cur) {
+    var sel = h("select", { "aria-label": "Expiry" });
+    DL_DAYS.forEach(function (d) { sel.appendChild(h("option", { value: d[0] == null ? "never" : String(d[0]), text: d[1] })); });
+    sel.value = cur == null ? "never" : String(cur);
+    return sel;
+  }
+  function daysOf(sel) { return sel.value === "never" ? null : +sel.value; }
+
+  window.addEventListener("beforeunload", function (e) { if (dlRunning) { e.preventDefault(); e.returnValue = ""; } });
+  function renderDeliveries() {
+    if (dlRunning) return;
+    var box = $("#p-deliveries"); box.innerHTML = "";
+    if (!mediaCfg()) { box.appendChild(h("p", { class: "hint", text: "Deliveries use the upload service. Open Cloudflare login (top right), enter the upload address and password, then come back here." })); return; }
+    var meter = h("div", { class: "dlmeter" }), formBox = h("div"), list = h("div", { class: "dllist" }), msg = h("p", { class: "msg", role: "status" });
+    var newBtn = h("button", { type: "button", class: "btn primary", text: "New delivery" });
+    box.appendChild(h("div", { class: "dltop" }, [meter, newBtn])); box.appendChild(msg); box.appendChild(formBox); box.appendChild(list);
+    function paint() {
+      var i = dlInfo, used = i.used + i.reserved;
+      meter.innerHTML = "";
+      meter.appendChild(h("div", { class: "dlbar" }, [(function () { var b = h("span"); b.style.width = Math.min(100, Math.round(used / i.cap * 100)) + "%"; return b; })()]));
+      meter.appendChild(h("span", { class: "hint", text: "Delivery space: " + mb(used) + " of " + mb(i.cap) + " used. Each gallery up to " + mb(i.galleryMax) + " and " + i.maxFiles + " files." }));
+      list.innerHTML = "";
+      if (!i.galleries.length) list.appendChild(h("p", { class: "empty", text: "No deliveries yet." }));
+      i.galleries.forEach(function (g) {
+        var edit = h("button", { type: "button", class: "btn", text: "Edit" }), copy = h("button", { type: "button", class: "btn", text: "Copy link" }), del = h("button", { type: "button", class: "btn", text: "Delete" });
+        var open = h("a", { class: "btn", href: g.url, target: "_blank", rel: "noopener", text: "Open" });
+        copy.onclick = function () { dlCopy(g.url, copy); }; edit.onclick = function () { editDelivery(g); }; del.onclick = function () { deleteDelivery(g); };
+        list.appendChild(h("div", { class: "dlrow" + (g.expired ? " off" : "") }, [
+          h("div", { class: "dlinfo" }, [h("strong", { text: g.title }), h("span", { class: "hint", text: (g.ready ? g.files + " files" : "unfinished upload") + " · " + mb(g.bytes) + " · created " + dlDate(g.createdAt) + " · " + dlExpiry(g) + (g.locked ? " · password" : "") }), h("span", { class: "dlurl", text: g.url })]),
+          h("div", { class: "dlbtns" }, [copy, open, edit, del])
+        ]));
+      });
+    }
+    function refresh() { return mediaCall("/dl/list").then(function (r) { dlInfo = r; paint(); }).catch(function (e) { msg.className = "msg err"; msg.textContent = e.message; }); }
+    function editDelivery(g) {
+      var title = h("input", { type: "text", value: g.title, maxlength: "120", "aria-label": "Title" }), cur = DL_DAYS.map(function (d) { return d[0]; });
+      var sel = h("select", { "aria-label": "Expiry" }); sel.appendChild(h("option", { value: "keep", text: "Keep (" + dlExpiry(g) + ")" }));
+      DL_DAYS.forEach(function (d) { sel.appendChild(h("option", { value: d[0] == null ? "never" : String(d[0]), text: "Restart as: " + d[1] })); });
+      var pw = h("input", { type: "text", placeholder: g.locked ? "Leave empty to keep the current password" : "Optional password", autocomplete: "off", "aria-label": "Password" });
+      var rm = h("input", { type: "checkbox" }), em = h("p", { class: "msg err" });
+      var body = h("div", { class: "pk-body mediabody" }, [h("label", {}, ["Title", title]), h("label", {}, ["Expiry", sel]), h("label", {}, ["Password", pw]), g.locked ? h("label", { class: "chk" }, [rm, " Remove the password"]) : null, em]);
+      var close = modal("Edit delivery", body, function (c) {
+        var save = h("button", { type: "button", class: "btn primary", text: "Save" });
+        save.onclick = function () {
+          var up = {}; if (title.value.trim() && title.value.trim() !== g.title) up.title = title.value.trim();
+          if (sel.value !== "keep") up.days = sel.value === "never" ? null : +sel.value;
+          if (pw.value) up.password = pw.value; else if (rm.checked) up.password = "";
+          if (!Object.keys(up).length) return c();
+          save.disabled = true;
+          mediaCall("/dl/" + g.id + "/update", { method: "POST", body: JSON.stringify(up) }).then(function () { c(); refresh(); }).catch(function (e) { save.disabled = false; em.textContent = e.message; });
+        };
+        return [save, h("button", { type: "button", class: "btn", text: "Cancel", onclick: c })];
+      });
+    }
+    function deleteDelivery(g) {
+      var body = h("div", { class: "pk-body" }, [h("p", { text: "Delete \"" + g.title + "\"? Its files are removed right away, the link stops working, and the space is freed. This can't be undone." }), h("p", { class: "msg err" })]);
+      modal("Delete delivery", body, function (c) {
+        var ok = h("button", { type: "button", class: "btn primary", text: "Delete" });
+        ok.onclick = function () { ok.disabled = true; mediaCall("/dl/" + g.id, { method: "DELETE" }).then(function () { c(); msg.className = "msg"; msg.textContent = "Deleted."; refresh(); }).catch(function (e) { ok.disabled = false; body.lastChild.textContent = e.message; }); };
+        return [ok, h("button", { type: "button", class: "btn", text: "Cancel", onclick: c })];
+      });
+    }
+    newBtn.onclick = function () { if (!dlRunning) newDelivery(); };
+
+    function newDelivery() {
+      formBox.innerHTML = "";
+      var files = [], title = h("input", { type: "text", maxlength: "120", placeholder: "Title, e.g. Jan Société Show 14", "aria-label": "Title" });
+      var exp = expirySelect(7), pw = h("input", { type: "text", autocomplete: "off", placeholder: "Optional password", "aria-label": "Password" });
+      var pick = h("input", { type: "file", multiple: "multiple", hidden: "hidden" }), sum = h("p", { class: "hint" }), go = h("button", { type: "button", class: "btn primary", text: "Create and upload", disabled: "disabled" });
+      var cancel = h("button", { type: "button", class: "btn", text: "Cancel" }), prog = h("div", { class: "dlprog", hidden: "hidden" }), status = h("p", { class: "msg", role: "status" });
+      var dz = h("div", { class: "dldrop", tabindex: "0", role: "button", text: "Drop photos and videos here, or click to choose" });
+      var fields = h("div", { class: "dlfields" }, [h("label", {}, ["Title", title]), h("label", {}, ["Keep it online for", exp]), h("label", {}, ["Password", pw])]);
+      var card = h("div", { class: "dlnew" }, [h("h3", { class: "sec", text: "New delivery" }), fields, dz, pick, sum, h("div", { class: "dlbtns" }, [go, cancel]), prog, status]);
+      formBox.appendChild(card);
+      function recalc() {
+        var total = files.reduce(function (a, f) { return a + f.size; }, 0), i = dlInfo, over = "";
+        if (total > i.galleryMax) over = "Too big: a gallery can hold at most " + mb(i.galleryMax) + ".";
+        else if (files.length > i.maxFiles) over = "Too many files: at most " + i.maxFiles + ".";
+        else if (total + files.length * 1.2e6 > i.free) over = "Not enough delivery space (" + mb(i.free) + " free). Delete an old delivery first.";
+        sum.className = "hint" + (over ? " err" : ""); sum.textContent = over || (files.length ? files.length + " files, " + mb(total) : "");
+        go.disabled = !files.length || !!over;
+      }
+      function add(list) {
+        var have = {}; files.forEach(function (f) { have[f.name + "|" + f.size] = 1; });
+        Array.prototype.forEach.call(list, function (f) { if (f.size > 0 && !have[f.name + "|" + f.size]) { files.push(f); have[f.name + "|" + f.size] = 1; } });
+        files.sort(function (a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); }); recalc();
+      }
+      dz.onclick = function () { pick.click(); }; dz.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick.click(); } };
+      pick.onchange = function () { add(pick.files); pick.value = ""; };
+      ["dragover", "dragenter"].forEach(function (ev) { dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.add("on"); }); });
+      ["dragleave", "drop"].forEach(function (ev) { dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.remove("on"); }); });
+      dz.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files) add(e.dataTransfer.files); });
+      cancel.onclick = function () { if (!dlRunning) formBox.innerHTML = ""; };
+      go.onclick = function () {
+        if (dlRunning || !files.length) return;
+        dlRunning = true; go.disabled = cancel.disabled = newBtn.disabled = true; [title, exp, pw, dz].forEach(function (x) { x.disabled = true; }); dz.style.pointerEvents = "none";
+        var total = files.reduce(function (a, f) { return a + f.size; }, 0), sent = 0, done = 0, id = null, meta = [], failed = null, nextIdx = 0;
+        prog.hidden = false; prog.innerHTML = "";
+        var bar = h("progress", { max: "100", value: "0" }), label = h("span", { class: "hint" }); prog.appendChild(bar); prog.appendChild(label);
+        function show() { var pc = Math.round(sent / total * 100); bar.value = pc; label.textContent = "Uploading… " + done + " of " + files.length + " files, " + pc + "% (" + mb(sent) + " of " + mb(total) + ")"; }
+        function one(n) {
+          var f = files[n], type = dlType(f);
+          return dlPreviews(f).then(function (pv) {
+            var tasks = [];
+            if (pv.t) tasks.push(dlRetry(function () { return mediaCall("/dl/" + id + "/t/" + n, { method: "PUT", body: pv.t }); }, 2));
+            if (pv.v) tasks.push(dlRetry(function () { return mediaCall("/dl/" + id + "/v/" + n, { method: "PUT", body: pv.v }); }, 2));
+            return Promise.all(tasks).then(function () { return dlUploadOriginal(id, n, f, type, function (b) { sent += b; show(); }); }).then(function (crc) {
+              meta[n] = { n: n, name: f.name, size: f.size, type: type, crc: crc, w: pv.w || 0, h: pv.h || 0, dur: pv.dur || 0 }; done++; show();
+            });
+          });
+        }
+        function worker() {
+          if (failed || nextIdx >= files.length) return Promise.resolve();
+          var n = nextIdx++;
+          return one(n).then(worker, function (e) { failed = failed || e; });
+        }
+        function cleanup() { dlRunning = false; newBtn.disabled = false; }
+        var previewEst = files.length * 1.2e6;
+        status.className = "msg"; status.textContent = "Preparing…"; show();
+        mediaCall("/dl/create", { method: "POST", body: JSON.stringify({ title: title.value, days: daysOf(exp), password: pw.value || undefined, bytes: total, planned: Math.round(total + previewEst), count: files.length }) }).then(function (r) {
+          id = r.id; status.textContent = "";
+          return Promise.all([worker(), worker(), worker()]);
+        }).then(function () {
+          if (failed) throw failed;
+          return mediaCall("/dl/" + id + "/commit", { method: "POST", body: JSON.stringify({ files: meta, title: title.value.trim() || undefined }) });
+        }).then(function (r) {
+          cleanup(); formBox.innerHTML = "";
+          var copy = h("button", { type: "button", class: "btn primary", text: "Copy link" }); copy.onclick = function () { dlCopy(r.url, copy); };
+          formBox.appendChild(h("div", { class: "dlnew" }, [h("h3", { class: "sec", text: "Delivery ready" }), h("p", { class: "dlurl", text: r.url }), h("div", { class: "dlbtns" }, [copy, h("a", { class: "btn", href: r.url, target: "_blank", rel: "noopener", text: "Open" })])]));
+          return refresh();
+        }).catch(function (e) {
+          status.className = "msg err"; status.textContent = "Upload stopped: " + (e.message || e) + (id ? " The unfinished delivery was removed." : "");
+          if (id) mediaCall("/dl/" + id, { method: "DELETE" }).catch(function () {});
+          cleanup(); go.disabled = false; cancel.disabled = false; [title, exp, pw, dz].forEach(function (x) { x.disabled = false; }); dz.style.pointerEvents = ""; refresh();
+        });
+      };
+      recalc();
+    }
+    refresh();
+  }
+
   /* ---------- Layout ---------- */
   function applyHints() {
     var m = meta(tab), k = m.kind;
@@ -1941,6 +2164,7 @@
     var hint = "";
     if (view === "layout" && (k === "photos" || (k === "entries" && editing))) hint = "Place photos side by side in rows, like a printed layout.";
     else if (k === "videos") { var vh = $("#vidhint"); vh.hidden = false; vh.textContent = "Drag to reorder. Desktop has three columns, each plays its own clips in turn (clip 1, 4, 7 in the left column; 2, 5 in the middle; 3, 6 on the right). Phones play them all in one column."; }
+    else if (k === "deliveries") hint = "Send photos and videos to a client as a private link. Originals are kept untouched; the client sees a gallery and can download single files or everything as a zip.";
     else if (k === "reels") hint = "Drag to reorder. The first video is the big featured one on the Video page; the rest form the grid.";
     else if (k === "photos") hint = "Captions and alt text. To reorder photos, use the Layout view. Alt text describes the photo for Google and screen readers; blank is filled in automatically.";
     else if (k === "entries" && editing) hint = "Captions and alt text. To reorder photos, use the Layout view; the first photo is the cover.";
@@ -1954,12 +2178,13 @@
     $("#fromshows").hidden = $("#randombtn").hidden = $("#presetbtn").hidden = !(tab === "fashion" && !editing);
     $("#removeall").hidden = !(k === "photos" && !editing);
     $("#p-shows").hidden = k !== "entries"; $("#p-reels").hidden = k !== "reels"; $("#p-menu").hidden = tab !== "landing"; $("#vidhead").hidden = $("#vidhint").hidden = tab !== "landing";
-    $("#exporthint").hidden = k !== "videos"; $("#p-seo").hidden = k !== "seo";
+    $("#exporthint").hidden = k !== "videos"; $("#p-seo").hidden = k !== "seo"; $("#p-deliveries").hidden = k !== "deliveries"; $("#save").hidden = k === "deliveries";
     applyHints();
     if (k === "entries") renderShowList();
     if (k === "reels") renderReels();
     if (tab === "landing") renderMenu();
     if (k === "seo") renderSeo();
+    if (k === "deliveries") renderDeliveries();
     if (grid) renderGrid();
     renderViewToggle(); renderDraft();
     refreshSave();
@@ -1969,7 +2194,7 @@
     var sl = $("#seolink"); sl.hidden = false; sl.setAttribute("aria-current", tab === "seo" ? "page" : "false");
     TABS.forEach(function (c) {
       if (c.id === "seo" || c.hide) return;
-      t.appendChild(h("button", { type: "button", role: "tab", class: c.id === "videos" ? "sep" : false, "aria-selected": String(c.id === tab), text: c.label, onclick: function () {
+      t.appendChild(h("button", { type: "button", role: "tab", class: c.id === "videos" || c.id === "deliveries" ? "sep" : false, "aria-selected": String(c.id === tab), text: c.label, onclick: function () {
         if (c.id === tab && !editing) return;
         tab = c.id; editing = null; view = "text"; lay = null; setStatus(""); tabs(); layout();
       } }));
@@ -1984,7 +2209,7 @@
   function start() {
     $("#setup").hidden = true; $("#editor").hidden = false; $("#disconnect").hidden = false; $("#cflink").hidden = false;
     setStatus("Loading…");
-    ensureDraft().then(function () { return Promise.all(TABS.map(function (c) { return load(c.id); }).concat([loadLayoutFile(), loadPresets(), loadMediaJson()])); }).then(function () {
+    ensureDraft().then(function () { return Promise.all(TABS.filter(function (c) { return c.kind !== "deliveries"; }).map(function (c) { return load(c.id); }).concat([loadLayoutFile(), loadPresets(), loadMediaJson()])); }).then(function () {
       setStatus("");
       try {
         var pos = JSON.parse(localStorage.getItem("sajgal-admin-pos") || "null");
