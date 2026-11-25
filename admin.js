@@ -2087,7 +2087,8 @@
       var cancel = h("button", { type: "button", class: "btn", text: "Cancel" }), prog = h("div", { class: "dlprog", hidden: "hidden" }), status = h("p", { class: "msg", role: "status" });
       var dz = h("div", { class: "dldrop", tabindex: "0", role: "button", text: "Drop photos and videos here, or click to choose" });
       var fields = h("div", { class: "dlfields" }, [h("label", {}, ["Title", title]), h("label", {}, ["Keep it online for", exp]), h("label", {}, ["Password", pw])]);
-      var card = h("div", { class: "dlnew" }, [h("h3", { class: "sec", text: "New delivery" }), fields, dz, pick, sum, h("div", { class: "dlbtns" }, [go, cancel]), prog, status]);
+      var fl = h("div", { class: "dlfiles" }), clearAll = h("button", { type: "button", class: "link", text: "Remove all", hidden: "hidden" });
+      var card = h("div", { class: "dlnew" }, [h("h3", { class: "sec", text: "New delivery" }), fields, dz, pick, h("div", { class: "dlsum" }, [sum, clearAll]), fl, h("div", { class: "dlbtns" }, [go, cancel]), prog, status]);
       formBox.appendChild(card);
       function recalc() {
         var total = files.reduce(function (a, f) { return a + f.size; }, 0), i = dlInfo, over = "";
@@ -2097,10 +2098,34 @@
         sum.className = "hint" + (over ? " err" : ""); sum.textContent = over || (files.length ? files.length + " files, " + mb(total) : "");
         go.disabled = !files.length || !!over;
       }
+      // Small previews of the chosen files, made one at a time so a big batch of large photos does not exhaust memory.
+      var thumbs = {}, thumbQ = [], thumbBusy = false;
+      function fkey(f) { return f.name + "|" + f.size + "|" + f.lastModified; }
+      function thumbNext() {
+        if (thumbBusy) return;
+        var f = thumbQ.shift(); if (!f) return;
+        thumbBusy = true;
+        var k = fkey(f), type = dlType(f), done = function (url) { if (url) thumbs[k] = url; thumbBusy = false; paintFiles(); thumbNext(); };
+        if (!files.some(function (x) { return fkey(x) === k; })) return done(null);
+        if (/^image\/(jpeg|png|webp|gif|avif)$/.test(type)) createImageBitmap(f).then(function (bmp) { return scaled(bmp, 260, 0.7); }).then(function (t) { done(URL.createObjectURL(t.blob)); }, function () { done(null); });
+        else if (/^video\/(mp4|webm|quicktime)$/.test(type)) posterOf(f).then(function (b) { return b ? createImageBitmap(b).then(function (bmp) { return scaled(bmp, 260, 0.7); }).then(function (t) { return URL.createObjectURL(t.blob); }) : null; }).then(done, function () { done(null); });
+        else done(null);
+      }
+      function paintFiles() {
+        if (dlRunning) return;
+        fl.innerHTML = ""; clearAll.hidden = !files.length;
+        files.forEach(function (f) {
+          var type = dlType(f), k = fkey(f), rm = h("button", { type: "button", class: "dlx", title: "Remove " + f.name, "aria-label": "Remove " + f.name, text: "✕" });
+          rm.onclick = function () { files = files.filter(function (x) { return x !== f; }); if (thumbs[k]) { URL.revokeObjectURL(thumbs[k]); delete thumbs[k]; } recalc(); paintFiles(); };
+          var vis = thumbs[k] ? h("img", { src: thumbs[k], alt: "" }) : h("span", { class: "dlext", text: /^video\//.test(type) ? "VIDEO" : (f.name.split(".").pop() || "file").slice(0, 5).toUpperCase() });
+          fl.appendChild(h("div", { class: "dlfile" }, [h("div", { class: "dlthumb" }, [vis, /^video\//.test(type) && thumbs[k] ? h("span", { class: "dlplay", text: "▶" }) : null, rm]), h("span", { class: "dlname", title: f.name, text: f.name }), h("span", { class: "hint", text: mb(f.size) })]));
+        });
+      }
+      clearAll.onclick = function () { if (dlRunning) return; Object.keys(thumbs).forEach(function (k) { URL.revokeObjectURL(thumbs[k]); }); thumbs = {}; thumbQ = []; files = []; recalc(); paintFiles(); };
       function add(list) {
-        var have = {}; files.forEach(function (f) { have[f.name + "|" + f.size] = 1; });
-        Array.prototype.forEach.call(list, function (f) { if (f.size > 0 && !have[f.name + "|" + f.size]) { files.push(f); have[f.name + "|" + f.size] = 1; } });
-        files.sort(function (a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); }); recalc();
+        var have = {}; files.forEach(function (f) { have[fkey(f)] = 1; });
+        Array.prototype.forEach.call(list, function (f) { if (f.size > 0 && !have[fkey(f)]) { files.push(f); have[fkey(f)] = 1; thumbQ.push(f); } });
+        files.sort(function (a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); }); recalc(); paintFiles(); thumbNext();
       }
       dz.onclick = function () { pick.click(); }; dz.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick.click(); } };
       pick.onchange = function () { add(pick.files); pick.value = ""; };
@@ -2112,7 +2137,7 @@
         if (dlRunning || !files.length) return;
         dlRunning = true; go.disabled = cancel.disabled = newBtn.disabled = true; [title, exp, pw, dz].forEach(function (x) { x.disabled = true; }); dz.style.pointerEvents = "none";
         var total = files.reduce(function (a, f) { return a + f.size; }, 0), sent = 0, done = 0, id = null, meta = [], failed = null, nextIdx = 0;
-        prog.hidden = false; prog.innerHTML = "";
+        prog.hidden = false; prog.innerHTML = ""; fl.classList.add("busy"); clearAll.hidden = true; Array.prototype.forEach.call(fl.querySelectorAll(".dlx"), function (x) { x.hidden = true; });
         var bar = h("progress", { max: "100", value: "0" }), label = h("span", { class: "hint" }); prog.appendChild(bar); prog.appendChild(label);
         function show() { var pc = Math.round(sent / total * 100); bar.value = pc; label.textContent = "Uploading… " + done + " of " + files.length + " files, " + pc + "% (" + mb(sent) + " of " + mb(total) + ")"; }
         function one(n) {
@@ -2148,7 +2173,7 @@
         }).catch(function (e) {
           status.className = "msg err"; status.textContent = "Upload stopped: " + (e.message || e) + (id ? " The unfinished delivery was removed." : "");
           if (id) mediaCall("/dl/" + id, { method: "DELETE" }).catch(function () {});
-          cleanup(); go.disabled = false; cancel.disabled = false; [title, exp, pw, dz].forEach(function (x) { x.disabled = false; }); dz.style.pointerEvents = ""; refresh();
+          cleanup(); go.disabled = false; cancel.disabled = false; [title, exp, pw, dz].forEach(function (x) { x.disabled = false; }); dz.style.pointerEvents = ""; fl.classList.remove("busy"); paintFiles(); refresh();
         });
       };
       recalc();
