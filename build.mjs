@@ -602,7 +602,23 @@ function sitemapXml() {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.join("\n")}\n</urlset>\n`;
 }
 const robotsTxt = () => DRAFT_BUILD ? `User-agent: *\nDisallow: /\n` : `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${SITE}/sitemap.xml\n`;
-const headersTxt = () => `/_build.json\n  Access-Control-Allow-Origin: *\n  Cache-Control: no-store\n${DRAFT_BUILD ? "/*\n  X-Robots-Tag: noindex, nofollow\n" : ""}/images/*\n  Cache-Control: public, max-age=31536000, immutable\n/videos/*\n  Cache-Control: public, max-age=31536000, immutable\n/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/admin*\n  X-Robots-Tag: noindex, nofollow\n  Cache-Control: no-store\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n`;
+// Security headers. The CSP covers the public pages only: /admin* detaches it (the admin builds inline previews and talks to GitHub and the upload Worker).
+// Production pages may be framed only by themselves; the draft site must be framed by the admin on sajgal.cz.
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' https://www.instagram.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https://media.sajgal.cz https://*.cdninstagram.com https://*.fbcdn.net https://raw.githubusercontent.com",
+  "media-src 'self' https://media.sajgal.cz",
+  "font-src 'self'",
+  "connect-src 'self' https://www.instagram.com" + (DRAFT_BUILD ? " https://api.github.com https://raw.githubusercontent.com" : ""),
+  "frame-src https://www.instagram.com",
+  DRAFT_BUILD ? "frame-ancestors 'self' https://sajgal.cz https://www.sajgal.cz" : "frame-ancestors 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'"
+].join("; ");
+const headersTxt = () => `/_build.json\n  Access-Control-Allow-Origin: *\n  Cache-Control: no-store\n${DRAFT_BUILD ? "/*\n  X-Robots-Tag: noindex, nofollow\n" : ""}/images/*\n  Cache-Control: public, max-age=31536000, immutable\n/videos/*\n  Cache-Control: public, max-age=31536000, immutable\n/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()\n  Content-Security-Policy: ${CSP}\n${DRAFT_BUILD ? "" : "  X-Frame-Options: SAMEORIGIN\n  Strict-Transport-Security: max-age=31536000; includeSubDomains\n"}/admin*\n  X-Robots-Tag: noindex, nofollow\n  Cache-Control: no-store\n  ! Content-Security-Policy\n  ! X-Frame-Options\n`;
 
 /* ---------- write ---------- */
 function copy(rel) {
