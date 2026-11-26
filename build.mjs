@@ -218,10 +218,7 @@ ${scripts.concat(DRAFT_BUILD ? ["draft.js"] : []).map((s) => `<script src="${A(s
 `;
 }
 
-const footer = () => `<footer class="foot gut">
-<span>© ${new Date().getFullYear()} ${esc(NAME)}</span>
-<nav aria-label="Footer"><a href="${L("/contact")}">Contact<span class="arr" aria-hidden="true"> →</span></a>${INSTAGRAM ? ` <a href="${esc(INSTAGRAM)}" target="_blank" rel="noopener">Instagram</a>` : ""}</nav>
-</footer>`;
+const footer = () => `<footer class="foot gut">\n<nav aria-label="Footer"><span>© ${new Date().getFullYear()} ${esc(NAME)}</span><a href="${L("/contact")}">Contact</a>${INSTAGRAM ? `<a href="${esc(INSTAGRAM)}" target="_blank" rel="noopener">Instagram</a>` : ""}</nav>\n</footer>`;
 
 const back = (route, label) => `<a class="back" href="${L(route)}" aria-label="${esc(label)}">${ARROW}</a>`;
 
